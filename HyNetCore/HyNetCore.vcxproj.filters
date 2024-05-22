@@ -18,28 +18,49 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HyIOCP.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="LockGuard.cpp">
+    <ClCompile Include="Source\Thread\ThreadLocal.cpp">
       <Filter>Source\Thread</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadLocal.cpp">
+    <ClCompile Include="Source\Thread\LockGuard.cpp">
       <Filter>Source\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\IOCPTcpServer.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\IOCPTcpSocket.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\HyNetCore.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\IOCPLoopEvent.cpp">
+      <Filter>Source\Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\Header\HyType.h">
       <Filter>Source\Common\Header</Filter>
     </ClInclude>
-    <ClInclude Include="LockGuard.h">
-      <Filter>Source\Thread</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Header\HyMacro.h">
       <Filter>Source\Common\Header</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadLocal.h">
+    <ClInclude Include="Source\Thread\ThreadLocal.h">
       <Filter>Source\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Thread\LockGuard.h">
+      <Filter>Source\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\IOCPLoopEvent.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\IOCPTcpServer.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\IOCPTcpSocket.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\HyNetCore.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

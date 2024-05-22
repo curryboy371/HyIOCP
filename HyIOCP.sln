@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HyIOCP", "HyIOCP\HyIOCP.vcxproj", "{E4A546FE-285C-4E93-9B88-54CF77C07CB6}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{81313491-5D9A-4668-AF55-8F65D8B44478}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{464E8FFF-DDA4-4CC9-B624-C9FDCB364B78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionPathTool", "Tools\SolutionPathTool\SolutionPathTool.csproj", "{6538674E-05AC-4C29-B2B4-D479C9A23A25}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{FBA274EE-66F3-4530-B215-A9BF5FB0511D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HyNetCore", "HyNetCore\HyNetCore.vcxproj", "{E4A546FE-285C-4E93-9B88-54CF77C07CB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,18 +21,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|Any CPU.Build.0 = Debug|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x64.ActiveCfg = Debug|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x64.Build.0 = Debug|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x86.ActiveCfg = Debug|Win32
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x86.Build.0 = Debug|Win32
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|Any CPU.ActiveCfg = Release|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|Any CPU.Build.0 = Release|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x64.ActiveCfg = Release|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x64.Build.0 = Release|x64
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x86.ActiveCfg = Release|Win32
-		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x86.Build.0 = Release|Win32
 		{81313491-5D9A-4668-AF55-8F65D8B44478}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{81313491-5D9A-4668-AF55-8F65D8B44478}.Debug|Any CPU.Build.0 = Debug|x64
 		{81313491-5D9A-4668-AF55-8F65D8B44478}.Debug|x64.ActiveCfg = Debug|x64
@@ -59,24 +45,21 @@ Global
 		{464E8FFF-DDA4-4CC9-B624-C9FDCB364B78}.Release|x64.Build.0 = Release|x64
 		{464E8FFF-DDA4-4CC9-B624-C9FDCB364B78}.Release|x86.ActiveCfg = Release|Win32
 		{464E8FFF-DDA4-4CC9-B624-C9FDCB364B78}.Release|x86.Build.0 = Release|Win32
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Debug|x64.Build.0 = Debug|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Debug|x86.Build.0 = Debug|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Release|x64.ActiveCfg = Release|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Release|x64.Build.0 = Release|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Release|x86.ActiveCfg = Release|Any CPU
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25}.Release|x86.Build.0 = Release|Any CPU
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|Any CPU.Build.0 = Debug|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x64.ActiveCfg = Debug|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x64.Build.0 = Debug|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x86.ActiveCfg = Debug|Win32
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Debug|x86.Build.0 = Debug|Win32
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|Any CPU.ActiveCfg = Release|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|Any CPU.Build.0 = Release|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x64.ActiveCfg = Release|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x64.Build.0 = Release|x64
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x86.ActiveCfg = Release|Win32
+		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{6538674E-05AC-4C29-B2B4-D479C9A23A25} = {FBA274EE-66F3-4530-B215-A9BF5FB0511D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A048851-69C6-4C58-A13C-2F97DA87BA27}

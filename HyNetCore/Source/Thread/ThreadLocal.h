@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Header/HyType.h"
+
 /* Thread Local */
 
 /* 
@@ -7,6 +9,6 @@
 	접두사는 tls변수명을 사용함. ( Thread_Local_Storage ) 
 */
 
-//extern thread_local int32 tlsThreadID = 0;
+extern thread_local int32 tlsThreadID;
 
 

@@ -5,21 +5,33 @@ class Program
 {
     static void Main()
     {
-        string[] Projects = { "HyIOCP", "Client", "Server" };
+        string[] Projects = { "TestProject" };
 
-        string solutionDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        string absolutePath = System.IO.Path.GetFullPath(solutionDirectory);
-        string newPath = RemoveLastDirectory(absolutePath, 7);
+        string[] IncludeDirectorys = { "TestDir1", "TestDir2" };
+
+        //string[] Projects = { "HyIOCP", "Client", "Server" };
+
+        string binDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string absolutePath = System.IO.Path.GetFullPath(binDirectory);
+        string solutionPath = RemoveLastDirectory(absolutePath, 7);
         
 
         for (int i = 0; i < Projects.Length; i++)
         {
             string project = Projects[i];
-            string absoluteProjectPath = newPath + "\\" + project + "\\" + project + ".vcxproj";
+            string absoluteProjectPath = solutionPath + "\\" + project + "\\" + project + ".vcxproj";
             Console.WriteLine(absoluteProjectPath);
+
+
+            for(int j = 0; j < IncludeDirectorys.Length; j++)
+            {
+                string includeDir = solutionPath + IncludeDirectorys[j];
+
+                AddIncludeDirectory(solutionPath, absoluteProjectPath, includeDir);
+
+            }
         }
 
-        //AddIncludeDirectory(projectFilePath, includeDirectory);
     }
     public static string RemoveLastDirectory(string path, int rmLen)
     {
@@ -34,7 +46,7 @@ class Program
         return string.Join(System.IO.Path.DirectorySeparatorChar.ToString(), newPathArray);
     }
 
-    static void AddIncludeDirectory(string projectFilePath, string includeDirectory)
+    static void AddIncludeDirectory(string solutionFilePath, string projectFilePath, string includeDirectory)
     {
         // Load the project file
         XmlDocument doc = new XmlDocument();
