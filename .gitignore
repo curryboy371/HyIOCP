@@ -1,0 +1,44 @@
+
+
+
+#white list
+!Tools/PacketGenerator/Proto
+
+
+# Exclude Visual Studio temporary files and build results
+.vs/
+*.suo
+*.user
+*.userosscache
+
+*.vscache
+ipch/
+*.aps
+*.ncb
+*.sdf
+*.suo
+*.ipch
+
+# Compiled object files, binaries, and build folders
+*.exe
+*.dll
+*.so
+*.dylib
+*.pdb
+Debug/
+Release/
+x64/
+*.ilk
+*.tlog
+*.idb
+*.vcxproj.FileListAbsolute.txt
+*.Build.CppClean.log
+*.exe.recipe
+*.lib.recipe
+*.pch
+
+
+*.spec
+*.pyc
+3rdparty/*
+Libraries/include/*
