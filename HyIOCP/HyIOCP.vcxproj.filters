@@ -1,14 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Source">
+      <UniqueIdentifier>{5fb8b320-4c4d-4cb6-9f6c-618158dc6223}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{40d41c42-eb95-42b3-9975-a7dda8cc18a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Network">
+      <UniqueIdentifier>{dd253cec-7ce8-43ed-b1ad-8b131f64a338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Thread">
+      <UniqueIdentifier>{663477a9-1843-490a-9ed9-158dd8ea4914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common\Header">
+      <UniqueIdentifier>{fe4fbc9f-1f90-4572-8012-9bd97cd247a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HyIOCP.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="LockGuard.cpp">
+      <Filter>Source\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLocal.cpp">
+      <Filter>Source\Thread</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Common\Header\HyType.h">
+      <Filter>Source\Common\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="LockGuard.h">
+      <Filter>Source\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Header\HyMacro.h">
+      <Filter>Source\Common\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadLocal.h">
+      <Filter>Source\Thread</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
