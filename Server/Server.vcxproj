@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -184,6 +184,7 @@
     <ClCompile Include="Source\Server.cpp" />
     <ClCompile Include="Source\ServerPacketHandler.cpp" />
     <ClCompile Include="Source\ServerSessions.cpp" />
+    <ClCompile Include="Source\SessionManager.cpp" />
     <ClCompile Include="Source\User.cpp" />
     <ClCompile Include="Source\UserManager.cpp" />
   </ItemGroup>
@@ -196,6 +197,7 @@
     <ClInclude Include="Source\Room.h" />
     <ClInclude Include="Source\ServerPacketHandler.h" />
     <ClInclude Include="Source\ServerSessions.h" />
+    <ClInclude Include="Source\SessionManager.h" />
     <ClInclude Include="Source\User.h" />
     <ClInclude Include="Source\UserManager.h" />
   </ItemGroup>

@@ -30,7 +30,7 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
     user_info.set_name(pkt.user_name());
     user_info.set_user_type(Protocol::hype_user::user_normal);
 
-    bool bret = HyServerInstance::GetUserMgr()->AddUser(user_info, session);
+    bool bret = Ginstance->GetManager<UserManager>()->AddUser(user_info, session);
 
     loginPkt.set_userid(user_info.id());
     loginPkt.set_success(bret); // TODO 체크
@@ -54,9 +54,9 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
     {
         std::cout << "room : " << pkt.room_name() << std::endl;
 
-        if (UserRef user = HyServerInstance::GetUserMgr()->GetUser(pkt.userid()))
+        if (UserRef user = Ginstance->GetManager<UserManager>()->GetUser(pkt.userid()))
         {
-            HyServerInstance::GetRoom()->Enter(user);
+            Ginstance->GetRoom()->Enter(user);
 
             enterPkt.set_success(true);
             //enterPkt.add_users();

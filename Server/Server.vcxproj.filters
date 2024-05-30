@@ -13,14 +13,17 @@
     <Filter Include="Source\Manager">
       <UniqueIdentifier>{6ebf0119-3b4a-4656-a17f-fb26b1d97348}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Main">
+      <UniqueIdentifier>{cd4b4380-52e7-44c7-bb31-31b9870f0c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Contents">
+      <UniqueIdentifier>{e26055b9-7bd5-49f8-ae34-5945e25c94f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Header">
+      <UniqueIdentifier>{76274a3b-a1bd-4196-9e9d-be2387351794}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Server.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\pch.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Protocol\Struct.pb.cc">
       <Filter>Source\Protocol</Filter>
     </ClCompile>
@@ -29,12 +32,6 @@
     </ClCompile>
     <ClCompile Include="Source\Protocol\Protocol.pb.cc">
       <Filter>Source\Protocol</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Room.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\User.cpp">
-      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\ServerPacketHandler.cpp">
       <Filter>Source\Network</Filter>
@@ -45,14 +42,26 @@
     <ClCompile Include="Source\UserManager.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SessionManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server.cpp">
+      <Filter>Source\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Room.cpp">
+      <Filter>Source\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\User.cpp">
+      <Filter>Source\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\pch.cpp">
+      <Filter>Source\Header</Filter>
+    </ClCompile>
     <ClCompile Include="Source\HyServerInstance.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\pch.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Protocol\Protocol.pb.h">
       <Filter>Source\Protocol</Filter>
     </ClInclude>
@@ -61,12 +70,6 @@
     </ClInclude>
     <ClInclude Include="Source\Protocol\Enum.pb.h">
       <Filter>Source\Protocol</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Room.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\User.h">
-      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\ServerPacketHandler.h">
       <Filter>Source\Network</Filter>
@@ -77,8 +80,20 @@
     <ClInclude Include="Source\UserManager.h">
       <Filter>Source\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SessionManager.h">
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room.h">
+      <Filter>Source\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\User.h">
+      <Filter>Source\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\pch.h">
+      <Filter>Source\Header</Filter>
+    </ClInclude>
     <ClInclude Include="Source\HyServerInstance.h">
-      <Filter>Source</Filter>
+      <Filter>Source\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

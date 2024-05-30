@@ -153,9 +153,9 @@ protected:
 	bool MakeClientSession();
 
 protected:
-	std::shared_ptr<HySession> listenSessionRef = nullptr; // listen session
-	
 	std::function<std::shared_ptr<HySession>(void)> createListenSessionFunc;
+
+	std::shared_ptr<HySession> listenSessionRef = nullptr; // listen session
 	std::unordered_map<int32, HySessionRef> sessionPool; // pool이라기보다는 연결되지 않은 세션들
 	std::atomic<int32> remainSessions; // sessionPool에 남은 session 수
 

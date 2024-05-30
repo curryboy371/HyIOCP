@@ -16,9 +16,6 @@
     <Filter Include="Source\Common\Header">
       <UniqueIdentifier>{fe4fbc9f-1f90-4572-8012-9bd97cd247a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Network\My">
-      <UniqueIdentifier>{5adfcd92-b129-4974-90fe-1477db164a9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Manager">
       <UniqueIdentifier>{4bd3a9bb-5e05-4339-b0a7-a963d29ca420}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     </Filter>
     <Filter Include="Source\Job">
       <UniqueIdentifier>{191bb144-3dec-4260-8aa3-8826bf25f922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Network\Buffer">
+      <UniqueIdentifier>{630df293-e6d7-47f3-b04f-27816c559a3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +45,6 @@
     <ClCompile Include="Source\Common\NetEnum.cpp">
       <Filter>Source\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Common\NetGlobal.cpp">
-      <Filter>Source\Common</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Common\Netpch.cpp">
       <Filter>Source\Common\Pch</Filter>
     </ClCompile>
@@ -55,12 +52,6 @@
       <Filter>Source\Network</Filter>
     </ClCompile>
     <ClCompile Include="Source\Network\MyIOCP.cpp">
-      <Filter>Source\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Network\RecvBuffer.cpp">
-      <Filter>Source\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Network\SendBuffer.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
     <ClCompile Include="Source\Manager\JobManager.cpp">
@@ -77,6 +68,15 @@
     </ClCompile>
     <ClCompile Include="Source\Manager\BaseManager.cpp">
       <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Manager\HyInstance.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\RecvBuffer.cpp">
+      <Filter>Source\Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\SendBuffer.cpp">
+      <Filter>Source\Network\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +101,6 @@
     <ClInclude Include="Source\Common\NetStruct.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\NetGlobal.h">
-      <Filter>Source\Common</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Netpch.h">
       <Filter>Source\Common\Pch</Filter>
     </ClInclude>
@@ -114,12 +111,6 @@
       <Filter>Source\Network</Filter>
     </ClInclude>
     <ClInclude Include="Source\Network\NetAddress.h">
-      <Filter>Source\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Network\RecvBuffer.h">
-      <Filter>Source\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Network\SendBuffer.h">
       <Filter>Source\Network</Filter>
     </ClInclude>
     <ClInclude Include="Source\Manager\JobManager.h">
@@ -136,6 +127,15 @@
     </ClInclude>
     <ClInclude Include="Source\Manager\BaseManager.h">
       <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Manager\HyInstance.h">
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\RecvBuffer.h">
+      <Filter>Source\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\SendBuffer.h">
+      <Filter>Source\Network\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

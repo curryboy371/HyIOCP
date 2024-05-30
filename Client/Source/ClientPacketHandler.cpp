@@ -26,7 +26,7 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
     {
         UserRef user = std::make_shared<User>();
         user->SetUserID(pkt.userid());
-        HyClientInstance::GetUserMgr()->Set_myUser(user);
+        Ginstance->GetManager<UserManager>()->Set_myUser(user);
 
         std::cout << "SC_LOGIN:: login success user id-" << user->GetUserID() << std::endl;
 

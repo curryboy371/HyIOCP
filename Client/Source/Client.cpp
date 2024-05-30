@@ -20,8 +20,8 @@ void WorkThread(std::shared_ptr<IOCPClient> iocpRef)
 
 int main()
 {
-	HyClientInstance instance;
-	instance.InitInstance();
+	HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
+	instance->InitHyInstance();
 
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 
@@ -54,8 +54,7 @@ int main()
 		GthreadMgr->JoinThreads();
 	}
 
-
-	instance.ReleaseInstance();
+	instance->ReleaseInstance();
 
 	return 0;
 }

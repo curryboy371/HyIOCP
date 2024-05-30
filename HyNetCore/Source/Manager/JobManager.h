@@ -7,7 +7,7 @@
 // queue에 push, pop은 싱글 스레드처럼 동작하지만, 해당 함수 내부에서 multi thread에서 lock을 잡게 동작함.
 // 따라서 멀티스레드 환경에서 안전할 것임.
 
-class JobManager
+class JobManager : std::enable_shared_from_this<JobManager>
 {
 public:
 	JobManager();

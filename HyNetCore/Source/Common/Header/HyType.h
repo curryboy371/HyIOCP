@@ -66,15 +66,31 @@ USING_SHARED_PTR(Job)
 USING_SHARED_PTR(ScheduledJob)
 USING_SHARED_PTR(JobScheduler)
 USING_SHARED_PTR(JobQueue)
-USING_SHARED_PTR(NetGlobal)
 
 
+USING_SHARED_PTR(HyInstance)
 
-/* Server */
+USING_SHARED_PTR(JobManager)
+USING_SHARED_PTR(ThreadManager)
+USING_SHARED_PTR(SendBufferManager)
+
+USING_SHARED_PTR(BaseManager)
+
+
+/* Common */
 USING_SHARED_PTR(User)
 USING_SHARED_PTR(Room)
 USING_SHARED_PTR(GameSession)
 USING_SHARED_PTR(UserManager)
+USING_SHARED_PTR(SessionManager)
+
+/* Client */
+USING_SHARED_PTR(HyClientInstance)
+
+
+/* Server */
+USING_SHARED_PTR(HyServerInstance)
+
 
 
 #pragma endregion

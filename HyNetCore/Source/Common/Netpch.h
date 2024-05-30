@@ -9,7 +9,7 @@
 
 
 #include <functional>
-
+#include <type_traits>
 
 #include <map>
 #include <unordered_map>
@@ -26,7 +26,6 @@
 #include <mutex>
 #include <atomic>
 
-#include "NetGlobal.h"
 #include "NetEnum.h"
 #include "NetStruct.h"
 #include "NetAddress.h"
@@ -42,6 +41,7 @@
 #include "SendBuffer.h"
 #include "RecvBuffer.h"
 
+#include "HyInstance.h"
 #include "ThreadManager.h"
 
 #include "Job.h"

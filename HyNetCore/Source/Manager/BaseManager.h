@@ -1,7 +1,7 @@
 #pragma once
 
 
-class BaseManager
+class BaseManager : public std::enable_shared_from_this<BaseManager>
 {
 public:
 	BaseManager();

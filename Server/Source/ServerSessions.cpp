@@ -41,7 +41,6 @@ void ListenSession::PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySes
 
 	// 세션 연결상태 변경 - listen server
 	SetSessionStatus(E_SESSION_STATUS::E_CONNECT_STATUS);
-
 }
 
 void ListenSession::PostConnect()

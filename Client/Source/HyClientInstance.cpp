@@ -2,14 +2,14 @@
 #include "HyClientInstance.h"
 
 #include "UserManager.h"
-//#include "Room.h"
+#include "SessionManager.h"
 
-std::shared_ptr<UserManager> HyClientInstance::userMgr = nullptr;
-//std::shared_ptr<Room> HyServerInstance::room;
+HyClientInstanceRef Ginstance;
 
 HyClientInstance::HyClientInstance()
 {
 	DEF_LOG;
+
 }
 
 HyClientInstance::~HyClientInstance()
@@ -17,22 +17,37 @@ HyClientInstance::~HyClientInstance()
 	DEF_LOG;
 }
 
-void HyClientInstance::InitInstance()
+void HyClientInstance::InitHyInstance()
 {
-	InitManager();
+	InitGInstance();
 	InitProtocol();
-
-
-	//room = std::make_shared<Room>();
-	netG = std::make_shared<NetGlobal>();
+	InitManager();
 }
 
 void HyClientInstance::ReleaseInstance()
 {
+	ReleaseGInstance();
 	ReleaseManager();
+}
 
-	netG.reset();
-	//room.reset();
+void HyClientInstance::InitGInstance()
+{
+	HyInstance::InitGInstance();
+
+	Ginstance = std::static_pointer_cast<HyClientInstance>(shared_from_this());
+}
+
+void HyClientInstance::ReleaseGInstance()
+{
+	HyInstance::ReleaseGInstance();
+
+	Ginstance.reset();
+}
+
+void HyClientInstance::ReleaseManager()
+{
+	HyInstance::ReleaseManager();
+
 }
 
 void HyClientInstance::InitProtocol()
@@ -42,11 +57,14 @@ void HyClientInstance::InitProtocol()
 
 void HyClientInstance::InitManager()
 {
-	userMgr = std::make_shared<UserManager>();
+	// 언리얼처럼 Reflection 기능이 있다면 하나하나 만들진 않아도 되는데..
+	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<UserManager>()));
+	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<SessionManager>()));
+
+	for (auto& manager : managers)
+	{
+		manager->InitManager();
+	}
 }
 
-void HyClientInstance::ReleaseManager()
-{
-	userMgr.reset();
-}
 

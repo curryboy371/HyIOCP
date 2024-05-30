@@ -8,36 +8,35 @@
 
 */
 
-class UserManager;
-class NetGlobal;
-class Room;
+#include "HyInstance.h"
 
-class HyServerInstance
+extern HyServerInstanceRef Ginstance;
+
+extern RoomRef Groom;
+
+class HyServerInstance : public HyInstance
 {
 public:
 	HyServerInstance();
 	~HyServerInstance();
 
-
 public:
-	void InitInstance();
-	void ReleaseInstance();
+	virtual void InitHyInstance();
+	virtual void ReleaseInstance();
 
 protected:
-	void InitProtocol();
-	void InitManager();
-	void ReleaseManager();
+	virtual void InitGInstance();
+
+	virtual void InitProtocol();
+	virtual void InitManager();
+
+	virtual void ReleaseGInstance();
+	virtual void ReleaseManager();
 
 public:
-	static UserManagerRef GetUserMgr() { return userMgr; };
-	static RoomRef GetRoom() { return room; };
+	RoomRef GetRoom() { return Groom; };
 
 private:
-	static UserManagerRef userMgr;
-	
-	static RoomRef room;
-
-	NetGlobalRef netG;
 
 };
 

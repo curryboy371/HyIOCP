@@ -58,7 +58,7 @@ private:
 };
 
 
-class SendBufferManager
+class SendBufferManager : std::enable_shared_from_this<SendBufferManager>
 {
 	DEF_MUTEX
 

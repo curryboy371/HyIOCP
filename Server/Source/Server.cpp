@@ -21,8 +21,8 @@ void WorkThread(std::shared_ptr<IOCPServer> iocpRef)
 
 int main()
 {
-	HyServerInstance instance;
-	instance.InitInstance();
+	HyServerInstanceRef instance = std::make_shared<HyServerInstance>();
+	instance->InitHyInstance();
 
 	// 서버는 클라이언트와 연결하기 위해 gamesession 사용
 	SessionConfig<ListenSession> listenConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_LISTEN, 1);
@@ -48,12 +48,12 @@ int main()
 			Protocol::SC_CHAT chatPkt;
 			chatPkt.set_msg(u8"broadcst : ");
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
-			instance.GetRoom()->DoTimer(1, [=] { HyServerInstance::GetRoom()->Broadcast(sendBuffer); });
+			Ginstance->GetRoom()->DoTimer(1, [=] { Ginstance->GetRoom()->Broadcast(sendBuffer); });
 		}
 
 		GthreadMgr->JoinThreads();
 	}
 
-	instance.ReleaseInstance();
+	instance->ReleaseInstance();
 	return 0;
 }

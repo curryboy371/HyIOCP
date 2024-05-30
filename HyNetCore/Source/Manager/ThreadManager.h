@@ -1,7 +1,7 @@
 #pragma once
 
 
-class ThreadManager
+class ThreadManager : std::enable_shared_from_this<ThreadManager>
 {
 	DEF_MUTEX;
 public:

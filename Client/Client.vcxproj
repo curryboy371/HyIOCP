@@ -23,6 +23,7 @@
     <ClCompile Include="Source\ClientPacketHandler.cpp" />
     <ClCompile Include="Source\ClientSessions.cpp" />
     <ClCompile Include="Source\HyClientInstance.cpp" />
+    <ClCompile Include="Source\SessionManager.cpp" />
     <ClCompile Include="Source\User.cpp" />
     <ClCompile Include="Source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -55,6 +56,7 @@
     <ClInclude Include="Source\ClientPacketHandler.h" />
     <ClInclude Include="Source\ClientSessions.h" />
     <ClInclude Include="Source\HyClientInstance.h" />
+    <ClInclude Include="Source\SessionManager.h" />
     <ClInclude Include="Source\User.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\Protocol\Enum.pb.h" />
