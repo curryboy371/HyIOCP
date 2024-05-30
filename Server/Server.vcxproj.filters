@@ -4,10 +4,81 @@
     <Filter Include="Source">
       <UniqueIdentifier>{96db42a7-dbce-4521-b0fe-bb8ce447fdbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Protocol">
+      <UniqueIdentifier>{b90917ae-61dd-4614-a578-dd36c973e1a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Network">
+      <UniqueIdentifier>{dbe79bc0-e4aa-4741-97db-1c589c127832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Manager">
+      <UniqueIdentifier>{6ebf0119-3b4a-4656-a17f-fb26b1d97348}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Server.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\pch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Protocol\Struct.pb.cc">
+      <Filter>Source\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Protocol\Enum.pb.cc">
+      <Filter>Source\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Protocol\Protocol.pb.cc">
+      <Filter>Source\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Room.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\User.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ServerPacketHandler.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ServerSessions.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UserManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HyServerInstance.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\pch.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Protocol\Protocol.pb.h">
+      <Filter>Source\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Protocol\Struct.pb.h">
+      <Filter>Source\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Protocol\Enum.pb.h">
+      <Filter>Source\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\User.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ServerPacketHandler.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ServerSessions.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UserManager.h">
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HyServerInstance.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

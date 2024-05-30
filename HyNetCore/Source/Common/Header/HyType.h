@@ -57,12 +57,32 @@ typedef WIDECHAR			TCHAR;
 #pragma region UsingMacro
 #define USING_SHARED_PTR(Cname)		using Cname##Ref = std::shared_ptr<class Cname>;
 
+/* HyNetCore */
+USING_SHARED_PTR(HySession)
+USING_SHARED_PTR(SendBuffer)
+USING_SHARED_PTR(RecvBuffer)
+USING_SHARED_PTR(SendBufferChunk)
+USING_SHARED_PTR(Job)
+USING_SHARED_PTR(ScheduledJob)
+USING_SHARED_PTR(JobScheduler)
+USING_SHARED_PTR(JobQueue)
+USING_SHARED_PTR(NetGlobal)
 
 
 
-
+/* Server */
+USING_SHARED_PTR(User)
+USING_SHARED_PTR(Room)
+USING_SHARED_PTR(GameSession)
+USING_SHARED_PTR(UserManager)
 
 
 #pragma endregion
 
 
+// 함수 템플릿: std::unordered_map 또는 std::map에서 키가 존재하는지 검사
+template <typename MapType, typename KeyType>
+bool Contains(const MapType& map, const KeyType& key)
+{
+    return map.find(key) != map.end();
+}

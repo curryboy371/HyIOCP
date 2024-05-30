@@ -1,9 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <mutex>
-
-
 /* LockGuard */
 /* 
 	Mutex, 그리고 동일 thread가 중복으로 lock을 접근 가능하게 하기 위해 recursive lock을 사용
@@ -11,6 +7,7 @@
 
 class LockGuard
 {
+public:
 	explicit LockGuard(std::recursive_mutex& inlockRef)
 		:lockRef(inlockRef)
 	{

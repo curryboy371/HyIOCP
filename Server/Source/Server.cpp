@@ -1,99 +1,59 @@
-#include <iostream>
-#include "HyNetCore.h"
+#include "pch.h"
 
-#ifdef _DEBUG
+#include "MyIOCP.h"
 
-#pragma comment(lib, "HyNetCore\\Debug\\HyNetCore.lib")
-#else
-#pragma comment(lib, "HyNetCore\\Release\\HyNetCore.lib")
-#endif
+#include "Room.h"
 
-namespace {
 
-	class TcpSocket : public X::ITcpSocketCB
+void WorkThread(std::shared_ptr<IOCPServer> iocpRef)
+{
+	while (true)
 	{
-	public:
-		char buff[1024]{ 0 };
+		tlsEndTickCount = ::GetTickCount64() + 64; // 여기도 타임아웃을 설정해둔다고 보면 됨.
 
-		char sendBuf[1024];
-		X::ITcpSocket* iTcpSocket;
-	public:
-
-
-		// 通过 ITcpSocketCB 继承
-		virtual bool OnRecv(int len) override
-		{
-			std::cout << buff << std::endl;
-
-			OnRecv();//重新投递
-
-
-			return true;
-		}
-
-		void OnRecv()
-		{
-			iTcpSocket->DoRecv(buff, 1024);
-		}
-
-
-		void OnSend()
-		{
-			for (int i = 0; i < 1024; i++)
-				sendBuf[i] = 'a';
-			iTcpSocket->DoSend(sendBuf, 1024);
-		}
-
-
-		virtual bool OnSend(int len) override
-		{
-
-			return true;
-		}
-
-		virtual void OnClose() override
-		{
-
-			std::cout << "客户端断开（断开回调）" << std::endl;
-		}
-
-	};
-
+		iocpRef->ProcessIOCompletion(10);
+		
+		ThreadManager::ScheduleJobQueueWork(); // 예약된 일감 처리
+		
+		ThreadManager::JobQueueWork(); //타임아웃에 걸리면 글로벌 큐에 넣음
+	}
 }
-
 
 int main()
 {
-	// win socket 초기화
-	X::InitNetCore();
+	HyServerInstance instance;
+	instance.InitInstance();
 
-	X::ILoopEvent* loop = X::CreateLoopEvent();
-	// iocp 생성
-	loop->Init();
+	// 서버는 클라이언트와 연결하기 위해 gamesession 사용
+	SessionConfig<ListenSession> listenConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_LISTEN, 1);
+	SessionConfig<GameSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_S2C, 2);
+	std::shared_ptr<IOCPServer> iocpRef = std::make_shared<IOCPServer>(sessionConfig.GetAddress(), listenConfig.GetSessionFactory(), sessionConfig.GetSessionFactory(), sessionConfig.GetMaxSessionCount());
 
-	X::ITcpServer* server = X::CreateTcpServer();
+	bool bret = iocpRef->InitIOCP(); 
 
-	// loop돌릴걸 lamda로 넣었네
-	server->Init(loop, [loop](X::ITcpSocket* sock) {
-		std::cout << "客户端连接成功1" << std::endl;
-		TcpSocket* tcp = new TcpSocket();
-		sock->Init(loop, tcp);
-
-		tcp->iTcpSocket = sock;
-
-		tcp->OnRecv();
-		tcp->OnSend();
-		});
-
-
-	// listen 시작
-	server->Listen("0.0.0.0", 7890);
-
-	// 루프
-	while (true)
+	if (bret)
 	{
-		loop->LoopOnce();
+		// lamda...
+		GthreadMgr->LaunchThread([&iocpRef]()
+			{
+				WorkThread(iocpRef);
+			}
+		);
+
+		// main thread
+		while (true)
+		{
+			std::this_thread::sleep_for(std::chrono::seconds(3));
+
+			Protocol::SC_CHAT chatPkt;
+			chatPkt.set_msg(u8"broadcst : ");
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+			instance.GetRoom()->DoTimer(1, [=] { HyServerInstance::GetRoom()->Broadcast(sendBuffer); });
+		}
+
+		GthreadMgr->JoinThreads();
 	}
 
+	instance.ReleaseInstance();
 	return 0;
 }

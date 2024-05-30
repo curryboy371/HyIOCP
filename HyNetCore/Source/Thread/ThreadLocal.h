@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Header/HyType.h"
 
 /* Thread Local */
 
@@ -10,5 +9,7 @@
 */
 
 extern thread_local int32 tlsThreadID;
+extern thread_local std::shared_ptr<class SendBufferChunk> tlsSendBufferChunk;
 
-
+extern thread_local class JobQueue* tlsCurJobQueue;
+extern thread_local unsigned long long tlsEndTickCount;

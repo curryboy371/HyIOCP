@@ -1,0 +1,52 @@
+syntax = "proto3";
+package Protocol;
+
+import "Enum.proto";
+import "Struct.proto";
+
+// CS - Client to Server
+// SC - Server to Client
+// BC - BroadCast to Client 
+//		BC_GL_ - BroadCast_Global : 전체유저 call
+//		BC_		- BroadCast		  : 특정 그룹에서 braodcast
+
+message CS_LOGIN
+{
+	string user_name = 1;
+	string passwd = 2;
+}
+
+message SC_LOGIN
+{
+	bool success = 1;
+	uint64 userId = 2;
+}
+
+message CS_ENTER_ROOM
+{
+	string room_name = 1;
+	uint64 userId = 2;
+}
+
+message SC_ENTER_ROOM
+{
+	bool success = 1;
+	repeated hyps_user_info users = 2;
+}
+
+message CS_CHAT
+{
+	string msg = 1;
+}
+
+message SC_CHAT
+{
+	bool success = 1;
+	uint64 userId = 2;
+	string msg = 3;
+}
+
+message BC_GL_CHAT
+{
+	string msg = 1;
+}

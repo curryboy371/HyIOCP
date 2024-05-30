@@ -72,24 +72,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Libraries\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Libraries\Libs\$(ProjectName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Thread\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Job\;$(SolutionDir)HyNetCore\Source\Thread\;$(SolutionDir)Libraries\include;$(ProjectDir)Source;$(ProjectDir)Source\Protocol;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Libraries\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Libraries\Libs\$(ProjectName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Thread\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Job\;$(SolutionDir)HyNetCore\Source\Thread\;$(SolutionDir)Libraries\include;$(ProjectDir)Source;$(ProjectDir)Source\Protocol;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Libraries\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Libraries\Libs\$(ProjectName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Thread\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Job\;$(SolutionDir)HyNetCore\Source\Thread\;$(SolutionDir)Libraries\include;$(ProjectDir)Source;$(ProjectDir)Source\Protocol;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Libraries\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Libraries\Libs\$(ProjectName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Thread\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)HyNetCore\Source\;$(SolutionDir)HyNetCore\Source\Manager\;$(SolutionDir)HyNetCore\Source\Common\;$(SolutionDir)HyNetCore\Source\Network\;$(SolutionDir)HyNetCore\Source\Job\;$(SolutionDir)HyNetCore\Source\Thread\;$(SolutionDir)Libraries\include;$(ProjectDir)Source;$(ProjectDir)Source\Protocol;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -97,8 +97,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Netpch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -114,8 +115,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Netpch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -131,8 +133,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Netpch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -148,8 +151,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Netpch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -160,20 +164,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Network\HyNetCore.cpp" />
-    <ClCompile Include="Source\Network\IOCPLoopEvent.cpp" />
-    <ClCompile Include="Source\Network\IOCPTcpServer.cpp" />
-    <ClCompile Include="Source\Network\IOCPTcpSocket.cpp" />
+    <ClCompile Include="Source\Common\Netpch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Common\NetEnum.cpp" />
+    <ClCompile Include="Source\Common\NetGlobal.cpp" />
+    <ClCompile Include="Source\Common\NetStruct.cpp" />
+    <ClCompile Include="Source\Job\Job.cpp" />
+    <ClCompile Include="Source\Job\JobScheduler.cpp" />
+    <ClCompile Include="Source\Job\LockQueue.cpp" />
+    <ClCompile Include="Source\Manager\BaseManager.cpp" />
+    <ClCompile Include="Source\Manager\JobManager.cpp" />
+    <ClCompile Include="Source\Manager\ThreadManager.cpp" />
+    <ClCompile Include="Source\Network\HySession.cpp" />
+    <ClCompile Include="Source\Network\MyIOCP.cpp" />
+    <ClCompile Include="Source\Network\RecvBuffer.cpp" />
+    <ClCompile Include="Source\Network\SendBuffer.cpp" />
     <ClCompile Include="Source\Thread\LockGuard.cpp" />
     <ClCompile Include="Source\Thread\ThreadLocal.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Common\Netpch.h" />
     <ClInclude Include="Source\Common\Header\HyMacro.h" />
     <ClInclude Include="Source\Common\Header\HyType.h" />
-    <ClInclude Include="Source\Network\HyNetCore.h" />
-    <ClInclude Include="Source\Network\IOCPLoopEvent.h" />
-    <ClInclude Include="Source\Network\IOCPTcpServer.h" />
-    <ClInclude Include="Source\Network\IOCPTcpSocket.h" />
+    <ClInclude Include="Source\Common\NetEnum.h" />
+    <ClInclude Include="Source\Common\NetGlobal.h" />
+    <ClInclude Include="Source\Common\NetStruct.h" />
+    <ClInclude Include="Source\Job\Job.h" />
+    <ClInclude Include="Source\Job\JobScheduler.h" />
+    <ClInclude Include="Source\Job\LockQueue.h" />
+    <ClInclude Include="Source\Manager\BaseManager.h" />
+    <ClInclude Include="Source\Manager\JobManager.h" />
+    <ClInclude Include="Source\Manager\ThreadManager.h" />
+    <ClInclude Include="Source\Network\HySession.h" />
+    <ClInclude Include="Source\Network\MyIOCP.h" />
+    <ClInclude Include="Source\Network\NetAddress.h" />
+    <ClInclude Include="Source\Network\RecvBuffer.h" />
+    <ClInclude Include="Source\Network\SendBuffer.h" />
     <ClInclude Include="Source\Thread\LockGuard.h" />
     <ClInclude Include="Source\Thread\ThreadLocal.h" />
   </ItemGroup>

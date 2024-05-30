@@ -58,12 +58,12 @@ namespace X {
 	class ITcpServer
 	{
 	public:
-		//  和　循环事件关联
+		//  이벤트 루프와 연결
 		/// <summary>
-		/// 初始化TCP服务
+		/// TCP 서비스를 초기화합니다.
 		/// </summary>
-		/// <param name="loop">循环事件</param>
-		/// <param name="cb">当用户连接成功后 回调的函数</param>
+		/// <param name="loop">이벤트 루프</param>
+		/// <param name="cb">사용자가 연결에 성공한 후 콜백될 함수</param>
 		/// <returns></returns>
 		virtual bool Init(ILoopEvent* loop, FTcpServerCB cb) = 0;
 

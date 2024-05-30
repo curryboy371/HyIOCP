@@ -1,0 +1,16 @@
+syntax = "proto3";
+package Protocol;
+
+import "Enum.proto";
+
+
+// hyps_name - hy protocol struct
+// name은 소문자
+
+message hyps_user_info
+{
+	uint64 id = 1;
+	string name = 2;
+	hype_user user_type = 3;
+
+}

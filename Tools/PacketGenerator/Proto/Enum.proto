@@ -1,0 +1,11 @@
+syntax = "proto3";
+package Protocol;
+
+// hype_name - hy protocol enum 
+// name은 소문자
+enum hype_user
+{
+	user_none = 0;
+	user_master = 1;
+	user_normal = 2;
+}

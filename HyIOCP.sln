@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{FBA274EE
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HyNetCore", "HyNetCore\HyNetCore.vcxproj", "{E4A546FE-285C-4E93-9B88-54CF77C07CB6}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PacketGenerator", "Tools\PacketGenerator\PacketGenerator.pyproj", "{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,9 +59,18 @@ Global
 		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x64.Build.0 = Release|x64
 		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x86.ActiveCfg = Release|Win32
 		{E4A546FE-285C-4E93-9B88-54CF77C07CB6}.Release|x86.Build.0 = Release|Win32
+		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Release|x64.ActiveCfg = Release|Any CPU
+		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762} = {FBA274EE-66F3-4530-B215-A9BF5FB0511D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A048851-69C6-4C58-A13C-2F97DA87BA27}
