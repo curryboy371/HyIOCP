@@ -91,14 +91,3 @@ void GameSession::PostSend(int32 len)
 
 
 }
-
-void GameSession::LoginSession(HySessionRef sessionRef)
-{
-	// TODO 로그인 성공시마다 락 잡는거 많이 안 좋아보임.
-	{
-		USE_MULOCK;
-
-		sessionRef->SetSessionStatus(E_SESSION_STATUS::E_LOGIN_STATUS);
-	}
-
-}

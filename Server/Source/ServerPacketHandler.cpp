@@ -6,6 +6,9 @@
 #include "Room.h"
 #include "User.h"
 
+#include "SessionManager.h"
+
+
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
 /* 서버 side 패킷 수신 */
@@ -24,7 +27,6 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
     // 로그인 시도
     Protocol::SC_LOGIN loginPkt;
 
-
     Protocol::hyps_user_info user_info;
     user_info.set_id(session->GetSessionKey());
     user_info.set_name(pkt.user_name());
@@ -37,11 +39,12 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
 
     if (bret)
     {
-        session->GetIOCPRef()->LoginSession(session);
+        if (Ginstance->GetManager<SessionManager>()->OnLoginSession(session) == true)
+        {
+            SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(loginPkt);
+            session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
+        }
     }
-
-    SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(loginPkt);
-    session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
 
     return true;
 }

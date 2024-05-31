@@ -75,6 +75,25 @@ private:
 
 #pragma endregion
 
+#pragma region Space
+
+#define BEGIN_NS(name) namespace ##nameCore {
+#define END_NS }
+
+#define BEGIN_SERVER namespace Server {
+#define END_SERVER }
+
+#define BEGIN_CLIENT namespace Client {
+#define END_CLIENT }
+
+#define BEGIN_CORE namespace NetCore {
+#define END_CORE }
+
+#define USING_CORE using namespace NetCore;
+#define USING_SERVER using namespace Server;
+#define USING_CLIENT using namespace Client;
+
+#pragma endregion
 
 
 #pragma region LockGuard

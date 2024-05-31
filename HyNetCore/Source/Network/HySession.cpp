@@ -23,12 +23,6 @@ HySession::~HySession()
 	std::cout << "~HySession" << std::endl;
 }
 
-void HySession::LoginSuccess()
-{
-	SetSessionStatus(E_SESSION_STATUS::E_LOGIN_STATUS);
-	std::cout << "LoginSuccess" << std::endl;
-}
-
 void HySession::ClearSession()
 {
 	SetSessionStatus(E_SESSION_STATUS::E_DISCONNECT_STATUS);

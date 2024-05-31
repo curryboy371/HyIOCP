@@ -177,6 +177,7 @@
     <ClCompile Include="Source\Job\LockQueue.cpp" />
     <ClCompile Include="Source\Manager\BaseManager.cpp" />
     <ClCompile Include="Source\Manager\HyInstance.cpp" />
+    <ClCompile Include="Source\Manager\ISessionManager.cpp" />
     <ClCompile Include="Source\Manager\JobManager.cpp" />
     <ClCompile Include="Source\Manager\ThreadManager.cpp" />
     <ClCompile Include="Source\Network\HySession.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Source\Job\LockQueue.h" />
     <ClInclude Include="Source\Manager\BaseManager.h" />
     <ClInclude Include="Source\Manager\HyInstance.h" />
+    <ClInclude Include="Source\Manager\ISessionManager.h" />
     <ClInclude Include="Source\Manager\JobManager.h" />
     <ClInclude Include="Source\Manager\ThreadManager.h" />
     <ClInclude Include="Source\Network\HySession.h" />

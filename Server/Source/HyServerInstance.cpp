@@ -3,7 +3,6 @@
 
 #include "UserManager.h"
 #include "SessionManager.h"
-
 #include "Room.h"
 
 HyServerInstanceRef Ginstance;
@@ -48,6 +47,7 @@ void HyServerInstance::ReleaseGInstance()
 
 	Ginstance.reset();
 	Groom.reset();
+	GisessionMgr.reset();
 }
 
 void HyServerInstance::ReleaseManager()
@@ -67,10 +67,13 @@ void HyServerInstance::InitManager()
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<UserManager>()));
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<SessionManager>()));
 
+
 	for (auto& manager : managers)
 	{
 		manager->InitManager();
 	}
+
+	GisessionMgr = std::static_pointer_cast<ISessionManager>(GetManager<SessionManager>());
 }
 
 

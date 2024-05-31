@@ -45,7 +45,6 @@ protected:
 	virtual void PostSend(int32 len) abstract;
 
 public:
-	void LoginSuccess();
 
 public:
 	void ClearSession();

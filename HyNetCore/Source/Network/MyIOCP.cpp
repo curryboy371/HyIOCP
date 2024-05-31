@@ -5,8 +5,10 @@
 #include "HySession.h"
 #include "Thread/LockGuard.h"
 
+#include "ISessionManager.h"
+
 IOCP::IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> Infunc, int32 InmaxSessionCount)
-	:sessionID(1), netAddr(InnetAddr), createSessionFunc(Infunc), maxSessionCount(InmaxSessionCount)
+	:netAddr(InnetAddr), createSessionFunc(Infunc), maxSessionCount(InmaxSessionCount)
 {
 
 	// 윈소켓 초기화
@@ -30,12 +32,6 @@ IOCP::IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)>
 
 IOCP::~IOCP()
 {
-	for (auto& pair : conSessionMap)
-	{
-		pair.second->ClearSession();
-	}
-
-	conSessionMap.clear();
 
 	// 윈소켓 close
 	::WSACleanup();
@@ -147,29 +143,22 @@ void IOCP::Send(HySessionRef sessionRef, SendBufferRef sendBufferRef)
 
 void IOCP::SendBroadcast(SendBufferRef sendBufferRef)
 {
-	for (auto& pair : conSessionMap)
-	{
-		if (pair.second->IsLogined())
-		{
-			pair.second->PreSend(sendBufferRef);
-		}
-	}
+	//for (auto& pair : conSessionMap)
+	//{
+	//	if (pair.second->IsLogined())
+	//	{
+	//		pair.second->PreSend(sendBufferRef);
+	//	}
+	//}
 }
 
 IOCPServer::IOCPServer(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InListenSFunc, std::function<std::shared_ptr<HySession>(void)> InClientSFunc, int32 InmaxSessionCount)
-	:IOCP(InnetAddr, InClientSFunc, InmaxSessionCount), createListenSessionFunc(InListenSFunc), remainSessions(0)
+	:IOCP(InnetAddr, InClientSFunc, InmaxSessionCount), createListenSessionFunc(InListenSFunc)
 {
-	//sessionPool.reserve(maxSessionCount);
 }
 
 IOCPServer::~IOCPServer()
 {
-	for (auto& pair : sessionPool)
-	{
-		pair.second->ClearSession();
-	}
-	sessionPool.clear();
-	remainSessions.store(0);
 
 	listenSessionRef->ClearSession();
 
@@ -220,11 +209,10 @@ bool IOCPServer::InitIOCP()
 
 bool IOCPServer::MakeClientSession()
 {
-	// 5개만 세션을 만들어두고 이후에 접속하는 세션은 안받도록 해야함.
-
 	// 이것을 블라킹 방식이 아닌..
 	// callback 함수로 받는 식의 non block으로...
 	// session은 미리 만들어두고.. 연결하는 식을 사용하겟음.
+
 	for (int i = 0; i < maxSessionCount; ++i)
 	{
 		// 이부분은 메인 스레드가 최초 실행시에만 담당하므로 lock을 걸지 않음.
@@ -247,17 +235,11 @@ std::shared_ptr<HySession> IOCPServer::CreateListenSession()
 
 void IOCPServer::DisconnectSession(std::shared_ptr<HySession> sessionRef)
 {
-	LockGuard lockGuard(GetLock());
-
 	// 서버면 세션을 지우지 않고 연결 해제, 초기화. - 세션 수는 항상 동일하게 유지하도록...
-	int32 sessionKey = sessionRef->GetSessionKey();
-	if (Contains(conSessionMap, sessionKey) == true)
+	bool bret = GisessionMgr->OnDisconnectSession(sessionRef);
+
+	if (bret)
 	{
-		USE_MULOCK;
-
-		// 세션을 초기화 하고 다시 Accept 상태로 변경
-		sessionRef->ClearSession();
-
 		bool bIsRetry = true;
 		Accept(sessionRef, bIsRetry);
 	}
@@ -265,6 +247,7 @@ void IOCPServer::DisconnectSession(std::shared_ptr<HySession> sessionRef)
 	{
 		//error
 	}
+
 }
 
 bool IOCPServer::Listen()
@@ -276,48 +259,8 @@ bool IOCPServer::PreAccept(std::shared_ptr<HySession> sessionRef, const bool bRe
 {
 	// ref 설정
 	sessionRef->SetIOCPRef(shared_from_this());
-	sessionRef->SetOverlappedOwner(E_IO_TYPE::E_IO_ACCEPT, sessionRef);
 
-	if (!bRetry)
-	{
-
-		// 세션 상태를 대기 상태로 설정
-		sessionRef->SetSessionStatus(E_SESSION_STATUS::E_WAIT_STATUS);
-
-		// 세션 키를 생성하고 설정
-		int32 sessionKey = sessionID.fetch_add(1);
-		sessionRef->SetSessioKey(sessionKey);
-
-		// 세션 풀에 세션을 추가
-		sessionPool.emplace(sessionKey, sessionRef);
-		remainSessions.fetch_add(1);
-
-		return true;
-	}
-	else
-	{
-		USE_MULOCK;
-
-		int32 sessionKey = sessionRef->GetSessionKey();
-
-		if (Contains(sessionPool, sessionKey) == true)
-		{
-			if (!sessionPool[sessionKey])
-			{
-				// 세션을 세션 풀에 업데이트
-				sessionPool[sessionKey] = sessionRef;
-				conSessionMap.erase(sessionKey);
-				remainSessions.fetch_add(1);
-
-				// 세션 상태를 재시도 상태로 설정
-				SetupSocket(sessionRef->GetSocketRef());
-				sessionRef->SetSessionStatus(E_SESSION_STATUS::E_RETRY_STATUS);
-				return true;
-			}
-		}
-	}
-
-	return false;
+	return GisessionMgr->OnAddConnectedSession(sessionRef, bRetry);
 }
 
 void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry/* = false*/)
@@ -349,38 +292,6 @@ void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry
 	}
 
 
-}
-
-bool IOCPServer::LoginSession(HySessionRef sessionRef)
-{
-	if (remainSessions.load() > 0)
-	{
-		// TODO 로그인 성공시마다 Lock 잡는거 수정 할 수 있으면 수정필요
-		USE_MULOCK;
-
-		int32 sessionKey = sessionRef->GetSessionKey();
-
-		if (Contains(sessionPool, sessionKey) == true)
-		{
-			if (sessionPool[sessionKey])
-			{
-				if (Contains(conSessionMap, sessionKey) == false)
-				{
-					conSessionMap.emplace(sessionKey, sessionPool[sessionKey]);
-					sessionPool[sessionKey].reset();
-					remainSessions.fetch_sub(1);
-					sessionRef->LoginSuccess();
-					return true;
-				}
-			}
-		}
-	}
-	else
-	{
-		std::cout << "remain session zero" << std::endl;
-	}
-
-	return false;
 }
 
 void IOCPServer::ProcessIOEvent(OverlappedEx* overlappedEx)
@@ -449,14 +360,9 @@ bool IOCPClient::InitIOCP()
 }
 
 
-void IOCPClient::DisconnectSession(std::shared_ptr<HySession> sessionRer)
+void IOCPClient::DisconnectSession(std::shared_ptr<HySession> sessionRef)
 {
-	LockGuard lockGuard(GetLock());
-
-	// 클라면 세션 지우기 - 서버 연결시 세션 생성
-	int32 sessionKey = sessionRer->GetSessionKey();
-	sessionRer->ClearSession();
-	conSessionMap.erase(sessionKey);
+	bool bret = GisessionMgr->OnDisconnectSession(sessionRef);
 }
 
 void IOCPClient::ProcessIOEvent(OverlappedEx* overlappedEx)
@@ -497,11 +403,7 @@ void IOCPClient::ProcessIOEvent(OverlappedEx* overlappedEx)
 
 void IOCPClient::ConnectSession(std::shared_ptr<HySession> sessionRef)
 {
-	LockGuard lockGuard(GetLock());
-	int index = static_cast<int>(conSessionMap.size()); // 서버 세션 고유 id를 사용하면 그거 가져옴
-	conSessionMap.emplace(index, sessionRef); // server session 저장
-	sessionRef->SetSessioKey(index);
-
+	GisessionMgr->OnAddConnectedSession(sessionRef, false);
 
 	// 컨텐츠 
 	sessionRef->OnConnect();

@@ -78,6 +78,9 @@
     <ClCompile Include="Source\Network\SendBuffer.cpp">
       <Filter>Source\Network\Buffer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Manager\ISessionManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\Header\HyType.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="Source\Network\SendBuffer.h">
       <Filter>Source\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Manager\ISessionManager.h">
+      <Filter>Source\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

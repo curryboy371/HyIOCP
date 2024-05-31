@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "UserManager.h"
 
+BEGIN_CLIENT
+
 UserManager::UserManager()
     :myUser(nullptr)
 {
@@ -19,3 +21,5 @@ void UserManager::InitManager()
 void UserManager::ReleaseManager()
 {
 }
+
+END_CLIENT

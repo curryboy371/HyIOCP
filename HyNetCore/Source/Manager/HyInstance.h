@@ -8,6 +8,9 @@
 */
 
 //extern class HyServerInstance* Ginstance;
+//ISessionManager* GisessionMgr; // 매니저에서 shared ptr로 생성하고 core에서 사용하기 위해 low ptr로 전달받음
+extern std::shared_ptr<class ISessionManager> GisessionMgr; 
+
 
 extern JobManagerRef GjobMgr;
 extern ThreadManagerRef GthreadMgr;
@@ -37,10 +40,11 @@ public:
 	template<typename T>
 	std::shared_ptr<T> GetManager()
 	{
-		// TODO 
+		// TODO 타입 체크
 		//std::static_assert(std::is_base_of<BaseManager, T>::value, "T must be derived from BaseManager");
 		//ASSERT_CRASH(std::is_base_of<BaseManager, T>::value);
 
+		// TOOD 모든 매니저 순회하면서 dynamic ptra cast 하는거라 인덱스 연산으로 수정 필요
 		for (const auto& manager : managers)
 		{
 			if (auto derived = std::dynamic_pointer_cast<T>(manager))
@@ -55,4 +59,3 @@ public:
 protected:
 	std::vector<BaseManagerRef> managers;
 };
-

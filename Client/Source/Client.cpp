@@ -4,6 +4,7 @@
 #include "HyNetCore.h"
 #include "MyIOCP.h"
 
+
 void WorkThread(std::shared_ptr<IOCPClient> iocpRef)
 {
 	while (true)

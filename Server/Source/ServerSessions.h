@@ -53,7 +53,6 @@ public:
 	virtual void PostSend(int32 len) override;
 
 public:
-	virtual void LoginSession(HySessionRef sessionRef);
 
 };
 

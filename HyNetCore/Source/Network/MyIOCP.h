@@ -47,8 +47,6 @@ public:
 	std::shared_ptr<HySession> CreateSession();
 	virtual void DisconnectSession(std::shared_ptr<HySession> sessionRer) {};
 
-	virtual bool LoginSession(HySessionRef sessionRef) { return false; };
-
 	virtual bool Bind(const SOCKET& inSocket, const NetAddress& inNetaddr);
 
 	void SetupSocket(SOCKET& InSock);
@@ -96,8 +94,6 @@ protected:
 	LPFN_DISCONNECTEX	DisconnectEx;
 	LPFN_ACCEPTEX		AcceptEx;
 
-	std::atomic<int> sessionID;
-	std::unordered_map<int, std::shared_ptr<HySession>> conSessionMap; // login된 세션 모음
 };
 
 
@@ -115,7 +111,7 @@ public:
 
 public:
 
-	virtual void DisconnectSession(std::shared_ptr<HySession> sessionRer);
+	virtual void DisconnectSession(std::shared_ptr<HySession> sessionRef);
 	void ConnectSession(std::shared_ptr<HySession> sessionRef);
 
 
@@ -143,7 +139,6 @@ public:
 	void Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry = false);
 
 public:
-	virtual bool LoginSession(HySessionRef sessionRef);
 
 protected:
 	bool Listen();
@@ -154,10 +149,7 @@ protected:
 
 protected:
 	std::function<std::shared_ptr<HySession>(void)> createListenSessionFunc;
-
 	std::shared_ptr<HySession> listenSessionRef = nullptr; // listen session
-	std::unordered_map<int32, HySessionRef> sessionPool; // pool이라기보다는 연결되지 않은 세션들
-	std::atomic<int32> remainSessions; // sessionPool에 남은 session 수
 
 };
 

@@ -1,10 +1,3 @@
 #pragma once
 
 
-class Client
-{
-
-
-
-};
-

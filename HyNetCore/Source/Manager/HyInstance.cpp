@@ -4,7 +4,12 @@
 #include "BaseManager.h"
 #include "JobManager.h"
 #include "ThreadManager.h"
+#include "ISessionManager.h"
 #include "SendBuffer.h"
+
+std::shared_ptr<class ISessionManager> GisessionMgr;
+
+//class ISessionManager* GisessionMgr;
 
 JobManagerRef GjobMgr;
 ThreadManagerRef GthreadMgr;
@@ -45,4 +50,3 @@ void HyInstance::ReleaseManager()
 
 	managers.clear();
 }
-
