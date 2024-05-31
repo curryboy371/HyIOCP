@@ -56,20 +56,20 @@ void HySession::CloseSocket()
 void HySession::OnAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
 	std::cout << "OnAccept() " << std::endl;
-	PostAccept(overlappedEx, sessionRef);
+	OnPostAccept(overlappedEx, sessionRef);
 }
 
 void HySession::OnConnect()
 {
 	std::cout << "ONConnect() " << std::endl;
-	PostConnect();
+	OnPostConnect();
 
 }
 
 void HySession::OnDisconnect()
 {
 	std::cout << "OnDisconnect() " << std::endl;
-	PostDisConnect();
+	OnPostDisconnect();
 }
 
 void HySession::OnRecv(OverlappedEx* overlappedEx)
@@ -114,7 +114,7 @@ void HySession::OnRecv(OverlappedEx* overlappedEx)
 			break;
 		}
 
-		int32 resLen = PostRecv(&readByte[processLen], packetSize);
+		int32 resLen = OnPostRecv(&readByte[processLen], packetSize);
 		processLen += resLen;
 	}
 

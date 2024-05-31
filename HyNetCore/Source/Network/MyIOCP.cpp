@@ -254,9 +254,6 @@ bool IOCPServer::Listen()
 
 bool IOCPServer::PreAccept(std::shared_ptr<HySession> sessionRef, const bool bRetry/* = false*/)
 {
-	// ref 설정
-	sessionRef->SetIOCPRef(shared_from_this());
-
 	return GisessionMgr->OnAddConnectedSession(sessionRef, bRetry);
 }
 
@@ -309,8 +306,6 @@ bool IOCPClient::InitIOCP()
 	{
 		// 세션을 먼저 생성하고 서버에 connect 요청을 함
 		HySessionRef sessionRef = CreateSession();
-		sessionRef->SetIOCPRef(shared_from_this());
-
 		bool bSuccess = sessionRef->StartConnect();
 
 		if (false == bSuccess)

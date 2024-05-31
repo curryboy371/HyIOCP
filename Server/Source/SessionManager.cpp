@@ -61,8 +61,7 @@ bool SessionManager::OnAddConnectedSession(HySessionRef addSession, const bool b
 				remainSessions.fetch_add(1);
 
 				// 세션 상태를 재시도 상태로 설정-그대로 써도 될 수도?
-				addSession->GetIOCPRef()->SetupSocket((addSession->GetSocketRef()));
-
+				Ginstance->Get_IocpRef()->SetupSocket((addSession->GetSocketRef()));
 				addSession->SetSessionStatus(E_SESSION_STATUS::E_RETRY_STATUS);
 				return true;
 			}

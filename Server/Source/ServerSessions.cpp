@@ -18,7 +18,7 @@ ListenSession::~ListenSession()
 
 }
 
-void ListenSession::PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
+void ListenSession::OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
 	//sessionRef : clientSession
 
@@ -47,11 +47,11 @@ void ListenSession::PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySes
 	SetSessionStatus(E_SESSION_STATUS::E_CONNECT_STATUS);
 }
 
-void ListenSession::PostConnect()
+void ListenSession::OnPostConnect()
 {
 }
 
-int32 ListenSession::PostRecv(BYTE* buffer, int32 len)
+int32 ListenSession::OnPostRecv(BYTE* buffer, int32 len)
 {
 	return int32();
 }
@@ -60,7 +60,7 @@ void ListenSession::PostSend(int32 len)
 {
 }
 
-void ListenSession::PostDisConnect()
+void ListenSession::OnPostDisconnect()
 {
 }
 
@@ -76,17 +76,17 @@ GameSession::~GameSession()
 	std::cout << "~GameSession" << std::endl;
 }
 
-void GameSession::PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
+void GameSession::OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
 	// GameSession 연결 상태 변경
 	SetSessionStatus(E_SESSION_STATUS::E_CONNECT_STATUS);
 }
 
-void GameSession::PostConnect()
+void GameSession::OnPostConnect()
 {
 }
 
-int32 GameSession::PostRecv(BYTE* buffer, int32 len)
+int32 GameSession::OnPostRecv(BYTE* buffer, int32 len)
 {
 	HySessionRef sessionRef = GetSessionRef();
 	bool bret = ServerPacketHandler::HandlePacket(sessionRef, buffer, len);
@@ -100,7 +100,7 @@ void GameSession::PostSend(int32 len)
 
 }
 
-void GameSession::PostDisConnect()
+void GameSession::OnPostDisconnect()
 {
 	bool bret = Ginstance->GetManager<SessionManager>()->OnDisconnectSession(shared_from_this());
 

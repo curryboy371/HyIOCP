@@ -4,11 +4,11 @@
 #include "UserManager.h"
 #include "SessionManager.h"
 
-void ServerSession::PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
+void ServerSession::OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
 }
 
-void ServerSession::PostConnect()
+void ServerSession::OnPostConnect()
 {
 	Ginstance->GetManager<Client::SessionManager>()->OnAddConnectedSession(shared_from_this(), false);
 
@@ -26,7 +26,7 @@ void ServerSession::PostConnect()
 	StartRecv();
 }
 
-int32 ServerSession::PostRecv(BYTE* buffer, int32 len)
+int32 ServerSession::OnPostRecv(BYTE* buffer, int32 len)
 {
 	HySessionRef sessionRef = GetSessionRef();
 	bool bret = ClientPacketHandler::HandlePacket(sessionRef, buffer, len);
@@ -38,7 +38,7 @@ void ServerSession::PostSend(int32 len)
 {
 }
 
-void ServerSession::PostDisConnect()
+void ServerSession::OnPostDisconnect()
 {
 	bool bret = GisessionMgr->OnDisconnectSession(shared_from_this());
 }

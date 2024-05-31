@@ -17,15 +17,15 @@ public:
 public:
 
 	// HySession을(를) 통해 상속됨
-	virtual void PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef) override;
+	virtual void OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef) override;
 
-	virtual void PostConnect() override;
+	virtual void OnPostConnect() override;
 
-	virtual int32 PostRecv(BYTE* buffer, int32 len) override;
+	virtual int32 OnPostRecv(BYTE* buffer, int32 len) override;
 
 	virtual void PostSend(int32 len) override;
 
-	virtual void PostDisConnect() override;
+	virtual void OnPostDisconnect() override;
 
 };
 

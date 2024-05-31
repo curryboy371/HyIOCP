@@ -18,7 +18,7 @@ public:
 	virtual ~HySession();
 
 public:
-	// PreDoing > StartDoing > IO Event  > OnDoing > PostDoing
+	// PreDoing > StartDoing > IO Event  > OnDoing > OnPostDoing
 
 	// prefare func
 	void PreDisconnect(const WCHAR* cause);
@@ -39,12 +39,11 @@ public:
 
 	// override func - call by event handler func ( OnDoing ) 
 protected:
-	virtual void PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef) abstract;
-	virtual void PostConnect() abstract;
-	virtual int32 PostRecv(BYTE* buffer, int32 len) abstract;
+	virtual void OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef) abstract;
+	virtual void OnPostConnect() abstract;
+	virtual int32 OnPostRecv(BYTE* buffer, int32 len) abstract;
 	virtual void PostSend(int32 len) abstract;
-	virtual void PostDisConnect() abstract;
-
+	virtual void OnPostDisconnect() abstract;
 
 public:
 
@@ -68,9 +67,6 @@ public:
 
 	void SetSessioKey(const int32 InKey) { sessionKey = InKey; }
 	const int32 GetSessionKey() { return sessionKey; }
-
-	void SetIOCPRef(std::shared_ptr<class IOCP> IniocpRef) { iocpRef = IniocpRef; }
-	std::shared_ptr<class IOCP> GetIOCPRef() { return iocpRef; }
 
 	void SetOverlappedOwner(E_IO_TYPE intype, std::shared_ptr<HySession> inOwnerSession);
 	OverlappedEx& GetOverlappedRef(E_IO_TYPE intype);
