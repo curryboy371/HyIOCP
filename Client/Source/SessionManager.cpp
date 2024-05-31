@@ -26,7 +26,7 @@ void SessionManager::ReleaseManager()
 bool SessionManager::OnAddConnectedSession(HySessionRef addSession, const bool bRetry)
 {
 	USE_MULOCK;
-	int index = static_cast<int>(connectedSessionMap.size()); // 서버 세션 고유 id를 사용하면 그거 가져옴
+	static int index = static_cast<int>(connectedSessionMap.size() + 1); // 서버 세션 고유 id를 사용하면 그거 가져옴
 	connectedSessionMap.emplace(index, addSession); // server session 저장
 	addSession->SetSessioKey(index);
 

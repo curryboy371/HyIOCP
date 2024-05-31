@@ -7,8 +7,6 @@
 
 HyServerInstanceRef GSinstance;
 
-RoomRef Groom;
-
 HyServerInstance::HyServerInstance()
 	:HyInstance(E_CORE_CONNECT::E_CONNECT_SERVER)
 {
@@ -41,7 +39,7 @@ void HyServerInstance::InitGInstance()
 	Ginstance = shared_from_this();
 	GSinstance = std::static_pointer_cast<HyServerInstance>(shared_from_this());;
 
-	Groom = std::make_shared<Room>();
+	room = std::make_shared<Room>();
 }
 
 void HyServerInstance::ReleaseGInstance()
@@ -49,8 +47,9 @@ void HyServerInstance::ReleaseGInstance()
 	HyInstance::ReleaseGInstance();
 
 	Ginstance.reset();
-	Groom.reset();
 
+	room->CleanRoom();// TODO temp
+	room.reset();
 }
 
 void HyServerInstance::ReleaseManager()

@@ -57,13 +57,28 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
     {
         if (UserRef user = GSinstance->GetManager<UserManager>()->GetUser(pkt.userid()))
         {
-            GSinstance->GetRoom()->Enter(user);
+            // 기존 room 유저정보 넣음
+            std::vector<UserRef> users;
+            GSinstance->Get_room()->SetUserList(users);
+            for (int32 i = 0; i < users.size(); ++i)
+            {
+                Protocol::hyps_user_info* user_info = enterPkt.add_users();
+                *user_info = users[i]->Get_user_infoRef();
+            }
 
+            // 신규 유저 입장
+            GSinstance->Get_room()->Enter(user);
             enterPkt.set_success(true);
-            //enterPkt.add_users();
+
+
+            // 노티
+            // TODO broadcast할때.. sendhande을 좀 더 간편하게 이용하도록..
+            Protocol::BC_GL_CHAT chatPkt;
+            chatPkt.set_msg(u8"User Enter" + user->Get_user_infoRef().name());
+            auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+            GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });
         }
     }
-
 
     SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(enterPkt);
     session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
@@ -72,6 +87,6 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
 
 bool CS_CHAT(HySessionRef& session, Protocol::CS_CHAT& pkt)
 {
-    DLOG_V(CS_CHAT, pkt.msg());
+    PRINT_V(CS_CHAT, pkt.msg());
     return true;
 }

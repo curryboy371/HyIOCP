@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SessionManager.h"
+#include "Room.h"
 
 SessionManager::SessionManager()
 {
@@ -114,6 +115,9 @@ bool SessionManager::OnDisconnectSession(HySessionRef sessionRef)
 	if (Contains(connectedSessionMap, sessionKey) == true)
 	{
 		USE_MULOCK;
+
+		// 유저 매니저 정리
+		GSinstance->GetManager<UserManager>()->RemoveUse(sessionRef);
 
 		// 세션을 초기화 하고 다시 Accept 상태로 변경
 		sessionRef->ClearSession();

@@ -10,6 +10,8 @@
 #define INVALID_INDEX		 -1
 #define INVALID_UID			 0
 
+//#define DETAIL_LOG			1
+
 #pragma endregion
 
 
@@ -17,44 +19,67 @@
 #pragma region Log
 
 #define STRINGIFY(x) #x
-#define DLOG(txt)				std::cout << txt << std::endl
-#define DLOG_V(txt, value)		std::cout << txt << " " << STRINGIFY(value) << " : " << value << std::endl
 
-#define WLOG(txt)				std::cout << "Waring-" << txt << std::endl
-#define WLOG_V(txt, value)		std::cout << "Waring-" << txt << " " << STRINGIFY(value) << " : " << value << std::endl
 
-#define ELOG(txt)				std::cout << "Error-" << txt << std::endl
-#define ELOG_V(txt, value)		std::cout << "Error-" << txt << " " << STRINGIFY(value) << " : " << value << std::endl
+#ifdef DETAIL_LOG
 
-#define LOG_FUNC					std::cout << __FUNCTION__ << std::endl
+	#define DLOG(txt)				std::cout << txt << std::endl
+	#define DLOG_V(txt, value)		std::cout << txt << " " << STRINGIFY(value) << " : " << value << std::endl
 
-#define LOG_GUARD			LogGuard logGuard(__FUNCTION__)
-#define END_LOGGUARD		logGuard.EndLogGuard();
+	#define WLOG(txt)				std::cout << "Waring-" << txt << std::endl
+	#define WLOG_V(txt, value)		std::cout << "Waring-" << txt << " " << STRINGIFY(value) << " : " << value << std::endl
 
-struct LogGuard
-{
-	LogGuard(const char* InfunctionName)
+	#define ELOG(txt)				std::cout << "Error-" << txt << std::endl
+	#define ELOG_V(txt, value)		std::cout << "Error-" << txt << " " << STRINGIFY(value) << " : " << value << std::endl
+
+	#define LOG_FUNC				std::cout << __FUNCTION__ << std::endl
+
+	#define LOG_GUARD			LogGuard logGuard(__FUNCTION__)
+	#define END_LOGGUARD		logGuard.EndLogGuard();
+
+	struct LogGuard
 	{
-		strncpy_s(this->functionName, InfunctionName, _TRUNCATE);
-		functionName[sizeof(functionName) - 1] = '\0'; // Null-terminate to avoid overflow
+		LogGuard(const char* InfunctionName)
+		{
+			strncpy_s(this->functionName, InfunctionName, _TRUNCATE);
+			functionName[sizeof(functionName) - 1] = '\0'; // Null-terminate to avoid overflow
 
-		DLOG_V("[Start]", functionName);
-	}
+			DLOG_V("[Start]", functionName);
+		}
 
-	void EndLogGuard()
-	{
-		DLOG_V("[EndLogGuard]", functionName);
-	}
+		void EndLogGuard()
+		{
+			DLOG_V("[EndLogGuard]", functionName);
+		}
 
-	~LogGuard()
-	{
-		DLOG_V("[End]", functionName);
-	}
+		~LogGuard()
+		{
+			DLOG_V("[End]", functionName);
+		}
 
-	char functionName[256];
-};
+		char functionName[256];
+	};
 
-#define WSALOG(error) L"WSA_ERROR-" + std::to_wstring(error)
+
+
+
+#else
+	#define STRINGIFY(x) #x
+	#define DLOG(txt)				
+	#define DLOG_V(txt, value)		
+
+	#define WLOG(txt)				
+	#define WLOG_V(txt, value)		
+
+	#define ELOG(txt)				
+	#define ELOG_V(txt, value)		
+
+	#define LOG_FUNC				
+
+	#define LOG_GUARD			
+	#define END_LOGGUARD		
+
+#endif
 
 inline std::wstring GetLogInfo(const char* function, int line, const std::wstring& txt)
 {
@@ -63,7 +88,12 @@ inline std::wstring GetLogInfo(const char* function, int line, const std::wstrin
 }
 
 // 매크로 정의
+#define WSALOG(error) L"WSA_ERROR-" + std::to_wstring(error)
 #define LOG_INFO(txt) GetLogInfo(__FUNCTION__, __LINE__, txt).c_str()
+
+// 항상 출력
+#define PRINT(txt)				std::cout << txt << std::endl
+#define PRINT_V(txt, value)		std::cout << txt << " " << STRINGIFY(value) << " : " << value << std::endl
 
 #pragma endregion
 

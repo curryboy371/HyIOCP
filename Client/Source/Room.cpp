@@ -27,15 +27,6 @@ void Room::Broadcast(SendBufferRef sendBuffer)
 	}
 }
 
-void Room::SetUserList(std::vector<UserRef>& Outusers)
-{
-	Outusers.reserve(static_cast<int32>(users.size()));
-	for (auto& user : users)
-	{
-		Outusers.push_back(user.second);
-	}
-}
-
 void Room::FlushJob()
 {
 	while (true)

@@ -25,7 +25,7 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
     {
         UserRef user = std::make_shared<User>();
         user->SetUserID(pkt.userid());
-        GCinstance->GetManager<Client::UserManager>()->Set_myUser(user);
+        GCinstance->GetManager<UserManager>()->Set_myUser(user);
 
         DLOG_V("SC_LOGIN:: login success user id-", user->GetUserID());
 
@@ -56,7 +56,10 @@ bool SC_ENTER_ROOM(HySessionRef& session, Protocol::SC_ENTER_ROOM& pkt)
 
         if (bsuccess)
         {
-
+            for (int32 i = 0; i < pkt.users_size(); ++i)
+            {
+                bool bret = Ginstance->GetManager<UserManager>()->AddUser(pkt.users()[i], session);
+            }
         }
     }
 
@@ -65,7 +68,7 @@ bool SC_ENTER_ROOM(HySessionRef& session, Protocol::SC_ENTER_ROOM& pkt)
 
 bool SC_CHAT(HySessionRef& session, Protocol::SC_CHAT& pkt)
 {
-    DLOG_V("SC_CHAT", pkt.msg());
+    PRINT_V("SC_CHAT", pkt.msg());
 
 
     return true;
@@ -73,7 +76,7 @@ bool SC_CHAT(HySessionRef& session, Protocol::SC_CHAT& pkt)
 
 bool BC_GL_CHAT(HySessionRef& session, Protocol::BC_GL_CHAT& pkt)
 {
-    DLOG_V("BC_GL_CHAT", pkt.msg());
+    PRINT_V("BC_GL_CHAT", pkt.msg());
 
     return true;
 }

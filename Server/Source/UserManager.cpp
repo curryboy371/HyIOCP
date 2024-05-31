@@ -3,6 +3,9 @@
 
 #include "User.h"
 
+#include "HyServerInstance.h"
+#include "Room.h"
+
 UserManager::UserManager()
 {
     LOG_FUNC;
@@ -43,6 +46,29 @@ bool UserManager::AddUser(const Protocol::hyps_user_info& InuserInfo, HySessionR
         user->Set_user_info(InuserInfo);
         user->Set_ownerSession(userSession);
         userInfoMap.emplace(InuserInfo.id(), user);
+        return true;
+    }
+
+    return false;
+}
+
+bool UserManager::RemoveUse(HySessionRef userSession)
+{
+    int64 userID = userSession->GetSessionKey();
+    if (userID <= INVALID_UID)
+    {
+        return false;
+    }
+
+    if (Contains(userInfoMap, userID) == true)
+    {
+        USE_MULOCK;
+
+        // 룸 유저 정보 정리
+        GSinstance->Get_room()->Leave(userInfoMap[userID]);
+
+        userInfoMap[userID]->Get_ownerSession().reset();
+        userInfoMap.erase(userID);
         return true;
     }
 

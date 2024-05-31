@@ -8,12 +8,10 @@ class Room : public JobQueue
 public:
 	void CleanRoom();
 
+
 	void Enter(UserRef user);
 	void Leave(UserRef user);
 	void Broadcast(SendBufferRef sendBuffer);
-
-	void SetUserList(std::vector<UserRef>& Outusers);
-
 
 public:
 	// multi thread 환경에서는 job으로 접근

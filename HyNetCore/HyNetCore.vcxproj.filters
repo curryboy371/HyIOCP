@@ -26,7 +26,7 @@
       <UniqueIdentifier>{191bb144-3dec-4260-8aa3-8826bf25f922}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Network\Buffer">
-      <UniqueIdentifier>{630df293-e6d7-47f3-b04f-27816c559a3e}</UniqueIdentifier>
+      <UniqueIdentifier>{ece0f547-0166-444d-ad55-699a8a124d04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,17 +72,17 @@
     <ClCompile Include="Source\Manager\HyInstance.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Network\RecvBuffer.cpp">
-      <Filter>Source\Network\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Network\SendBuffer.cpp">
-      <Filter>Source\Network\Buffer</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Manager\ISessionManager.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Network\IOCPHandler.cpp">
       <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\RecvBuffer.cpp">
+      <Filter>Source\Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\SendBuffer.cpp">
+      <Filter>Source\Network\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,17 +137,17 @@
     <ClInclude Include="Source\Manager\HyInstance.h">
       <Filter>Source\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Network\RecvBuffer.h">
-      <Filter>Source\Network\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Network\SendBuffer.h">
-      <Filter>Source\Network\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Manager\ISessionManager.h">
       <Filter>Source\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Network\IOCPHandler.h">
       <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\RecvBuffer.h">
+      <Filter>Source\Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\SendBuffer.h">
+      <Filter>Source\Network\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

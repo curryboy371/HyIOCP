@@ -11,7 +11,9 @@ public:
 public:
 	const int64 GetUserID() { return user_info.id(); }
 
+public:
 	GETTER(HySessionRef, ownerSession);
+	GETTER(Protocol::hyps_user_info, user_info);
 
 
 	SETTER(HySessionRef, ownerSession);

@@ -30,7 +30,8 @@ protected:
 	virtual void ReleaseManager();
 
 public:
+	GETTER(RoomRef, room);
 
 private:
-
+	RoomRef room;
 };

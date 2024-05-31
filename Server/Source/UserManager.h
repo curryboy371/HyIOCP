@@ -8,6 +8,7 @@ class User;
 
 class UserManager : public BaseManager
 {
+	DEF_MUTEX;
 public:
 	UserManager();
 	~UserManager();
@@ -19,12 +20,12 @@ public:
 
 public:
 	bool AddUser(const Protocol::hyps_user_info& InuserInfo, HySessionRef userSession);
+	bool RemoveUse(HySessionRef userSession);
 
 public:
 	UserRef GetUser(const int64& userKey);
 
 private:
 	std::unordered_map<int64, UserRef> userInfoMap;
-
 };
 

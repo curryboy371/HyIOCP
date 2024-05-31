@@ -53,10 +53,13 @@ private:
 		if (pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)) == false)
 			return false;
 
-		// TODO log 
+#ifdef DETAIL_LOG
 		std::cout << "[Start] " << funcName << "("<< packet_id <<")" << std::endl;
 		bool bret = func(session, pkt);
 		std::cout << "[End] " << funcName << "(" << packet_id << ")" << " ret : " << bret << std::endl;
+#else
+		bool bret = func(session, pkt);
+#endif
 
 		return bret;
 	}

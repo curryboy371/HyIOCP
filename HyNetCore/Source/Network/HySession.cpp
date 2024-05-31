@@ -130,7 +130,7 @@ void HySession::OnSend(OverlappedEx* overlappedEx)
 		return;
 	}
 
-	DLOG_V("OnSend ByteSize", overlappedEx->GetByteSize());
+	//DLOG_V("OnSend ByteSize", overlappedEx->GetByteSize());
 
 	{
 		USE_MULOCK;

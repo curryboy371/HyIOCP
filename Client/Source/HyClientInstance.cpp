@@ -3,6 +3,8 @@
 
 #include "UserManager.h"
 #include "SessionManager.h"
+#include "Room.h"
+
 
 HyClientInstanceRef GCinstance;
 
@@ -37,6 +39,9 @@ void HyClientInstance::InitGInstance()
 
 	Ginstance = shared_from_this();
 	GCinstance = std::static_pointer_cast<HyClientInstance>(shared_from_this());
+
+	room = std::make_shared<Room>();
+
 }
 
 void HyClientInstance::ReleaseGInstance()
@@ -45,6 +50,8 @@ void HyClientInstance::ReleaseGInstance()
 
 	GCinstance.reset();
 
+	room->CleanRoom(); // TODO temp;
+	room.reset();
 
 }
 
@@ -62,7 +69,7 @@ void HyClientInstance::InitProtocol()
 void HyClientInstance::InitManager()
 {
 	// 언리얼처럼 Reflection 기능이 있다면 하나하나 만들진 않아도 되는데..
-	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<Client::UserManager>()));
+	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<UserManager>()));
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<Client::SessionManager>()));
 
 	for (auto& manager : managers)

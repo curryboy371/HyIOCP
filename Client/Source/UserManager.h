@@ -3,12 +3,11 @@
 #include "BaseManager.h"
 
 
-BEGIN_CLIENT
-
 class User;
 
 class UserManager : public BaseManager
 {
+	DEF_MUTEX;
 public:
 	UserManager();
 	~UserManager();
@@ -19,12 +18,19 @@ public:
 	virtual void ReleaseManager() override;
 
 public:
+	bool AddUser(const Protocol::hyps_user_info& InuserInfo, HySessionRef userSession);
+	bool RemoveUse(HySessionRef userSession);
+
+public:
+	UserRef GetUser(const int64& userKey);
+
+public:
 	SETTER(UserRef, myUser);
 	GETTER(UserRef, myUser);
 
 private:
 	UserRef myUser;
 
-};
+	std::unordered_map<int64, UserRef> userInfoMap;
 
-END_CLIENT
+};

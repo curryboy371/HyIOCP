@@ -57,6 +57,9 @@
     <ClCompile Include="Source\User.cpp">
       <Filter>Source\Contents</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Room.cpp">
+      <Filter>Source\Contents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Protocol\Protocol.pb.h">
@@ -90,6 +93,9 @@
       <Filter>Source\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Source\User.h">
+      <Filter>Source\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room.h">
       <Filter>Source\Contents</Filter>
     </ClInclude>
   </ItemGroup>

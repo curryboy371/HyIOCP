@@ -17,7 +17,7 @@ void ServerSession::OnPostConnect()
 
 	// 로그인 시도
 	Protocol::CS_LOGIN loginPkt;
-	loginPkt.set_user_name("test");
+	loginPkt.set_user_name("test_" + std::to_string(sessionKey));
 	loginPkt.set_passwd("1234");
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 	GCinstance->Get_IocpRef()->Send(GetSessionRef(), sendBuffer);

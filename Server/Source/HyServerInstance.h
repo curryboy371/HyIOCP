@@ -12,8 +12,6 @@
 
 extern HyServerInstanceRef GSinstance;
 
-extern RoomRef Groom;
-
 class HyServerInstance : public HyInstance
 {
 public:
@@ -34,9 +32,11 @@ protected:
 	virtual void ReleaseManager();
 
 public:
-	RoomRef GetRoom() { return Groom; };
+	GETTER(RoomRef, room);
 
 
+private:
+	RoomRef room;
 
 };
 
