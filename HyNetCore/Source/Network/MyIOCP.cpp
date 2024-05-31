@@ -44,7 +44,7 @@ IOCP::~IOCP()
 	// 윈소켓 close
 	::WSACleanup();
 
-	std::cout << "~IOCP" << std::endl;
+	LOG_FUNC;
 }
 
 void IOCP::CreateCompletion()
@@ -175,8 +175,7 @@ IOCPServer::~IOCPServer()
 
 	listenSessionRef->ClearSession();
 
-	std::cout << "~IOCPServer" << std::endl;
-
+	LOG_FUNC;
 }
 
 bool IOCPServer::InitIOCP()
@@ -282,7 +281,7 @@ void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry
 	}
 	else 
 	{
-		std::cout << "Accept Error" << std::endl;
+		ELOG("Accept");
 	}
 
 
@@ -295,8 +294,7 @@ IOCPClient::IOCPClient(NetAddress InnetAddr, std::function<std::shared_ptr<HySes
 
 IOCPClient::~IOCPClient()
 {
-
-	std::cout << "~IOCPClient" << std::endl;
+	LOG_FUNC;
 }
 
 bool IOCPClient::InitIOCP()

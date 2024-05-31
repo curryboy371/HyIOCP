@@ -55,8 +55,6 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
 
     if (session)
     {
-        std::cout << "room : " << pkt.room_name() << std::endl;
-
         if (UserRef user = GSinstance->GetManager<UserManager>()->GetUser(pkt.userid()))
         {
             GSinstance->GetRoom()->Enter(user);
@@ -74,6 +72,6 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
 
 bool CS_CHAT(HySessionRef& session, Protocol::CS_CHAT& pkt)
 {
-    std::cout << pkt.msg() << std::endl;
+    DLOG_V(CS_CHAT, pkt.msg());
     return true;
 }

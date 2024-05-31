@@ -12,13 +12,13 @@ RoomRef Groom;
 HyServerInstance::HyServerInstance()
 	:HyInstance(E_CORE_CONNECT::E_CONNECT_SERVER)
 {
-	DEF_LOG;
+	LOG_FUNC;
 
 }
 
 HyServerInstance::~HyServerInstance()
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 void HyServerInstance::InitHyInstance()

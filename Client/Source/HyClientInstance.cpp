@@ -9,13 +9,13 @@ HyClientInstanceRef GCinstance;
 HyClientInstance::HyClientInstance()
 	:HyInstance(E_CORE_CONNECT::E_CONNECT_CLIENT)
 {
-	DEF_LOG;
+	LOG_FUNC;
 
 }
 
 HyClientInstance::~HyClientInstance()
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 void HyClientInstance::InitHyInstance()

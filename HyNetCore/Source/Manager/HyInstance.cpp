@@ -16,12 +16,12 @@ HyInstanceRef Ginstance;
 HyInstance::HyInstance(E_CORE_CONNECT Incore_connect)
 	:core_connect(Incore_connect)
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 HyInstance::~HyInstance()
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 void HyInstance::InitGInstance()

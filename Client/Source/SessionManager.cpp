@@ -5,12 +5,12 @@ BEGIN_CLIENT
 
 SessionManager::SessionManager()
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 SessionManager::~SessionManager()
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 void SessionManager::InitManager()
@@ -30,7 +30,7 @@ bool SessionManager::OnAddConnectedSession(HySessionRef addSession, const bool b
 	connectedSessionMap.emplace(index, addSession); // server session 저장
 	addSession->SetSessioKey(index);
 
-	std::cout << "OnAddConnectedSession client " << std::endl;
+	LOG_FUNC;
 	return true;
 }
 

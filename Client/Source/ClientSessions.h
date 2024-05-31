@@ -12,7 +12,7 @@ public:
 	}
 	~ServerSession()
 	{
-		std::cout << "ServerSession::~ServerSession " << std::endl;
+		LOG_FUNC;
 	}
 public:
 

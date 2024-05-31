@@ -14,15 +14,22 @@
 
 
 
-
-
 #pragma region Log
 
-#define DEF_LOG				std::cout << __FUNCTION__ << std::endl
+#define STRINGIFY(x) #x
+#define DLOG(txt)				std::cout << txt << std::endl
+#define DLOG_V(txt, value)		std::cout << txt << " " << STRINGIFY(value) << " : " << value << std::endl
 
+#define WLOG(txt)				std::cout << "Waring-" << txt << std::endl
+#define WLOG_V(txt, value)		std::cout << "Waring-" << txt << " " << STRINGIFY(value) << " : " << value << std::endl
 
-#define DEF_LOGG			LogGuard logGuard(__FUNCTION__)
-#define DEF_ENDLOGG			logGuard.EndLogGuard();
+#define ELOG(txt)				std::cout << "Error-" << txt << std::endl
+#define ELOG_V(txt, value)		std::cout << "Error-" << txt << " " << STRINGIFY(value) << " : " << value << std::endl
+
+#define LOG_FUNC					std::cout << __FUNCTION__ << std::endl
+
+#define LOG_GUARD			LogGuard logGuard(__FUNCTION__)
+#define END_LOGGUARD		logGuard.EndLogGuard();
 
 struct LogGuard
 {
@@ -31,17 +38,17 @@ struct LogGuard
 		strncpy_s(this->functionName, InfunctionName, _TRUNCATE);
 		functionName[sizeof(functionName) - 1] = '\0'; // Null-terminate to avoid overflow
 
-		std::cout << "[Start] " << functionName << std::endl;
+		DLOG_V("[Start]", functionName);
 	}
 
 	void EndLogGuard()
 	{
-		std::cout << "[End] " << functionName << std::endl;
+		DLOG_V("[EndLogGuard]", functionName);
 	}
 
 	~LogGuard()
 	{
-		//std::cout << "[End]" << functionName << std::endl;
+		DLOG_V("[End]", functionName);
 	}
 
 	char functionName[256];

@@ -15,8 +15,7 @@ PacketHandlerFunc GPacketHandler[UINT16_MAX];
 bool INVALID_PACKET(HySessionRef& session, BYTE* buffer, int32 len)
 {
     PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
-    std::cout << "\nINVALID_PACKET:: id " << header->id << std::endl;
-
+    DLOG_V("INVALID_PACKET", header->id);
     return false;
 }
 
@@ -28,7 +27,7 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
         user->SetUserID(pkt.userid());
         GCinstance->GetManager<Client::UserManager>()->Set_myUser(user);
 
-        std::cout << "SC_LOGIN:: login success user id-" << user->GetUserID() << std::endl;
+        DLOG_V("SC_LOGIN:: login success user id-", user->GetUserID());
 
         session->SetSessionStatus(E_SESSION_STATUS::E_LOGIN_STATUS);
 
@@ -39,7 +38,7 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
         SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(enterPkt);
         session->PreSend(sendBuffer);
 
-        std::cout << "SC_LOGIN:: try enter the room - " << enterPkt.room_name() << std::endl;
+        DLOG_V("SC_LOGIN:: try enter the room - ", enterPkt.room_name());
 
     }
     else
@@ -66,14 +65,15 @@ bool SC_ENTER_ROOM(HySessionRef& session, Protocol::SC_ENTER_ROOM& pkt)
 
 bool SC_CHAT(HySessionRef& session, Protocol::SC_CHAT& pkt)
 {
-    std::cout << pkt.msg() << std::endl;
+    DLOG_V("SC_CHAT", pkt.msg());
+
 
     return true;
 }
 
 bool BC_GL_CHAT(HySessionRef& session, Protocol::BC_GL_CHAT& pkt)
 {
-    std::cout << pkt.msg() << std::endl;
+    DLOG_V("BC_GL_CHAT", pkt.msg());
 
     return true;
 }

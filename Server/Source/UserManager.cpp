@@ -5,12 +5,12 @@
 
 UserManager::UserManager()
 {
-    DEF_LOG;
+    LOG_FUNC;
 }
 
 UserManager::~UserManager()
 {
-    DEF_LOG;
+    LOG_FUNC;
 }
 
 

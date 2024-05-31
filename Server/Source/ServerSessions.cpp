@@ -14,8 +14,7 @@ ListenSession::ListenSession(E_SESSION_TYPE inSessionType)
 
 ListenSession::~ListenSession()
 {
-	std::cout << "~ListenSession" << std::endl;
-
+	LOG_FUNC;
 }
 
 void ListenSession::OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
@@ -73,7 +72,7 @@ GameSession::GameSession(E_SESSION_TYPE inSessionType)
 
 GameSession::~GameSession()
 {
-	std::cout << "~GameSession" << std::endl;
+	LOG_FUNC;
 }
 
 void GameSession::OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)

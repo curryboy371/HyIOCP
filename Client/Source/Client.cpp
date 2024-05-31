@@ -48,13 +48,13 @@ int main()
 		while (true)
 		{
 			//std::this_thread::sleep_for(std::chrono::seconds(2));
-			//std::string input;
-			//std::cin >> input;
-			//
-			//Protocol::CS_CHAT chatPkt;
-			//chatPkt.set_msg(input.c_str());
-			//SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
-			//iocpRef->SendBroadcast(sendBuffer);
+			std::string input;
+			std::cin >> input;
+			
+			Protocol::CS_CHAT chatPkt;
+			chatPkt.set_msg(input.c_str());
+			SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
+			iocpRef->SendBroadcast(sendBuffer);
 		}
 	
 		Ginstance->Get_threadMgr()->JoinThreads();

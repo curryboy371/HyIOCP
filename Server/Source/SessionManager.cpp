@@ -3,12 +3,12 @@
 
 SessionManager::SessionManager()
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 SessionManager::~SessionManager()
 {
-	DEF_LOG;
+	LOG_FUNC;
 }
 
 void SessionManager::InitManager()
@@ -100,7 +100,7 @@ bool SessionManager::OnLoginSession(HySessionRef sessionRef)
 	}
 	else
 	{
-		std::cout << "remain session zero" << std::endl;
+		ELOG("remain session zero");
 	}
 
 	return false;
