@@ -7,15 +7,11 @@
 #include "ISessionManager.h"
 #include "SendBuffer.h"
 
-std::shared_ptr<class ISessionManager> GisessionMgr;
 
-//class ISessionManager* GisessionMgr;
+HyInstanceRef Ginstance;
 
-JobManagerRef GjobMgr;
-ThreadManagerRef GthreadMgr;
-SendBufferManagerRef GsendBufferMgr;
 
-//class HyInstance* Ginstance;
+
 
 HyInstance::HyInstance(E_CORE_CONNECT Incore_connect)
 	:core_connect(Incore_connect)
@@ -30,16 +26,19 @@ HyInstance::~HyInstance()
 
 void HyInstance::InitGInstance()
 {
-	GjobMgr = std::make_shared<JobManager>();
-	GthreadMgr = std::make_shared<ThreadManager>();
-	GsendBufferMgr = std::make_shared<SendBufferManager>();
+	isessionMgr.reset();
+
+	jobMgr = std::make_shared<JobManager>();
+	threadMgr = std::make_shared<ThreadManager>();
+	sendBufferMgr = std::make_shared<SendBufferManager>();
 }
 void HyInstance::ReleaseGInstance()
 {
-	GjobMgr.reset();
-	GthreadMgr.reset();
-	GsendBufferMgr.reset();
+	Ginstance.reset();
 
+	jobMgr.reset();
+	threadMgr.reset();
+	sendBufferMgr.reset();
 
 	// 프로토버프 종료 ( crtdebug에서 leak mem이 남아서..)
 	google::protobuf::ShutdownProtobufLibrary();

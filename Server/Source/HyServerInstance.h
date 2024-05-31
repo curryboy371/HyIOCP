@@ -10,7 +10,7 @@
 
 #include "HyInstance.h"
 
-extern HyServerInstanceRef Ginstance;
+extern HyServerInstanceRef GSinstance;
 
 extern RoomRef Groom;
 

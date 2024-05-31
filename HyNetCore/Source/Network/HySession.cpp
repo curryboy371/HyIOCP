@@ -29,10 +29,6 @@ void HySession::ClearSession()
 {
 	SetSessionStatus(E_SESSION_STATUS::E_DISCONNECT_STATUS);
 
-	// iocp ref 레퍼 해제
-	iocpRef.reset();
-
-
 	// overlapped 구조체 초기화
 	for (int i = 0; i < static_cast<int>(E_IO_TYPE::E_IO_TYPE_MAX); ++i)
 	{
@@ -186,6 +182,13 @@ bool HySession::StartConnect()
 	address.sin_addr.s_addr = ::htonl(INADDR_ANY);
 	address.sin_port = ::htons(0); // any port
 
+	IOCPRef iocpRef = Ginstance->Get_IocpRef();
+
+	if (!iocpRef)
+	{
+		return false;
+	}
+
 	if (false == iocpRef->Bind(GetSocketRef(), address))
 	{
 		// bind error
@@ -248,7 +251,7 @@ bool HySession::StartDisconnect()
 
 	SetOverlappedOwner(E_IO_TYPE::E_IO_DISCONNECT, shared_from_this());
 
-	if (false == iocpRef->Get_DisconnectEx()(GetSocketRef(), &GetOverlappedRef(E_IO_TYPE::E_IO_DISCONNECT), TF_REUSE_SOCKET, 0))
+	if (false == Ginstance->Get_IocpRef()->Get_DisconnectEx()(GetSocketRef(), &GetOverlappedRef(E_IO_TYPE::E_IO_DISCONNECT), TF_REUSE_SOCKET, 0))
 	{
 		int32 errCode = ::WSAGetLastError();
 		if (errCode != WSA_IO_PENDING)

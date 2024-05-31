@@ -57,9 +57,9 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
     {
         std::cout << "room : " << pkt.room_name() << std::endl;
 
-        if (UserRef user = Ginstance->GetManager<UserManager>()->GetUser(pkt.userid()))
+        if (UserRef user = GSinstance->GetManager<UserManager>()->GetUser(pkt.userid()))
         {
-            Ginstance->GetRoom()->Enter(user);
+            GSinstance->GetRoom()->Enter(user);
 
             enterPkt.set_success(true);
             //enterPkt.add_users();

@@ -79,9 +79,6 @@ protected:
 	void CloseSocket();
 
 protected:
-	std::shared_ptr<class IOCP> iocpRef; // 부모 Iocp ref을 저장
-
-protected:
 	//send recv
 	RecvBuffer recvBuffer;
 

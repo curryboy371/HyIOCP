@@ -7,14 +7,7 @@
 	manager 등
 */
 
-//extern class HyServerInstance* Ginstance;
-//ISessionManager* GisessionMgr; // 매니저에서 shared ptr로 생성하고 core에서 사용하기 위해 low ptr로 전달받음
-extern std::shared_ptr<class ISessionManager> GisessionMgr; 
-
-
-extern JobManagerRef GjobMgr;
-extern ThreadManagerRef GthreadMgr;
-extern SendBufferManagerRef GsendBufferMgr;
+extern HyInstanceRef Ginstance;
 
 class HyInstance : public std::enable_shared_from_this<HyInstance>
 {
@@ -62,8 +55,19 @@ public:
 	GETTER(IOCPRef, IocpRef);
 	SETTER(IOCPRef, IocpRef);
 
+	GETTER(std::shared_ptr<class ISessionManager>, isessionMgr);
+
+	GETTER(JobManagerRef, jobMgr);
+	GETTER(ThreadManagerRef, threadMgr);
+	GETTER(SendBufferManagerRef, sendBufferMgr);
+
 protected:
 	std::vector<BaseManagerRef> managers;
+	std::shared_ptr<class ISessionManager> isessionMgr;
+
+	JobManagerRef jobMgr;
+	ThreadManagerRef threadMgr;
+	SendBufferManagerRef sendBufferMgr;
 
 	E_CORE_CONNECT core_connect;
 	IOCPRef IocpRef;

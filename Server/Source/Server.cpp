@@ -37,7 +37,7 @@ int main()
 	if (bret)
 	{
 		// lamda...
-		GthreadMgr->LaunchThread([&iocpRef]()
+		Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
 			{
 				WorkThread(iocpRef);
 			}
@@ -51,10 +51,10 @@ int main()
 			Protocol::SC_CHAT chatPkt;
 			chatPkt.set_msg(u8"broadcst : ");
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
-			Ginstance->GetRoom()->DoTimer(1, [=] { Ginstance->GetRoom()->Broadcast(sendBuffer); });
+			GSinstance->GetRoom()->DoTimer(1, [=] { GSinstance->GetRoom()->Broadcast(sendBuffer); });
 		}
 
-		GthreadMgr->JoinThreads();
+		Ginstance->Get_threadMgr()->JoinThreads();
 	}
 
 	instance->ReleaseInstance();

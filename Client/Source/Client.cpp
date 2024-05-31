@@ -38,7 +38,7 @@ int main()
 	if (ret)
 	{
 		// lamda...
-		GthreadMgr->LaunchThread([&iocpRef]()
+		Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
 			{
 				WorkThread(iocpRef);
 			}
@@ -57,7 +57,7 @@ int main()
 			//iocpRef->SendBroadcast(sendBuffer);
 		}
 	
-		GthreadMgr->JoinThreads();
+		Ginstance->Get_threadMgr()->JoinThreads();
 	}
 	
 	instance->ReleaseInstance();

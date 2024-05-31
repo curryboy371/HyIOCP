@@ -55,7 +55,7 @@ public:
 		JobRef jobRef = std::make_shared<Job>(std::move(callback));
 		JobQueueRef temp = shared_from_this();
 
-		GjobMgr->Get_jobSchedulerRef()->Reservc(afterTick, shared_from_this(), jobRef);
+		Ginstance->Get_jobMgr()->Get_jobSchedulerRef()->Reservc(afterTick, shared_from_this(), jobRef);
 	}
 
 	template<typename T, typename Ret, typename... Args>
@@ -63,7 +63,7 @@ public:
 	{
 		std::shared_ptr<T> owner = std::static_pointer_cast<T>(shared_from_this());
 		JobRef jobRef = std::make_shared<Job>(owner, memFunc, std::forward<Args>(args)...);
-		GjobMgr->Get_jobSchedulerRef()->Reservc(afterTick, owner, jobRef);
+		Ginstance->Get_jobMgr()->Get_jobSchedulerRef()->Reservc(afterTick, owner, jobRef);
 	}
 
 	void ClearJobs() { jobs.Clear(); }

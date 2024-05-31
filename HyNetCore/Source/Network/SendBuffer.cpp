@@ -122,5 +122,5 @@ void SendBufferManager::Push(SendBufferChunkRef buffer)
 void SendBufferManager::PushGlobal(SendBufferChunk* buffer)
 {
 	// 반납한 버퍼 재사용
-	GsendBufferMgr->Push(SendBufferChunkRef(buffer, PushGlobal));
+	Ginstance->Get_sendBufferMgr()->Push(SendBufferChunkRef(buffer, PushGlobal));
 }

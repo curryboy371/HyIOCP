@@ -53,7 +53,7 @@ void ThreadManager::JoinThreads()
 void ThreadManager::ScheduleJobQueueWork()
 {
 	const uint64 now = ::GetTickCount64();
-	GjobMgr->Get_jobSchedulerRef()->Distribute(now);
+	Ginstance->Get_jobMgr()->Get_jobSchedulerRef()->Distribute(now);
 }
 
 void ThreadManager::JobQueueWork()
@@ -66,7 +66,7 @@ void ThreadManager::JobQueueWork()
 			break;
 		}
 
-		JobQueueRef jobQueue = GjobMgr->Pop();
+		JobQueueRef jobQueue = Ginstance->Get_jobMgr()->Pop();
 		if (jobQueue == nullptr)
 		{
 			break;

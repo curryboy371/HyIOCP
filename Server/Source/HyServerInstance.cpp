@@ -5,7 +5,7 @@
 #include "SessionManager.h"
 #include "Room.h"
 
-HyServerInstanceRef Ginstance;
+HyServerInstanceRef GSinstance;
 
 RoomRef Groom;
 
@@ -38,7 +38,9 @@ void HyServerInstance::InitGInstance()
 {
 	HyInstance::InitGInstance();
 
-	Ginstance = std::static_pointer_cast<HyServerInstance>(shared_from_this());
+	Ginstance = shared_from_this();
+	GSinstance = std::static_pointer_cast<HyServerInstance>(shared_from_this());;
+
 	Groom = std::make_shared<Room>();
 }
 
@@ -48,7 +50,7 @@ void HyServerInstance::ReleaseGInstance()
 
 	Ginstance.reset();
 	Groom.reset();
-	GisessionMgr.reset();
+
 }
 
 void HyServerInstance::ReleaseManager()
@@ -74,7 +76,7 @@ void HyServerInstance::InitManager()
 		manager->InitManager();
 	}
 
-	GisessionMgr = std::static_pointer_cast<ISessionManager>(GetManager<SessionManager>());
+	isessionMgr = std::static_pointer_cast<ISessionManager>(GetManager<SessionManager>());
 }
 
 

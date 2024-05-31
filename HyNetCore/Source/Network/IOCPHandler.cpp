@@ -6,7 +6,7 @@
 
 bool IOCPHandler::OnAccept(HySessionRef sessionRef, OverlappedEx* overlapped)
 {
-	if (HySessionRef listenSession = GisessionMgr->Get_listenSession())
+	if (HySessionRef listenSession = Ginstance->Get_isessionMgr()->Get_listenSession())
 	{
 		listenSession->OnAccept(overlapped, sessionRef); // listen server의 accpet실행
 		sessionRef->OnAccept(overlapped, sessionRef);

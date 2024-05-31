@@ -8,7 +8,7 @@
 
 #include "HyInstance.h"
 
-extern HyClientInstanceRef Ginstance;
+extern HyClientInstanceRef GCinstance;
 
 class HyClientInstance : public HyInstance
 {

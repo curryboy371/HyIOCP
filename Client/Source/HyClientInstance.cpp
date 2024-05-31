@@ -4,7 +4,7 @@
 #include "UserManager.h"
 #include "SessionManager.h"
 
-HyClientInstanceRef Ginstance;
+HyClientInstanceRef GCinstance;
 
 HyClientInstance::HyClientInstance()
 	:HyInstance(E_CORE_CONNECT::E_CONNECT_CLIENT)
@@ -35,15 +35,16 @@ void HyClientInstance::InitGInstance()
 {
 	HyInstance::InitGInstance();
 
-	Ginstance = std::static_pointer_cast<HyClientInstance>(shared_from_this());
+	Ginstance = shared_from_this();
+	GCinstance = std::static_pointer_cast<HyClientInstance>(shared_from_this());
 }
 
 void HyClientInstance::ReleaseGInstance()
 {
 	HyInstance::ReleaseGInstance();
 
-	Ginstance.reset();
-	GisessionMgr.reset();
+	GCinstance.reset();
+
 
 }
 
@@ -69,7 +70,7 @@ void HyClientInstance::InitManager()
 		manager->InitManager();
 	}
 
-	GisessionMgr = std::static_pointer_cast<ISessionManager>(GetManager<Client::SessionManager>());
+	isessionMgr = std::static_pointer_cast<ISessionManager>(GetManager<Client::SessionManager>());
 }
 
 

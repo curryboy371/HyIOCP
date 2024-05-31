@@ -31,7 +31,8 @@ void JobQueue::Excute()
 			tlsCurJobQueue = nullptr;
 
 			// 여유 있는 다른 쓰레드가 실행하도록 GlobalQueue에 넘김
-			GjobMgr->Push(shared_from_this());
+			
+			Ginstance->Get_jobMgr()->Push(shared_from_this());
 			break;
 		}
 
@@ -57,7 +58,7 @@ void JobQueue::Push(JobRef job, bool pushOnly)
 		else
 		{
 			// 다른 쓰레드가 실행하도록 넘김
-			GjobMgr->Push(shared_from_this());
+			Ginstance->Get_jobMgr()->Push(shared_from_this());
 		}
 
 	}

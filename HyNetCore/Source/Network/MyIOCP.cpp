@@ -183,8 +183,8 @@ bool IOCPServer::InitIOCP()
 {
 	// 여기서는 listen server session 생성해줌.
 	listenSessionRef = CreateListenSession();
-	GisessionMgr->Set_listenSession(listenSessionRef);
-	
+	Ginstance->Get_isessionMgr()->Set_listenSession(listenSessionRef);
+
 	// TODO?
 	if (false == SetSockOpt(listenSessionRef->GetSocketRef(), SOL_SOCKET, SO_REUSEADDR, true))
 	{
@@ -254,7 +254,7 @@ bool IOCPServer::Listen()
 
 bool IOCPServer::PreAccept(std::shared_ptr<HySession> sessionRef, const bool bRetry/* = false*/)
 {
-	return GisessionMgr->OnAddConnectedSession(sessionRef, bRetry);
+	return Ginstance->Get_isessionMgr()->OnAddConnectedSession(sessionRef, bRetry);
 }
 
 void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry/* = false*/)
