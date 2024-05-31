@@ -19,7 +19,7 @@ extern SendBufferManagerRef GsendBufferMgr;
 class HyInstance : public std::enable_shared_from_this<HyInstance>
 {
 public:
-	HyInstance();
+	HyInstance(E_CORE_CONNECT Incore_connect);
 	virtual ~HyInstance();
 
 public:
@@ -56,6 +56,16 @@ public:
 		return nullptr;
 	}
 
+	bool IsServerConnect() { return (core_connect == E_CORE_CONNECT::E_CONNECT_SERVER); }
+
+public:
+	GETTER(IOCPRef, IocpRef);
+	SETTER(IOCPRef, IocpRef);
+
 protected:
 	std::vector<BaseManagerRef> managers;
+
+	E_CORE_CONNECT core_connect;
+	IOCPRef IocpRef;
+
 };

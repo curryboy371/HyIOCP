@@ -25,6 +25,8 @@ public:
 
 	virtual void PostSend(int32 len) override;
 
+	virtual void PostDisConnect() override;
+
 };
 
 

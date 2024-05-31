@@ -81,6 +81,9 @@
     <ClCompile Include="Source\Manager\ISessionManager.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Network\IOCPHandler.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\Header\HyType.h">
@@ -142,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="Source\Manager\ISessionManager.h">
       <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\IOCPHandler.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

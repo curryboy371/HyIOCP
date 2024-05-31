@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "ClientSessions.h"
+#include "HyClientInstance.h"
+#include "UserManager.h"
+#include "SessionManager.h"
 
 void ServerSession::PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
@@ -7,6 +10,8 @@ void ServerSession::PostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySes
 
 void ServerSession::PostConnect()
 {
+	Ginstance->GetManager<Client::SessionManager>()->OnAddConnectedSession(shared_from_this(), false);
+
 	// 연결상태 전환
 	SetSessionStatus(E_SESSION_STATUS::E_CONNECT_STATUS);
 
@@ -16,6 +21,9 @@ void ServerSession::PostConnect()
 	loginPkt.set_passwd("1234");
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 	iocpRef->Send(GetSessionRef(), sendBuffer);
+
+	
+	StartRecv();
 }
 
 int32 ServerSession::PostRecv(BYTE* buffer, int32 len)
@@ -28,4 +36,9 @@ int32 ServerSession::PostRecv(BYTE* buffer, int32 len)
 
 void ServerSession::PostSend(int32 len)
 {
+}
+
+void ServerSession::PostDisConnect()
+{
+	bool bret = GisessionMgr->OnDisconnectSession(shared_from_this());
 }

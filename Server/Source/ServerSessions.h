@@ -24,7 +24,7 @@ public:
 
 	virtual void PostSend(int32 len) override;
 
-public:
+	virtual void PostDisConnect() override;
 
 };
 
@@ -53,6 +53,10 @@ public:
 	virtual void PostSend(int32 len) override;
 
 public:
+
+
+	// HySession을(를) 통해 상속됨
+	virtual void PostDisConnect() override;
 
 };
 

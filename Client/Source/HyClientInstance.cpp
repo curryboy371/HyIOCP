@@ -7,6 +7,7 @@
 HyClientInstanceRef Ginstance;
 
 HyClientInstance::HyClientInstance()
+	:HyInstance(E_CORE_CONNECT::E_CONNECT_CLIENT)
 {
 	DEF_LOG;
 

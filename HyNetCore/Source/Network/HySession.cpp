@@ -1,6 +1,8 @@
 #include "Netpch.h"
 #include "HySession.h"
 
+#include "ISessionManager.h"
+
 HySession::HySession(E_SESSION_TYPE inSessionType)
 	:sessionType(inSessionType), status(E_SESSION_STATUS::E_NONE_STATUS), bcanPushSendQ(false),
 	recvBuffer(RECV_BURRER_SIZE)
@@ -28,7 +30,7 @@ void HySession::ClearSession()
 	SetSessionStatus(E_SESSION_STATUS::E_DISCONNECT_STATUS);
 
 	// iocp ref 레퍼 해제
-	iocpRef = nullptr;
+	iocpRef.reset();
 
 
 	// overlapped 구조체 초기화
@@ -67,6 +69,7 @@ void HySession::OnConnect()
 void HySession::OnDisconnect()
 {
 	std::cout << "OnDisconnect() " << std::endl;
+	PostDisConnect();
 }
 
 void HySession::OnRecv(OverlappedEx* overlappedEx)
@@ -194,7 +197,7 @@ bool HySession::StartConnect()
 
 	SOCKADDR_IN sockAddr = iocpRef->GetNetAddress().GetSockAddr();
 
-	if (false == iocpRef->GetConnectEx()(GetSocketRef(), reinterpret_cast<SOCKADDR*>(&sockAddr), sizeof(sockAddr), nullptr, 0, &numOfBytes, &GetOverlappedRef(E_IO_TYPE::E_IO_CONNECT)))
+	if (false == iocpRef->Get_ConnectEx()(GetSocketRef(), reinterpret_cast<SOCKADDR*>(&sockAddr), sizeof(sockAddr), nullptr, 0, &numOfBytes, &GetOverlappedRef(E_IO_TYPE::E_IO_CONNECT)))
 	{
 		int32 errCode = ::WSAGetLastError();
 		if (errCode != WSA_IO_PENDING)
@@ -245,7 +248,7 @@ bool HySession::StartDisconnect()
 
 	SetOverlappedOwner(E_IO_TYPE::E_IO_DISCONNECT, shared_from_this());
 
-	if (false == iocpRef->GetDisconnectEx()(GetSocketRef(), &GetOverlappedRef(E_IO_TYPE::E_IO_DISCONNECT), TF_REUSE_SOCKET, 0))
+	if (false == iocpRef->Get_DisconnectEx()(GetSocketRef(), &GetOverlappedRef(E_IO_TYPE::E_IO_DISCONNECT), TF_REUSE_SOCKET, 0))
 	{
 		int32 errCode = ::WSAGetLastError();
 		if (errCode != WSA_IO_PENDING)

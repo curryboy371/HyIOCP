@@ -1,6 +1,14 @@
 #pragma once
 
 
+/* hyinstance에서 client, server 구분할 용도 */
+enum class E_CORE_CONNECT : unsigned char
+{
+	E_CONNECT_NONE,			// 디폴트
+	E_CONNECT_SERVER,		// 서버연결
+	E_CONNECT_CLIENT,		// 클라연결
+};
+
 enum class E_IO_TYPE : unsigned char
 {
 	E_IO_SEND,

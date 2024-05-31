@@ -10,6 +10,7 @@ HyServerInstanceRef Ginstance;
 RoomRef Groom;
 
 HyServerInstance::HyServerInstance()
+	:HyInstance(E_CORE_CONNECT::E_CONNECT_SERVER)
 {
 	DEF_LOG;
 

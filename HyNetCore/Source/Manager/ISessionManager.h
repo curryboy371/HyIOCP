@@ -17,14 +17,19 @@ public:
 	virtual ~ISessionManager() {};
 
 	void ReleaseSession();
+	
 
 	virtual bool OnAddConnectedSession(HySessionRef addSession, const bool bRetry) abstract;
 	virtual bool OnDisconnectSession(HySessionRef sessionRef) abstract;
 	virtual bool OnLoginSession(HySessionRef sessionRef) abstract;
 
+public:
+	SETTER(HySessionRef, listenSession);
+	GETTER(HySessionRef, listenSession)
+
 protected:
 	std::atomic<int> sessionID;
-	std::unordered_map<int64, HySessionRef> connectedSessionMap; 
-
+	std::unordered_map<int64, HySessionRef> connectedSessionMap;
+	HySessionRef listenSession;
 };
 

@@ -17,7 +17,8 @@ SendBufferManagerRef GsendBufferMgr;
 
 //class HyInstance* Ginstance;
 
-HyInstance::HyInstance()
+HyInstance::HyInstance(E_CORE_CONNECT Incore_connect)
+	:core_connect(Incore_connect)
 {
 	DEF_LOG;
 }
@@ -38,6 +39,10 @@ void HyInstance::ReleaseGInstance()
 	GjobMgr.reset();
 	GthreadMgr.reset();
 	GsendBufferMgr.reset();
+
+
+	// 프로토버프 종료 ( crtdebug에서 leak mem이 남아서..)
+	google::protobuf::ShutdownProtobufLibrary();
 }
 
 

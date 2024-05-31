@@ -36,7 +36,7 @@ protected:
 public:
 	RoomRef GetRoom() { return Groom; };
 
-private:
+
 
 };
 

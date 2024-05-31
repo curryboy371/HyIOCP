@@ -13,14 +13,14 @@
     <Filter Include="Source\Manager">
       <UniqueIdentifier>{6ebf0119-3b4a-4656-a17f-fb26b1d97348}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Main">
-      <UniqueIdentifier>{cd4b4380-52e7-44c7-bb31-31b9870f0c9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Contents">
       <UniqueIdentifier>{e26055b9-7bd5-49f8-ae34-5945e25c94f0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Header">
       <UniqueIdentifier>{76274a3b-a1bd-4196-9e9d-be2387351794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\0_Main">
+      <UniqueIdentifier>{cd4b4380-52e7-44c7-bb31-31b9870f0c9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,7 +46,7 @@
       <Filter>Source\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Server.cpp">
-      <Filter>Source\Main</Filter>
+      <Filter>Source\0_Main</Filter>
     </ClCompile>
     <ClCompile Include="Source\Room.cpp">
       <Filter>Source\Contents</Filter>

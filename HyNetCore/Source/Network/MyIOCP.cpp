@@ -7,6 +7,8 @@
 
 #include "ISessionManager.h"
 
+#include "IOCPHandler.h"
+
 IOCP::IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> Infunc, int32 InmaxSessionCount)
 	:netAddr(InnetAddr), createSessionFunc(Infunc), maxSessionCount(InmaxSessionCount)
 {
@@ -26,6 +28,12 @@ IOCP::IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)>
 	BindExFunction(dummySocket, WSAID_DISCONNECTEX, reinterpret_cast<LPVOID*>(&DisconnectEx));
 	BindExFunction(dummySocket, WSAID_ACCEPTEX, reinterpret_cast<LPVOID*>(&AcceptEx));
 
+
+	IOHandler[static_cast<int32>(E_IO_TYPE::E_IO_SEND)] = [](HySessionRef& session, OverlappedEx* overlapped) { return IOCPHandler::OnSend(session, overlapped); };
+	IOHandler[static_cast<int32>(E_IO_TYPE::E_IO_RECV)] = [](HySessionRef& session, OverlappedEx* overlapped) { return IOCPHandler::OnReceive(session, overlapped); };
+	IOHandler[static_cast<int32>(E_IO_TYPE::E_IO_ACCEPT)] = [](HySessionRef& session, OverlappedEx* overlapped) { return IOCPHandler::OnAccept(session, overlapped); };
+	IOHandler[static_cast<int32>(E_IO_TYPE::E_IO_CONNECT)] = [](HySessionRef& session, OverlappedEx* overlapped) { return IOCPHandler::OnConnect(session, overlapped); };
+	IOHandler[static_cast<int32>(E_IO_TYPE::E_IO_DISCONNECT)] = [](HySessionRef& session, OverlappedEx* overlapped) { return IOCPHandler::OnDisconnect(session,overlapped); };
 
 	CreateCompletion();
 }
@@ -131,9 +139,14 @@ void IOCP::ProcessIOCompletion(const DWORD& dwMilliSec /* = INFINITE*/)
 	ProcessIOEvent(overlappedEx);
 }
 
-void IOCP::StartAsyncReceive(std::shared_ptr<HySession> sessionRef)
+void IOCP::ProcessIOEvent(OverlappedEx* overlappedEx)
 {
-	bool bret = sessionRef->StartRecv();
+	std::shared_ptr<HySession> sessionRef = overlappedEx->GetOwnerSessionRef();
+	overlappedEx->ResetOwner();
+
+	E_IO_TYPE type = overlappedEx->GetIOType();
+
+	IOHandler[static_cast<int32>(type)](sessionRef, overlappedEx);
 }
 
 void IOCP::Send(HySessionRef sessionRef, SendBufferRef sendBufferRef)
@@ -170,7 +183,8 @@ bool IOCPServer::InitIOCP()
 {
 	// 여기서는 listen server session 생성해줌.
 	listenSessionRef = CreateListenSession();
-
+	GisessionMgr->Set_listenSession(listenSessionRef);
+	
 	// TODO?
 	if (false == SetSockOpt(listenSessionRef->GetSocketRef(), SOL_SOCKET, SO_REUSEADDR, true))
 	{
@@ -233,23 +247,6 @@ std::shared_ptr<HySession> IOCPServer::CreateListenSession()
 	return sessionRef;
 }
 
-void IOCPServer::DisconnectSession(std::shared_ptr<HySession> sessionRef)
-{
-	// 서버면 세션을 지우지 않고 연결 해제, 초기화. - 세션 수는 항상 동일하게 유지하도록...
-	bool bret = GisessionMgr->OnDisconnectSession(sessionRef);
-
-	if (bret)
-	{
-		bool bIsRetry = true;
-		Accept(sessionRef, bIsRetry);
-	}
-	else
-	{
-		//error
-	}
-
-}
-
 bool IOCPServer::Listen()
 {
 	return SOCKET_ERROR != ::listen(listenSessionRef->GetSocketRef(), SOMAXCONN);
@@ -274,7 +271,7 @@ void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry
 	if (bret)
 	{
 		DWORD byteReceived = 0;
-		if (false == AcceptEx(listenSessionRef->GetSocketRef(), sessionRef->GetSocket(), sessionRef->GetRecvBufferRef().WritePos(), 0,
+		if (false == Get_AcceptEx()(listenSessionRef->GetSocketRef(), sessionRef->GetSocket(), sessionRef->GetRecvBufferRef().WritePos(), 0,
 			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16,
 			OUT & byteReceived, static_cast<LPOVERLAPPED>(&(sessionRef->GetOverlappedRef(E_IO_TYPE::E_IO_ACCEPT)))))
 		{
@@ -292,40 +289,6 @@ void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry
 	}
 
 
-}
-
-void IOCPServer::ProcessIOEvent(OverlappedEx* overlappedEx)
-{
-	std::shared_ptr<HySession> sessionRef = overlappedEx->GetOwnerSessionRef();
-	overlappedEx->ResetOwner();
-
-	E_IO_TYPE type = overlappedEx->GetIOType();
-
-	// 수신 등록
-	switch (type)
-	{
-	case E_IO_TYPE::E_IO_SEND:
-		sessionRef->OnSend(overlappedEx);
-		break;
-	case E_IO_TYPE::E_IO_RECV:
-		sessionRef->OnRecv(overlappedEx);
-		StartAsyncReceive(sessionRef); // send 보낸 세션에 대해 다시 수신 등록
-		break;
-	case E_IO_TYPE::E_IO_ACCEPT:
-		listenSessionRef->OnAccept(overlappedEx, sessionRef); // listen server의 accpet실행
-		sessionRef->OnAccept(overlappedEx, sessionRef); // listen server의 accpet실행
-		StartAsyncReceive(sessionRef); // 연결된 세션 수신 등록
-		break;
-	case E_IO_TYPE::E_IO_CONNECT:
-		sessionRef->OnConnect(); // 클라 전용
-		break;
-	case E_IO_TYPE::E_IO_DISCONNECT:
-		sessionRef->OnDisconnect(); // 서버에서만 Disconnect 노티
-		DisconnectSession(sessionRef);
-		break;
-	default:
-		break;
-	}
 }
 
 IOCPClient::IOCPClient(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InFunc, int32 InmaxSessionCount)
@@ -359,54 +322,3 @@ bool IOCPClient::InitIOCP()
 	return true;
 }
 
-
-void IOCPClient::DisconnectSession(std::shared_ptr<HySession> sessionRef)
-{
-	bool bret = GisessionMgr->OnDisconnectSession(sessionRef);
-}
-
-void IOCPClient::ProcessIOEvent(OverlappedEx* overlappedEx)
-{
-	// 클라이언트에서 IOCP Event 실행
-
-	std::shared_ptr<HySession> sessionRef = overlappedEx->GetOwnerSessionRef();
-	overlappedEx->ResetOwner();
-
-	E_IO_TYPE type = overlappedEx->GetIOType();
-
-	switch (type)
-	{
-	case E_IO_TYPE::E_IO_SEND:
-		sessionRef->OnSend(overlappedEx);
-		break;
-	case E_IO_TYPE::E_IO_RECV:
-		sessionRef->OnRecv(overlappedEx);
-		StartAsyncReceive(sessionRef); // send 보낸 세션에 대해 다시 수신 등록
-		break;
-	case E_IO_TYPE::E_IO_ACCEPT: // X 서버전용
-
-		break;
-	case E_IO_TYPE::E_IO_CONNECT:
-		// 클라이언트 : 서버 세션 연결
-		ConnectSession(sessionRef); // 연결된 server session
-		StartAsyncReceive(sessionRef); // 등록된 서버 세션에 대해 수신 등록
-		break;
-	case E_IO_TYPE::E_IO_DISCONNECT:
-		//sessionRef->OnDisconnect();
-		DisconnectSession(sessionRef);
-		break;
-	default:
-		break;
-	}
-
-}
-
-void IOCPClient::ConnectSession(std::shared_ptr<HySession> sessionRef)
-{
-	GisessionMgr->OnAddConnectedSession(sessionRef, false);
-
-	// 컨텐츠 
-	sessionRef->OnConnect();
-
-	std::cout << "connect client - server " << std::endl;
-}

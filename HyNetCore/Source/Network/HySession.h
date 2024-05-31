@@ -43,6 +43,8 @@ protected:
 	virtual void PostConnect() abstract;
 	virtual int32 PostRecv(BYTE* buffer, int32 len) abstract;
 	virtual void PostSend(int32 len) abstract;
+	virtual void PostDisConnect() abstract;
+
 
 public:
 

@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "ServerSessions.h"
 
+#include "HyServerInstance.h"
+#include "SessionManager.h"
+
+#include "MyIOCP.h"
 
 ListenSession::ListenSession(E_SESSION_TYPE inSessionType)
 	:HySession(inSessionType)
@@ -56,6 +60,10 @@ void ListenSession::PostSend(int32 len)
 {
 }
 
+void ListenSession::PostDisConnect()
+{
+}
+
 GameSession::GameSession(E_SESSION_TYPE inSessionType)
 	:HySession(inSessionType)
 {
@@ -90,4 +98,15 @@ void GameSession::PostSend(int32 len)
 {
 
 
+}
+
+void GameSession::PostDisConnect()
+{
+	bool bret = Ginstance->GetManager<SessionManager>()->OnDisconnectSession(shared_from_this());
+
+	if (bret)
+	{
+		bool bIsRetry = true;
+		Ginstance->Get_IocpRef()->Accept(shared_from_this(), bIsRetry);
+	}
 }

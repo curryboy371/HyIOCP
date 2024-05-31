@@ -18,9 +18,11 @@
 
 #pragma region Log
 
-// TODO 패킷 함수 실행 전에 한번에 실행하도록 해야함.
-#define DEF_LOG			LogGuard logGuard(__FUNCTION__)
-#define DEF_ENDLOG		logGuard.EndLogGuard();
+#define DEF_LOG				std::cout << __FUNCTION__ << std::endl
+
+
+#define DEF_LOGG			LogGuard logGuard(__FUNCTION__)
+#define DEF_ENDLOGG			logGuard.EndLogGuard();
 
 struct LogGuard
 {

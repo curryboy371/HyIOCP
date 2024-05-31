@@ -5,6 +5,8 @@
 
 void ISessionManager::ReleaseSession()
 {
+	listenSession.reset();
+
 	sessionID.store(0);
 
 	for (auto& pair : connectedSessionMap)

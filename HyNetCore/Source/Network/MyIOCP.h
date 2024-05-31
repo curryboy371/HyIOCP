@@ -33,6 +33,7 @@ private:
 	int32 maxSessionCount;
 };
 
+using IOCPHandlerFunc = std::function<bool(HySessionRef&, OverlappedEx*)>;
 
 class IOCP : public std::enable_shared_from_this<IOCP>
 {
@@ -45,7 +46,7 @@ public:
 	virtual bool InitIOCP() abstract;
 
 	std::shared_ptr<HySession> CreateSession();
-	virtual void DisconnectSession(std::shared_ptr<HySession> sessionRer) {};
+	virtual void Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry = false) {};
 
 	virtual bool Bind(const SOCKET& inSocket, const NetAddress& inNetaddr);
 
@@ -53,8 +54,7 @@ public:
 
 public:
 	void ProcessIOCompletion(const DWORD& dwMilliSec = INFINITE);
-	virtual void ProcessIOEvent(OverlappedEx* overlappedEx) abstract;
-	virtual void StartAsyncReceive(std::shared_ptr<HySession> sessionRef);
+	void ProcessIOEvent(OverlappedEx* overlappedEx);
 
 public:
 	void Send(HySessionRef sessionRef, SendBufferRef sendBufferRef);
@@ -77,9 +77,11 @@ public:
 
 
 public:
-	LPFN_CONNECTEX GetConnectEx() const { return ConnectEx; }
-	LPFN_DISCONNECTEX GetDisconnectEx() const { return DisconnectEx; }
-	LPFN_ACCEPTEX GetAcceptEx() const { return AcceptEx; }
+	GETTER(LPFN_CONNECTEX, ConnectEx);
+	GETTER(LPFN_DISCONNECTEX, DisconnectEx);
+	GETTER(LPFN_ACCEPTEX, AcceptEx);
+
+public:
 
 	NetAddress& GetNetAddress() { return netAddr; }
 protected:
@@ -94,6 +96,7 @@ protected:
 	LPFN_DISCONNECTEX	DisconnectEx;
 	LPFN_ACCEPTEX		AcceptEx;
 
+	IOCPHandlerFunc IOHandler[static_cast<int32>(E_IO_TYPE::E_IO_TYPE_MAX)];
 };
 
 
@@ -107,12 +110,6 @@ public:
 	virtual bool InitIOCP() override;
 
 public:
-	virtual void ProcessIOEvent(OverlappedEx* overlappedEx);
-
-public:
-
-	virtual void DisconnectSession(std::shared_ptr<HySession> sessionRef);
-	void ConnectSession(std::shared_ptr<HySession> sessionRef);
 
 
 protected:
@@ -129,11 +126,6 @@ public:
 
 public:
 	virtual bool InitIOCP() override;
-
-public:
-	virtual void ProcessIOEvent(OverlappedEx* overlappedEx);
-
-	virtual void DisconnectSession(std::shared_ptr<HySession> sessionRef);
 
 	bool PreAccept(std::shared_ptr<HySession> sessionRef, const bool bRetry = false);
 	void Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry = false);

@@ -4,12 +4,15 @@
 #include <MSWSock.h>
 #include <WS2tcpip.h>
 
+#include <google/protobuf/stubs/common.h>
+
 
 #include <chrono>
 
 
 #include <functional>
 #include <type_traits>
+#include <crtdbg.h>
 
 #include <map>
 #include <unordered_map>

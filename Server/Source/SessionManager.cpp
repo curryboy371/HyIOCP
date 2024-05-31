@@ -69,6 +69,9 @@ bool SessionManager::OnAddConnectedSession(HySessionRef addSession, const bool b
 		}
 
 	}
+
+	return false;
+
 }
 
 bool SessionManager::OnLoginSession(HySessionRef sessionRef)
@@ -115,6 +118,8 @@ bool SessionManager::OnDisconnectSession(HySessionRef sessionRef)
 
 		// 세션을 초기화 하고 다시 Accept 상태로 변경
 		sessionRef->ClearSession();
+
+		//erase는 accept에서 한번에...
 
 		return true;
 

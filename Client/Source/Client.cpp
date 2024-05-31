@@ -21,18 +21,20 @@ void WorkThread(std::shared_ptr<IOCPClient> iocpRef)
 
 int main()
 {
-	HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
-	instance->InitHyInstance();
+
 
 	std::this_thread::sleep_for(std::chrono::seconds(3));
-
+	
 	// 클라이언트는 서버와 연결하기 위해 ServerSession 사용
 	SessionConfig<ServerSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_C2S, 1);
-
+	
 	std::shared_ptr<IOCPClient> iocpRef = std::make_shared<IOCPClient>(sessionConfig.GetAddress(), sessionConfig.GetSessionFactory(), sessionConfig.GetMaxSessionCount());
+	HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
+	instance->InitHyInstance();
+	instance->Set_IocpRef(iocpRef);
 
 	bool ret = iocpRef->InitIOCP();
-
+	
 	if (ret)
 	{
 		// lamda...
@@ -41,21 +43,25 @@ int main()
 				WorkThread(iocpRef);
 			}
 		);
-
+	
+		// mainthread에서 input
 		while (true)
 		{
-			std::this_thread::sleep_for(std::chrono::seconds(2));
-
-			//Protocol::C_CHAT chatPkt;
-			//chatPkt.set_msg("chatting client 2 server ");
+			//std::this_thread::sleep_for(std::chrono::seconds(2));
+			//std::string input;
+			//std::cin >> input;
+			//
+			//Protocol::CS_CHAT chatPkt;
+			//chatPkt.set_msg(input.c_str());
 			//SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
 			//iocpRef->SendBroadcast(sendBuffer);
 		}
-
+	
 		GthreadMgr->JoinThreads();
 	}
-
+	
 	instance->ReleaseInstance();
 
+	_CrtDumpMemoryLeaks();
 	return 0;
 }

@@ -58,6 +58,9 @@ typedef WIDECHAR			TCHAR;
 #define USING_SHARED_PTR(Cname)		using Cname##Ref = std::shared_ptr<class Cname>;
 
 /* HyNetCore */
+
+
+USING_SHARED_PTR(IOCP)
 USING_SHARED_PTR(HySession)
 USING_SHARED_PTR(SendBuffer)
 USING_SHARED_PTR(RecvBuffer)

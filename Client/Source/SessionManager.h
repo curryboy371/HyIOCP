@@ -10,14 +10,13 @@ public:
 	SessionManager();
 	~SessionManager();
 
-private:
 
+public:
 
 	// BaseManager을(를) 통해 상속됨
 	virtual void InitManager() override;
 
 	virtual void ReleaseManager() override;
-
 
 
 	// ISessionManager을(를) 통해 상속됨

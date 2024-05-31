@@ -21,13 +21,16 @@ void WorkThread(std::shared_ptr<IOCPServer> iocpRef)
 
 int main()
 {
-	HyServerInstanceRef instance = std::make_shared<HyServerInstance>();
-	instance->InitHyInstance();
+
 
 	// 서버는 클라이언트와 연결하기 위해 gamesession 사용
 	SessionConfig<ListenSession> listenConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_LISTEN, 1);
-	SessionConfig<GameSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_S2C, 2);
+	SessionConfig<GameSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_S2C, 10);
 	std::shared_ptr<IOCPServer> iocpRef = std::make_shared<IOCPServer>(sessionConfig.GetAddress(), listenConfig.GetSessionFactory(), sessionConfig.GetSessionFactory(), sessionConfig.GetMaxSessionCount());
+
+	HyServerInstanceRef instance = std::make_shared<HyServerInstance>();
+	instance->InitHyInstance();
+	instance->Set_IocpRef(iocpRef);
 
 	bool bret = iocpRef->InitIOCP(); 
 
@@ -55,5 +58,7 @@ int main()
 	}
 
 	instance->ReleaseInstance();
+
+	_CrtDumpMemoryLeaks();
 	return 0;
 }
