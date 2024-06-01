@@ -172,17 +172,33 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     return TRUE;
 }
 
+std::string ConvertUTF8(const std::wstring& wstr)
+{
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    return conv.to_bytes(wstr);
+}
+
+std::wstring ConvertUTF8(const std::string& str)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
+    return conv.from_bytes(str);
+}
+
 void AddTextToOutput(const std::wstring& text) {
+
+    std::string msg = ConvertUTF8(text);
+    std::wstring wmsg = std::wstring().assign(msg.begin(), msg.end());
+
     int length = GetWindowTextLength(hEditOutput);
     SendMessage(hEditOutput, EM_SETSEL, length, length);
-    SendMessage(hEditOutput, EM_REPLACESEL, 0, (LPARAM)text.c_str());
+    SendMessage(hEditOutput, EM_REPLACESEL, 0, (LPARAM)wmsg.c_str());
     SendMessage(hEditOutput, EM_REPLACESEL, 0, (LPARAM)L"\r\n");
 
 }
 
 void AddTextToOutput(const std::string& text) {
 
-    std::wstring wmsg = std::wstring().assign(text.begin(), text.end());
+    std::wstring wmsg = ConvertUTF8(text);
 
     int length = GetWindowTextLength(hEditOutput);
     SendMessage(hEditOutput, EM_SETSEL, length, length);
@@ -194,8 +210,9 @@ void SendUserMessage(const std::wstring& text)
 {
     Protocol::CS_CHAT chatpkt;
 
-    std::string str = std::string().assign(text.begin(), text.end());
-    chatpkt.set_msg(str);
+    std::string msg = ConvertUTF8(text);
+    chatpkt.set_msg(msg);
+
     SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatpkt);
     GCinstance->Get_room()->DoAsync([sendBuffer]() { GCinstance->GetManager<UserManager>()->Get_myUserRef()->Get_ownerSessionRef()->PreSend(sendBuffer); });
 }
