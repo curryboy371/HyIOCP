@@ -75,6 +75,9 @@ public:
 
 	HySessionRef GetSessionRef() { return std::static_pointer_cast<HySession>(shared_from_this()); }
 
+	GETTER(std::string, socketName);
+	SETTER(std::string, socketName);
+
 protected:
 	void CloseSocket();
 
@@ -88,8 +91,8 @@ protected:
 protected:
 	SOCKET socket = INVALID_SOCKET;
 	std::atomic<E_SESSION_STATUS> status;
-
 	int32 sessionKey;
+	std::string socketName;
 
 	E_SESSION_TYPE sessionType = E_SESSION_TYPE::E_SESSION_NONE;
 

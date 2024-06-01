@@ -9,8 +9,8 @@
 
 #include "IOCPHandler.h"
 
-IOCP::IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> Infunc, int32 InmaxSessionCount)
-	:netAddr(InnetAddr), createSessionFunc(Infunc), maxSessionCount(InmaxSessionCount)
+IOCP::IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> Infunc, int32 InmaxSessionCount, const std::string inName)
+	:netAddr(InnetAddr), createSessionFunc(Infunc), maxSessionCount(InmaxSessionCount), netName(inName)
 {
 
 	// 윈소켓 초기화
@@ -165,8 +165,8 @@ void IOCP::SendBroadcast(SendBufferRef sendBufferRef)
 	//}
 }
 
-IOCPServer::IOCPServer(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InListenSFunc, std::function<std::shared_ptr<HySession>(void)> InClientSFunc, int32 InmaxSessionCount)
-	:IOCP(InnetAddr, InClientSFunc, InmaxSessionCount), createListenSessionFunc(InListenSFunc)
+IOCPServer::IOCPServer(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InListenSFunc, std::function<std::shared_ptr<HySession>(void)> InClientSFunc, int32 InmaxSessionCount, const std::string inName)
+	:IOCP(InnetAddr, InClientSFunc, InmaxSessionCount, inName), createListenSessionFunc(InListenSFunc)
 {
 }
 
@@ -230,6 +230,7 @@ bool IOCPServer::MakeClientSession()
 	{
 		// 이부분은 메인 스레드가 최초 실행시에만 담당하므로 lock을 걸지 않음.
 		std::shared_ptr<HySession> clientSessionRef = CreateSession();
+		clientSessionRef->Set_socketName("ClientSocket" + std::to_string(i));
 		Accept(clientSessionRef);
 	}
 
@@ -287,8 +288,8 @@ void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry
 
 }
 
-IOCPClient::IOCPClient(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InFunc, int32 InmaxSessionCount)
-	:IOCP(InnetAddr, InFunc, InmaxSessionCount)
+IOCPClient::IOCPClient(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InFunc, int32 InmaxSessionCount, const std::string inName)
+	:IOCP(InnetAddr, InFunc, InmaxSessionCount, inName )
 {
 }
 

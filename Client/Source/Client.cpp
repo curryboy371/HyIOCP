@@ -19,16 +19,21 @@ void WorkThread(std::shared_ptr<IOCPClient> iocpRef)
 	}
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-
-
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	
+	int32 client_session_count = CLIENT_SESSION;
+	if (argc > 1)
+	{
+		client_session_count = std::stoi(argv[1]);
+		
+	}
+
 	// 클라이언트는 서버와 연결하기 위해 ServerSession 사용
-	SessionConfig<ServerSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_C2S, 1);
+	SessionConfig<ServerSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_C2S, client_session_count, "Client");
 	
-	std::shared_ptr<IOCPClient> iocpRef = std::make_shared<IOCPClient>(sessionConfig.GetAddress(), sessionConfig.GetSessionFactory(), sessionConfig.GetMaxSessionCount());
+	std::shared_ptr<IOCPClient> iocpRef = std::make_shared<IOCPClient>(sessionConfig.GetAddress(), sessionConfig.GetSessionFactory(), sessionConfig.Get_maxSessionCount(), sessionConfig.Get_nameRef());
 	HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
 	instance->InitHyInstance();
 	instance->Set_IocpRef(iocpRef);

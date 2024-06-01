@@ -10,10 +10,10 @@ class SessionConfig
 public:
 	// 생성자 추가
 	SessionConfig() = delete;
-	SessionConfig(const std::wstring& ip, uint16_t port, E_SESSION_TYPE type, int32 InmaxSessionCount)
-		:address{ ip, port }, sessionType(type), maxSessionCount(InmaxSessionCount)
+	SessionConfig(const std::wstring& ip, uint16_t port, E_SESSION_TYPE type, int32 InmaxSessionCount, const std::string& Inname)
+		:address{ ip, port }, sessionType(type), maxSessionCount(InmaxSessionCount), name(Inname)
 	{
-		sessoinfactory = [=]() { return std::make_shared<T>(GetSessionType()); };
+		sessoinfactory = [=]() { return std::make_shared<T>(Get_sessionType()); };
 	}
 
 	std::shared_ptr<T> CreateSession() const { return sessoinfactory();}
@@ -21,8 +21,9 @@ public:
 
 	std::function<std::shared_ptr<T>(void)> GetSessionFactory() { return sessoinfactory; }
 
-	E_SESSION_TYPE GetSessionType() { return sessionType; }
-	int32 GetMaxSessionCount() const { return maxSessionCount; }
+	GETTER(E_SESSION_TYPE, sessionType);
+	GETTER(int32, maxSessionCount);
+	GETTER(std::string, name);
 	
 private:
 	NetAddress address;
@@ -30,6 +31,7 @@ private:
 
 	E_SESSION_TYPE sessionType;
 
+	std::string name;
 	int32 maxSessionCount;
 };
 
@@ -39,7 +41,7 @@ class IOCP : public std::enable_shared_from_this<IOCP>
 {
 	DEF_MUTEX
 public:
-	IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InFunc, int32 InmaxSessionCount);
+	IOCP(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InFunc, int32 InmaxSessionCount, const std::string inName);
 	virtual ~IOCP();
 
 public:
@@ -85,6 +87,8 @@ public:
 
 	NetAddress& GetNetAddress() { return netAddr; }
 protected:
+	std::string netName;
+
 	NetAddress netAddr;
 	std::function<std::shared_ptr<HySession>(void)> createSessionFunc;
 	int32 maxSessionCount;
@@ -103,7 +107,8 @@ protected:
 class IOCPClient : public IOCP
 {
 public:
-	IOCPClient(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InFunc, int32 InmaxSessionCount);
+	IOCPClient() = delete;
+	IOCPClient(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InFunc, int32 InmaxSessionCount, const std::string inName);
 	virtual ~IOCPClient();
 
 public:
@@ -121,7 +126,8 @@ protected:
 class IOCPServer : public IOCP
 {
 public:
-	IOCPServer(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InListenSFunc, std::function<std::shared_ptr<HySession>(void)> InClientSFunc, int32 InmaxSessionCount);
+	IOCPServer() = delete;
+	IOCPServer(NetAddress InnetAddr, std::function<std::shared_ptr<HySession>(void)> InListenSFunc, std::function<std::shared_ptr<HySession>(void)> InClientSFunc, int32 InmaxSessionCount, const std::string inName);
 	virtual ~IOCPServer();
 
 public:

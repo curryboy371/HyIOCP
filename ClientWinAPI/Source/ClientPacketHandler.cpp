@@ -6,6 +6,8 @@
 #include "UserManager.h"
 #include "User.h"
 
+#include "../ClientWinAPI.h"
+
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -78,14 +80,17 @@ bool SC_ENTER_ROOM(HySessionRef& session, Protocol::SC_ENTER_ROOM& pkt)
 bool SC_CHAT(HySessionRef& session, Protocol::SC_CHAT& pkt)
 {
     PRINT_V("SC_CHAT", pkt.msg());
-
-
+    AddTextToOutput(pkt.msg());
     return true;
 }
 
 bool BC_GL_CHAT(HySessionRef& session, Protocol::BC_GL_CHAT& pkt)
 {
     PRINT_V("BC_GL_CHAT", pkt.msg());
+
+    hEditOutput;
+
+    AddTextToOutput(pkt.msg());
 
     return true;
 }

@@ -6,11 +6,13 @@
 #define RECV_BURRER_SIZE 0x10000
 #define MAX_RECV_SIZE 4096
 
+#define MAX_SERVER_SESSION 100
+#define CLIENT_SESSION 50
 
 #define INVALID_INDEX		 -1
 #define INVALID_UID			 0
 
-//#define DETAIL_LOG			1
+#define DETAIL_LOG			1
 
 #pragma endregion
 

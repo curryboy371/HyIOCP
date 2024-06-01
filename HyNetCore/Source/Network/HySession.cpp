@@ -5,7 +5,7 @@
 
 HySession::HySession(E_SESSION_TYPE inSessionType)
 	:sessionType(inSessionType), status(E_SESSION_STATUS::E_NONE_STATUS), bcanPushSendQ(false),
-	recvBuffer(RECV_BURRER_SIZE)
+	recvBuffer(RECV_BURRER_SIZE), socketName("")
 {
 	// 소켓 초기화
 	socket = INVALID_SOCKET;

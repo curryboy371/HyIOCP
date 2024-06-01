@@ -28,8 +28,10 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
     Protocol::SC_LOGIN loginPkt;
 
     Protocol::hyps_user_info user_info;
+    std::string user_name = pkt.user_name() + std::to_string(session->GetSessionKey());
+
     user_info.set_id(session->GetSessionKey());
-    user_info.set_name(pkt.user_name());
+    user_info.set_name(user_name);
     user_info.set_user_type(Protocol::hype_user::user_normal);
 
     bool bret = Ginstance->GetManager<UserManager>()->AddUser(user_info, session);
@@ -74,19 +76,36 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
             // 노티
             // TODO broadcast할때.. sendhande을 좀 더 간편하게 이용하도록..
             Protocol::BC_GL_CHAT chatPkt;
-            chatPkt.set_msg(u8"User Enter" + user->Get_user_infoRef().name());
+            std::string newUser = user->Get_user_infoRef().name();
+            chatPkt.set_msg(u8"User Enter" + newUser);
             auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
             GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });
         }
     }
 
-    SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(enterPkt);
-    session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
     return true;
 }
 
 bool CS_CHAT(HySessionRef& session, Protocol::CS_CHAT& pkt)
 {
-    PRINT_V(CS_CHAT, pkt.msg());
+    PRINT_V("CS_CHAT", pkt.msg());
+
+    // 노티
+    // TODO broadcast할때.. sendhande을 좀 더 간편하게 이용하도록..
+    Protocol::BC_GL_CHAT chatPkt;
+    UserRef User = GSinstance->GetManager<UserManager>()->GetUser(session->GetSessionKey());
+    if (User)
+    {
+        std::string userName = User->Get_user_infoRef().name();
+        chatPkt.set_msg(userName + " : " +pkt.msg());
+        auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+        GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });
+    }
+    else
+    {
+        //error
+        // send only session
+    }
+
     return true;
 }

@@ -13,6 +13,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HyNetCore", "HyNetCore\HyNe
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PacketGenerator", "Tools\PacketGenerator\PacketGenerator.pyproj", "{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientWinAPI", "ClientWinAPI\ClientWinAPI.vcxproj", "{78338BA0-26B7-4081-B495-C5D81EA60FD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{4426E520-AE8C-49AE-B211-2605EA667BD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,12 +69,26 @@ Global
 		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Release|x64.ActiveCfg = Release|Any CPU
 		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762}.Release|x86.ActiveCfg = Release|Any CPU
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Debug|Any CPU.Build.0 = Debug|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Debug|x64.ActiveCfg = Debug|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Debug|x64.Build.0 = Debug|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Debug|x86.ActiveCfg = Debug|Win32
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Debug|x86.Build.0 = Debug|Win32
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Release|Any CPU.ActiveCfg = Release|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Release|Any CPU.Build.0 = Release|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Release|x64.ActiveCfg = Release|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Release|x64.Build.0 = Release|x64
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Release|x86.ActiveCfg = Release|Win32
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{464E8FFF-DDA4-4CC9-B624-C9FDCB364B78} = {4426E520-AE8C-49AE-B211-2605EA667BD6}
 		{8A9E5CC9-CD9B-438F-BD0A-931F661F7762} = {FBA274EE-66F3-4530-B215-A9BF5FB0511D}
+		{78338BA0-26B7-4081-B495-C5D81EA60FD1} = {4426E520-AE8C-49AE-B211-2605EA667BD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A048851-69C6-4C58-A13C-2F97DA87BA27}

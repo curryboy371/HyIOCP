@@ -4,9 +4,6 @@
     <Filter Include="Source">
       <UniqueIdentifier>{ea84b77e-bacf-40b9-937c-05ec63b51df1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Main">
-      <UniqueIdentifier>{4747f2fb-4915-444e-9a73-fa9b2d2785d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Header">
       <UniqueIdentifier>{b3c910e6-3368-4301-9e06-1bead5af8b00}</UniqueIdentifier>
     </Filter>
@@ -22,6 +19,9 @@
     <Filter Include="Source\Network\Protocol">
       <UniqueIdentifier>{0ab7e22f-84a5-464f-81f2-fdb085b5b361}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\0_Main">
+      <UniqueIdentifier>{4747f2fb-4915-444e-9a73-fa9b2d2785d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Protocol\Struct.pb.cc">
@@ -34,7 +34,7 @@
       <Filter>Source\Network\Protocol</Filter>
     </ClCompile>
     <ClCompile Include="Source\Client.cpp">
-      <Filter>Source\Main</Filter>
+      <Filter>Source\0_Main</Filter>
     </ClCompile>
     <ClCompile Include="Source\ClientPacketHandler.cpp">
       <Filter>Source\Network</Filter>
@@ -72,7 +72,7 @@
       <Filter>Source\Network\Protocol</Filter>
     </ClInclude>
     <ClInclude Include="Source\Client.h">
-      <Filter>Source\Main</Filter>
+      <Filter>Source\0_Main</Filter>
     </ClInclude>
     <ClInclude Include="Source\ClientPacketHandler.h">
       <Filter>Source\Network</Filter>
