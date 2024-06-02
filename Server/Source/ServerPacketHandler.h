@@ -10,9 +10,12 @@ enum HyPacketID : uint16
 	PKE_SC_LOGIN = 1001,
 	PKE_CS_ENTER_ROOM = 1002,
 	PKE_SC_ENTER_ROOM = 1003,
-	PKE_CS_CHAT = 1004,
-	PKE_SC_CHAT = 1005,
-	PKE_BC_GL_CHAT = 1006,
+	PKE_SC_ENTER_ROOM_OTHERS = 1004,
+	PKE_CS_CHAT = 1005,
+	PKE_SC_CHAT = 1006,
+	PKE_BC_GL_CHAT = 1007,
+	PKE_CS_ECHO = 1008,
+	PKE_BC_GL_ECHO = 1009,
 };
 
 // Custom Handlers
@@ -20,6 +23,7 @@ bool INVALID_PACKET(HySessionRef& session, BYTE* buffer, int32 len);
 bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt);
 bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt);
 bool CS_CHAT(HySessionRef& session, Protocol::CS_CHAT& pkt);
+bool CS_ECHO(HySessionRef& session, Protocol::CS_ECHO& pkt);
 
 class ServerPacketHandler
 {
@@ -33,6 +37,7 @@ public:
 		GPacketHandler[PKE_CS_LOGIN] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_LOGIN > (CS_LOGIN, "CS_LOGIN", static_cast<uint16>(PKE_CS_LOGIN), session, buffer, len); };
 		GPacketHandler[PKE_CS_ENTER_ROOM] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_ENTER_ROOM > (CS_ENTER_ROOM, "CS_ENTER_ROOM", static_cast<uint16>(PKE_CS_ENTER_ROOM), session, buffer, len); };
 		GPacketHandler[PKE_CS_CHAT] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_CHAT > (CS_CHAT, "CS_CHAT", static_cast<uint16>(PKE_CS_CHAT), session, buffer, len); };
+		GPacketHandler[PKE_CS_ECHO] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_ECHO > (CS_ECHO, "CS_ECHO", static_cast<uint16>(PKE_CS_ECHO), session, buffer, len); };
 	}
 
 	static bool HandlePacket(HySessionRef& session, BYTE * buffer, int32 len)
@@ -42,8 +47,10 @@ public:
 	}
 	static SendBufferRef MakeSendBuffer(Protocol::SC_LOGIN& pkt) { return MakeSendBuffer(pkt, PKE_SC_LOGIN); }
 	static SendBufferRef MakeSendBuffer(Protocol::SC_ENTER_ROOM& pkt) { return MakeSendBuffer(pkt, PKE_SC_ENTER_ROOM); }
+	static SendBufferRef MakeSendBuffer(Protocol::SC_ENTER_ROOM_OTHERS& pkt) { return MakeSendBuffer(pkt, PKE_SC_ENTER_ROOM_OTHERS); }
 	static SendBufferRef MakeSendBuffer(Protocol::SC_CHAT& pkt) { return MakeSendBuffer(pkt, PKE_SC_CHAT); }
 	static SendBufferRef MakeSendBuffer(Protocol::BC_GL_CHAT& pkt) { return MakeSendBuffer(pkt, PKE_BC_GL_CHAT); }
+	static SendBufferRef MakeSendBuffer(Protocol::BC_GL_ECHO& pkt) { return MakeSendBuffer(pkt, PKE_BC_GL_ECHO); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

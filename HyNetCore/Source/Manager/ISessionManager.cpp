@@ -16,3 +16,16 @@ void ISessionManager::ReleaseSession()
 
 	connectedSessionMap.clear();
 }
+
+
+HySessionRef ISessionManager::GetUserSession(const int64& InuserId)
+{
+	if(Contains(connectedSessionMap, InuserId) == true)
+	{ 
+		return connectedSessionMap[InuserId];
+	}
+
+	// error
+	return nullptr;
+}
+

@@ -22,6 +22,9 @@
     <Filter Include="Source\0_Main">
       <UniqueIdentifier>{cd4b4380-52e7-44c7-bb31-31b9870f0c9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\DB">
+      <UniqueIdentifier>{495357ff-1899-4292-920f-a2e4764c961a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Protocol\Struct.pb.cc">
@@ -60,6 +63,9 @@
     <ClCompile Include="Source\HyServerInstance.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DBManager.cpp">
+      <Filter>Source\DB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Protocol\Protocol.pb.h">
@@ -94,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="Source\HyServerInstance.h">
       <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DBManager.h">
+      <Filter>Source\DB</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

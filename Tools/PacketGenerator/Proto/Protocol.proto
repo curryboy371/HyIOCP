@@ -34,6 +34,13 @@ message SC_ENTER_ROOM
 	repeated hyps_user_info users = 2;
 }
 
+message SC_ENTER_ROOM_OTHERS
+{
+	bool success = 1;
+	repeated hyps_user_info users = 2;
+}
+
+
 message CS_CHAT
 {
 	string msg = 1;
@@ -47,6 +54,16 @@ message SC_CHAT
 }
 
 message BC_GL_CHAT
+{
+	string msg = 1;
+}
+
+message CS_ECHO
+{
+	string msg = 1;
+}
+
+message BC_GL_ECHO
 {
 	string msg = 1;
 }

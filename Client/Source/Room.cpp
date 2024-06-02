@@ -23,7 +23,8 @@ void Room::Broadcast(SendBufferRef sendBuffer)
 {
 	for (auto& user : users)
 	{
-		user.second->Get_ownerSession()->PreSend(sendBuffer);
+		DLOG_V("broacast", user.second->Get_user_infoRef().name());
+		DoAsync([user, sendBuffer]() {user.second->Get_ownerSession()->PreSend(sendBuffer); });
 	}
 }
 

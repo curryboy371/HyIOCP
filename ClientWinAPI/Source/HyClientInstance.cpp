@@ -71,6 +71,7 @@ void HyClientInstance::InitManager()
 	// 언리얼처럼 Reflection 기능이 있다면 하나하나 만들진 않아도 되는데..
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<UserManager>()));
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<Client::SessionManager>()));
+	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<TimeManager>()));
 
 	for (auto& manager : managers)
 	{

@@ -59,6 +59,16 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
     {
         if (UserRef user = GSinstance->GetManager<UserManager>()->GetUser(pkt.userid()))
         {
+            // 기존유저에 입장알림.
+            Protocol::SC_ENTER_ROOM_OTHERS othersPkt;
+            Protocol::hyps_user_info* user_info = othersPkt.add_users();
+            *user_info = user->Get_user_infoRef();
+            othersPkt.set_success(true);
+            auto sendBuffer = ServerPacketHandler::MakeSendBuffer(othersPkt);
+            GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });
+
+            // 신규 유저 입장
+
             // 기존 room 유저정보 넣음
             std::vector<UserRef> users;
             GSinstance->Get_room()->SetUserList(users);
@@ -68,21 +78,17 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
                 *user_info = users[i]->Get_user_infoRef();
             }
 
-            // 신규 유저 입장
             GSinstance->Get_room()->Enter(user);
             enterPkt.set_success(true);
+            sendBuffer = ServerPacketHandler::MakeSendBuffer(enterPkt);
+            GSinstance->Get_room()->DoAsync([=] { session->PreSend(sendBuffer); });
 
-
-            // 노티
-            // TODO broadcast할때.. sendhande을 좀 더 간편하게 이용하도록..
-            Protocol::BC_GL_CHAT chatPkt;
-            std::string newUser = user->Get_user_infoRef().name();
-            chatPkt.set_msg(u8"User Enter" + newUser);
-            auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
-            GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });
+            return true;
         }
-    }
 
+        auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterPkt);
+        GSinstance->Get_room()->DoAsync([=] { session->PreSend(sendBuffer); });
+    }
     return true;
 }
 
@@ -98,6 +104,28 @@ bool CS_CHAT(HySessionRef& session, Protocol::CS_CHAT& pkt)
     {
         std::string userName = User->Get_user_infoRef().name();
         chatPkt.set_msg(userName + " : " +pkt.msg());
+        auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+        GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });
+    }
+    else
+    {
+        //error
+        // send only session
+    }
+
+    return true;
+}
+
+bool CS_ECHO(HySessionRef& session, Protocol::CS_ECHO& pkt)
+{
+    // 노티
+    Protocol::BC_GL_ECHO chatPkt;
+    UserRef User = GSinstance->GetManager<UserManager>()->GetUser(session->GetSessionKey());
+    if (User)
+    {
+        std::string userName = __FUNCTION__  + User->Get_user_infoRef().name();
+        PRINT_V(userName, pkt.msg());
+        chatPkt.set_msg(userName + " : " + GSinstance->GetManager<TimeManager>()->GetCurrentTimeAsString());
         auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
         GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });
     }

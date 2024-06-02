@@ -3,11 +3,11 @@
 #include "ClientPacketHandler.h"
 #include "Protocol.pb.h"
 
+#include "SessionManager.h"
 #include "UserManager.h"
 #include "User.h"
 
-#include "../ClientWinAPI.h"
-
+#include "Room.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -35,7 +35,7 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
         user->Set_user_info(myInfo);
         user->Set_ownerSession(session);
 
-        GCinstance->GetManager<UserManager>()->Set_myUser(user);
+        GCinstance->GetManager<UserManager>()->AddClientSession(user);
 
         DLOG_V("SC_LOGIN:: login success user id-", user->GetUserID());
 
@@ -67,13 +67,57 @@ bool SC_ENTER_ROOM(HySessionRef& session, Protocol::SC_ENTER_ROOM& pkt)
 
         if (bsuccess)
         {
+            // 본인 입장
+            UserRef myUser = GCinstance->GetManager<UserManager>()->GetMyUser();
+
+            // 신규 유저 입장 (본인 ) 
+            GCinstance->Get_room()->Enter(myUser);
+
             for (int32 i = 0; i < pkt.users_size(); ++i)
             {
-                bool bret = Ginstance->GetManager<UserManager>()->AddUser(pkt.users()[i], session);
+                int64 userid = pkt.users()[i].id();
+                //HySessionRef otherSession = GCinstance->GetManager<Client::SessionManager>()->GetUserSession(userid); //다른 유저 세션은 보관 안함
+                if(Ginstance->GetManager<UserManager>()->AddUser(pkt.users()[i], nullptr))
+                {
+                    UserRef newUser=  Ginstance->GetManager<UserManager>()->GetUser(pkt.users()[i].id());
+                    std::string username = pkt.users()[i].name();
+                    // 기존 유저정보
+                    GCinstance->Get_room()->Enter(newUser);
+                }
             }
+
+            std::string msg = myUser->Get_user_infoRef().name() + " : Enter the room (me)";
+            AddTextToOutput(msg);
         }
     }
 
+    return true;
+}
+
+bool SC_ENTER_ROOM_OTHERS(HySessionRef& session, Protocol::SC_ENTER_ROOM_OTHERS& pkt)
+{
+    if (session)
+    {
+        bool bsuccess = pkt.success();
+
+        if (bsuccess)
+        {
+            for (int32 i = 0; i < pkt.users_size(); ++i)
+            {
+                int64 userid = pkt.users()[i].id();
+                //HySessionRef otherSession = GCinstance->GetManager<Client::SessionManager>()->GetUserSession(userid);
+                if (Ginstance->GetManager<UserManager>()->AddUser(pkt.users()[i], nullptr))
+                {
+                    UserRef newUser = Ginstance->GetManager<UserManager>()->GetUser(pkt.users()[i].id());
+
+                    // 신규 유저 입장 ( 다른유저 ) 
+                    GCinstance->Get_room()->Enter(newUser);
+                    std::string msg = newUser->Get_user_infoRef().name() + " : Enter the room";
+                    AddTextToOutput(msg);
+                }
+            }
+        }
+    }
     return true;
 }
 
@@ -81,16 +125,21 @@ bool SC_CHAT(HySessionRef& session, Protocol::SC_CHAT& pkt)
 {
     PRINT_V("SC_CHAT", pkt.msg());
     AddTextToOutput(pkt.msg());
+
     return true;
 }
 
 bool BC_GL_CHAT(HySessionRef& session, Protocol::BC_GL_CHAT& pkt)
 {
     PRINT_V("BC_GL_CHAT", pkt.msg());
-
-    hEditOutput;
-
     AddTextToOutput(pkt.msg());
 
+    return true;
+}
+
+bool BC_GL_ECHO(HySessionRef& session, Protocol::BC_GL_ECHO& pkt)
+{
+    PRINT_V("BC_GL_ECHO", pkt.msg());
+    AddTextToOutput(pkt.msg());
     return true;
 }

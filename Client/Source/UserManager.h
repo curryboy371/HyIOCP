@@ -18,18 +18,21 @@ public:
 	virtual void ReleaseManager() override;
 
 public:
+	bool AddClientSession(UserRef user);
+
 	bool AddUser(const Protocol::hyps_user_info& InuserInfo, HySessionRef userSession);
 	bool RemoveUse(HySessionRef userSession);
 
 public:
 	UserRef GetUser(const int64& userKey);
+	UserRef GetMyUser();
 
 public:
-	SETTER(UserRef, myUser);
-	GETTER(UserRef, myUser);
+	//SETTER(UserRef, myUser);
+	//GETTER(UserRef, myUser);
 
 private:
-	UserRef myUser;
+	std::vector<UserRef> myUsers;
 
 	std::unordered_map<int64, UserRef> userInfoMap;
 

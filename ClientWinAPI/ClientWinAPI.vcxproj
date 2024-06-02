@@ -155,30 +155,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ClientWinAPI.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="Source\ClientWin.h" />
     <ClInclude Include="Source\ClientPacketHandler.h" />
     <ClInclude Include="Source\ClientSessions.h" />
+    <ClInclude Include="Source\ClientWin.h" />
+    <ClInclude Include="Source\ClientWinAPI.h" />
+    <ClInclude Include="Source\framework.h" />
     <ClInclude Include="Source\HyClientInstance.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\Protocol\Enum.pb.h" />
     <ClInclude Include="Source\Protocol\Protocol.pb.h" />
     <ClInclude Include="Source\Protocol\Struct.pb.h" />
+    <ClInclude Include="Source\Resource.h" />
     <ClInclude Include="Source\Room.h" />
     <ClInclude Include="Source\SessionManager.h" />
+    <ClInclude Include="Source\targetver.h" />
     <ClInclude Include="Source\User.h" />
     <ClInclude Include="Source\UserManager.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClientWinAPI.cpp" />
-    <ClCompile Include="Source\ClientWin.cpp" />
     <ClCompile Include="Source\ClientPacketHandler.cpp" />
     <ClCompile Include="Source\ClientSessions.cpp" />
+    <ClCompile Include="Source\ClientWin.cpp" />
+    <ClCompile Include="Source\ClientWinAPI.cpp" />
     <ClCompile Include="Source\HyClientInstance.cpp" />
-    <ClCompile Include="Source\pch.cpp" />
+    <ClCompile Include="Source\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Source\Protocol\Enum.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -204,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ClientWinAPI.rc" />
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="ClientWinAPI.ico" />

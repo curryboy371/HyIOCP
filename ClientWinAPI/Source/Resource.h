@@ -2,6 +2,18 @@
 // Microsoft Visual C++에서 생성한 포함 파일입니다.
 // 다음에서 사용 ClientWinAPI.rc
 
+#define IDC_MAIN_BUTTON_LOGIN 101
+#define IDC_MAIN_BUTTON_REGISTER 102
+#define IDC_MAIN_EDIT_USERNAME 103
+#define IDC_MAIN_EDIT_PASSWORD 104
+
+#define IDC_CHAT_EDIT_MESSAGE 201
+#define IDC_CHAT_BUTTON_SEND 202
+#define IDC_CHAT_LIST_MESSAGES 203
+
+#define IDD_DIALOG_MAIN 301
+#define IDD_DIALOG_CHAT 302
+
 #define IDS_APP_TITLE			103
 
 #define IDR_MAINFRAME			128
@@ -13,11 +25,11 @@
 #define IDI_SMALL				108
 #define IDC_CLIENTWINAPI			109
 #define IDC_MYICON				2
+
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
 #endif
 // 다음은 새 개체에 사용할 기본값입니다.
-//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 

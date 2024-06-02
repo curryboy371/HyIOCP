@@ -36,9 +36,6 @@
     <ClCompile Include="Source\Client.cpp">
       <Filter>Source\0_Main</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ClientPacketHandler.cpp">
-      <Filter>Source\Network</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ClientSessions.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
@@ -73,9 +70,6 @@
     </ClInclude>
     <ClInclude Include="Source\Client.h">
       <Filter>Source\0_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientPacketHandler.h">
-      <Filter>Source\Network</Filter>
     </ClInclude>
     <ClInclude Include="Source\ClientSessions.h">
       <Filter>Source\Network</Filter>

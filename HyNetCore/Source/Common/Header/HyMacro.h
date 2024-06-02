@@ -12,7 +12,7 @@
 #define INVALID_INDEX		 -1
 #define INVALID_UID			 0
 
-#define DETAIL_LOG			1
+//#define DETAIL_LOG			1
 
 #pragma endregion
 

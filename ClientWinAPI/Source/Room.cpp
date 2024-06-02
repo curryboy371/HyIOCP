@@ -2,6 +2,9 @@
 #include "Room.h"
 #include "User.h"
 
+#include "UserManager.h"
+#include "HyClientInstance.h"
+
 void Room::CleanRoom()
 {
 	users.clear();
@@ -19,11 +22,18 @@ void Room::Leave(UserRef user)
 	users.erase(user->GetUserID());
 }
 
-void Room::SendMsg(SendBufferRef sendBuffer)
+void Room::Broadcast(SendBufferRef sendBuffer)
 {
-	for (auto& user : users)
+	std::vector<UserRef> Myusers;
+	GCinstance->GetManager<UserManager>()->GetMyUsers(Myusers);
+
+	for (auto& myuser : Myusers)
 	{
-		user.second->Get_ownerSession()->PreSend(sendBuffer);
+		DLOG_V("broacast", myuser->Get_user_infoRef().name());
+		if (myuser->Get_ownerSession())
+		{
+			DoAsync([myuser, sendBuffer]() {myuser->Get_ownerSession()->PreSend(sendBuffer); });
+		}
 	}
 }
 

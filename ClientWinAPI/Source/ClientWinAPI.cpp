@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+
 #include "framework.h"
 #include "ClientWinAPI.h"
 #include <iostream>
@@ -29,6 +30,87 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK    EditProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+
+LRESULT CALLBACK ChatDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+
+LRESULT CALLBACK MainDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        if (wmId == IDC_MAIN_BUTTON_LOGIN)
+        {
+            // 로그인 처리 로직
+            // 성공 시 채팅 창으로 이동
+            EndDialog(hDlg, IDOK);
+
+            // 로그인 성공시 
+            // 입력 창에 포커스 설정
+            //SetFocus(hEditInput);
+        }
+        else if (wmId == IDC_MAIN_BUTTON_REGISTER)
+        {
+            // 회원가입 처리 로직
+            MessageBox(hDlg, L"Register clicked", L"Info", MB_OK);
+        }
+    }
+    break;
+
+    case WM_CLOSE:
+        EndDialog(hDlg, LOWORD(wParam));
+        return (INT_PTR)TRUE;
+    }
+    return (INT_PTR)FALSE;
+}
+
+
+LRESULT CALLBACK ChatDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        if (wmId == IDC_CHAT_BUTTON_SEND)
+        {
+            // 채팅 메시지 보내기 처리 로직
+            HWND hEdit = GetDlgItem(hDlg, IDC_CHAT_EDIT_MESSAGE);
+            int len = GetWindowTextLength(hEdit);
+            if (len > 0)
+            {
+                TCHAR* buffer = (TCHAR*)GlobalAlloc(GPTR, len + 1);
+                GetWindowText(hEdit, buffer, len + 1);
+                // 메시지를 채팅 목록에 추가
+                HWND hList = GetDlgItem(hDlg, IDC_CHAT_LIST_MESSAGES);
+                SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)buffer);
+                // 입력창 초기화
+                SetWindowText(hEdit, L"");
+                GlobalFree(buffer);
+            }
+        }
+    }
+    break;
+
+    case WM_CLOSE:
+        EndDialog(hDlg, LOWORD(wParam));
+        return (INT_PTR)TRUE;
+    }
+    return (INT_PTR)FALSE;
+
+}
+
+
+
+bool bvDebug = true;
+
 void RedirectIOToConsole() {
     // 콘솔을 할당합니다.
     AllocConsole();
@@ -56,64 +138,119 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
 {
+    // Get the command line arguments
+    int argc;
+    LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+
+    if (argv == NULL) {
+        MessageBox(NULL, L"CommandLineToArgvW failed", L"Error", MB_OK);
+        return 1;
+    }
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // 콘솔 창을 설정합니다.
-    RedirectIOToConsole();
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CLIENTWINAPI, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
-    // 애플리케이션 초기화를 수행합니다:
-    if (!InitInstance(hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
-
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENTWINAPI));
     MSG msg;
 
-    int32 client_session_count = 1;
+    // Get command line arguments as a wide string
+    LPWSTR cmdLine = GetCommandLineW();
 
-    // 클라이언트는 서버와 연결하기 위해 ServerSession 사용
-    SessionConfig<ServerSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_C2S, client_session_count, "Client");
+    // Convert the command line to a list of arguments
 
-    std::shared_ptr<IOCPClient> iocpRef = std::make_shared<IOCPClient>(sessionConfig.GetAddress(), sessionConfig.GetSessionFactory(), sessionConfig.Get_maxSessionCount(), sessionConfig.Get_nameRef());
-    HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
-    instance->InitHyInstance();
-    instance->Set_IocpRef(iocpRef);
-
-    bool ret = iocpRef->InitIOCP();
-
-    if (ret)
+    int32 sessionCount = 1;
+    if (argc > 1)
     {
+        sessionCount = std::stoi(argv[1]);
+        bvDebug = false;
+    }
+    else
+    {
+        // 콘솔 창을 설정합니다.
+        RedirectIOToConsole();
+    }
+
+    // 로그인 대화 상자를 표시합니다.
+    if (DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG_MAIN), NULL, MainDlgProc) == IDOK)
+    {
+        // 애플리케이션 초기화를 수행합니다:
+        if (!InitInstance(hInstance, nCmdShow))
+        {
+            return FALSE;
+        }
+
+        // 클라이언트는 서버와 연결하기 위해 ServerSession 사용
+        SessionConfig<ServerSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_C2S, sessionCount, "Client");
+
+        std::shared_ptr<IOCPClient> iocpRef = std::make_shared<IOCPClient>(sessionConfig.GetAddress(), sessionConfig.GetSessionFactory(), sessionConfig.Get_maxSessionCount(), sessionConfig.Get_nameRef());
+        HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
+        instance->InitHyInstance();
+        instance->Set_IocpRef(iocpRef);
+
+        bool ret = iocpRef->InitIOCP();
+
+        if (ret)
+        {
+            // lamda...
+            Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
+                {
+                    WorkThread(iocpRef);
+                }
+            );
+        }
+
+
         // lamda...
         Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
             {
-                WorkThread(iocpRef);
+                while (true)
+                {
+                    //if (bvDebug)
+                    {
+                        std::this_thread::sleep_for(std::chrono::seconds(15));
+
+                        Protocol::CS_ECHO echoptk;
+                        std::string time = TimeManager::GetCurrentTimeAsString();
+                        echoptk.set_msg("CS_ECHO... " + time);
+                        auto sendBuffer = ClientPacketHandler::MakeSendBuffer(echoptk);
+
+                        GCinstance->Get_room()->DoAsync([=] { GCinstance->Get_room()->Broadcast(sendBuffer); });
+                    }
+
+                }
+
             }
         );
 
-    }
 
-    // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+
+        HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENTWINAPI));
+        MSG msg;
+
+        // 기본 메시지 루프입니다:
+        while (GetMessage(&msg, nullptr, 0, 0))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
         }
+
+        Ginstance->Get_threadMgr()->JoinThreads();
+        instance->ReleaseInstance();
+
+        return (int)msg.wParam;
     }
 
-    Ginstance->Get_threadMgr()->JoinThreads();
-
-    instance->ReleaseInstance();
-
-    return (int)msg.wParam;
+    return 0;
+   // return (int)msg.wParam;
 }
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
@@ -169,6 +306,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     // 타이머 설정 (100ms)
     SetTimer(hWnd, 1, 60, NULL);
 
+
     return TRUE;
 }
 
@@ -214,7 +352,7 @@ void SendUserMessage(const std::wstring& text)
     chatpkt.set_msg(msg);
 
     SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatpkt);
-    GCinstance->Get_room()->DoAsync([sendBuffer]() { GCinstance->GetManager<UserManager>()->Get_myUserRef()->Get_ownerSessionRef()->PreSend(sendBuffer); });
+    GCinstance->Get_room()->DoAsync([sendBuffer]() { GCinstance->GetManager<UserManager>()->GetMyUser()->Get_ownerSessionRef()->PreSend(sendBuffer); });
 }
 
 void SendUserMessage(const std::string& text)
@@ -222,7 +360,7 @@ void SendUserMessage(const std::string& text)
     Protocol::CS_CHAT chatpkt;
     chatpkt.set_msg(text);
     SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatpkt);
-    GCinstance->Get_room()->DoAsync([sendBuffer]() { GCinstance->GetManager<UserManager>()->Get_myUserRef()->Get_ownerSessionRef()->PreSend(sendBuffer); });
+    GCinstance->Get_room()->DoAsync([sendBuffer]() { GCinstance->GetManager<UserManager>()->GetMyUser()->Get_ownerSessionRef()->PreSend(sendBuffer); });
 
 }
 
@@ -236,6 +374,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // 메뉴 선택을 구문 분석합니다:
         switch (wmId)
         {
+
         case IDM_ABOUT:
             DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
             break;

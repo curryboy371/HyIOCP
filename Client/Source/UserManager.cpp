@@ -3,7 +3,6 @@
 #include "User.h"
 
 UserManager::UserManager()
-    :myUser(nullptr)
 {
     LOG_FUNC;
 }
@@ -26,7 +25,21 @@ void UserManager::ReleaseManager()
         pair.second->Get_ownerSession().reset();
     }
 
+    for (auto& user : myUsers)
+    {
+        user->Get_ownerSession().reset();
+    }
+
+    myUsers.clear();
+
+
     userInfoMap.clear();
+}
+
+bool UserManager::AddClientSession(UserRef user)
+{
+    myUsers.push_back(user);
+    return false;
 }
 
 bool UserManager::AddUser(const Protocol::hyps_user_info& InuserInfo, HySessionRef userSession)
@@ -81,4 +94,9 @@ UserRef UserManager::GetUser(const int64& userKey)
 
     return nullptr;
 }
+UserRef UserManager::GetMyUser()
+{
+    return myUsers[0];
+}
+
 

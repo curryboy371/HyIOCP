@@ -11,7 +11,9 @@ public:
 
 	void Enter(UserRef user);
 	void Leave(UserRef user);
-	void SendMsg(SendBufferRef sendBuffer);
+	void Broadcast(SendBufferRef sendBuffer);
+	void BroadcastTest();
+
 
 public:
 	// multi thread 환경에서는 job으로 접근

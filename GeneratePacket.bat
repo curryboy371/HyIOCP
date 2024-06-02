@@ -37,12 +37,12 @@ pushd %~dp0\Tools\PacketGenerator\Proto
 
 XCOPY /Y /I *.pb.h "..\..\..\Server\Source\Protocol\"
 XCOPY /Y /I *.pb.cc "..\..\..\Server\Source\Protocol\"
-XCOPY /Y /I *.pb.h "..\..\..\Client\Source\Protocol\"
-XCOPY /Y /I *.pb.cc "..\..\..\Client\Source\Protocol\"
+XCOPY /Y /I *.pb.h "..\..\..\ClientWinAPI\Source\Protocol\"
+XCOPY /Y /I *.pb.cc "..\..\..\ClientWinAPI\Source\Protocol\"
 
 pushd %~dp0\Tools\PacketGenerator\Output
 
-XCOPY /Y /I "ClientPacketHandler.h" "..\..\..\Client\Source\"
+XCOPY /Y /I "ClientPacketHandler.h" "..\..\..\ClientWinAPI\Source\"
 XCOPY /Y /I "ServerPacketHandler.h" "..\..\..\Server\Source\"
 
 

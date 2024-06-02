@@ -1,4 +1,6 @@
 title Client10
 pushd %~dp0
 
-Binaries\Debug\Client.exe 10
+start "" "Binaries\Debug\ClientWinAPI.exe" 95
+exit
+

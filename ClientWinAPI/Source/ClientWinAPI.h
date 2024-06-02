@@ -1,6 +1,6 @@
 #pragma once
 
-#include "resource.h"
+#include "Resource.h"
 #include <locale>
 #include <codecvt>
 

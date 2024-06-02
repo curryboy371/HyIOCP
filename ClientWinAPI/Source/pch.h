@@ -6,10 +6,8 @@
 
 #include "HyClientInstance.h"
 
-#include "framework.h"
 #include "ClientWinAPI.h"
-#include <iostream>
-#include <string>
+
 
 
 #ifdef _DEBUG

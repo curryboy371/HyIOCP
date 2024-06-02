@@ -23,6 +23,8 @@ public:
 	virtual bool OnDisconnectSession(HySessionRef sessionRef) abstract;
 	virtual bool OnLoginSession(HySessionRef sessionRef) abstract;
 
+	HySessionRef GetUserSession(const int64& InuserId);
+
 public:
 	SETTER(HySessionRef, listenSession);
 	GETTER(HySessionRef, listenSession)

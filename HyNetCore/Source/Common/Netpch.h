@@ -47,6 +47,8 @@
 #include "HyInstance.h"
 #include "ThreadManager.h"
 
+#include "TimeManager.h"
+
 #include "Job.h"
 
 

@@ -31,7 +31,6 @@ int32 ServerSession::OnPostRecv(BYTE* buffer, int32 len)
 {
 	HySessionRef sessionRef = GetSessionRef();
 	bool bret = ClientPacketHandler::HandlePacket(sessionRef, buffer, len);
-
 	return bret ? len : 0;
 }
 

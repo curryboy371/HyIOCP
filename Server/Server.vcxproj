@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\DBManager.cpp" />
     <ClCompile Include="Source\HyServerInstance.cpp" />
     <ClCompile Include="Source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -189,6 +190,7 @@
     <ClCompile Include="Source\UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\DBManager.h" />
     <ClInclude Include="Source\HyServerInstance.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\Protocol\Enum.pb.h" />
