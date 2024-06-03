@@ -25,6 +25,7 @@ PROTOBUF_CONSTEXPR CS_LOGIN::CS_LOGIN(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.user_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.passwd_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.bisdevlogin_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct CS_LOGINDefaultTypeInternal {
   PROTOBUF_CONSTEXPR CS_LOGINDefaultTypeInternal()
@@ -37,7 +38,7 @@ struct CS_LOGINDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CS_LOGINDefaultTypeInternal _CS_LOGIN_default_instance_;
 PROTOBUF_CONSTEXPR SC_LOGIN::SC_LOGIN(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.userid_)*/uint64_t{0u}
+    /*decltype(_impl_.user_info_)*/nullptr
   , /*decltype(_impl_.success_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SC_LOGINDefaultTypeInternal {
@@ -170,6 +171,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Protocol::CS_LOGIN, _impl_.bisdevlogin_),
   PROTOBUF_FIELD_OFFSET(::Protocol::CS_LOGIN, _impl_.user_name_),
   PROTOBUF_FIELD_OFFSET(::Protocol::CS_LOGIN, _impl_.passwd_),
   ~0u,  // no _has_bits_
@@ -179,7 +181,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_LOGIN, _impl_.success_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::SC_LOGIN, _impl_.userid_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::SC_LOGIN, _impl_.user_info_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::CS_ENTER_ROOM, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -244,15 +246,15 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Protocol::CS_LOGIN)},
-  { 8, -1, -1, sizeof(::Protocol::SC_LOGIN)},
-  { 16, -1, -1, sizeof(::Protocol::CS_ENTER_ROOM)},
-  { 24, -1, -1, sizeof(::Protocol::SC_ENTER_ROOM)},
-  { 32, -1, -1, sizeof(::Protocol::SC_ENTER_ROOM_OTHERS)},
-  { 40, -1, -1, sizeof(::Protocol::CS_CHAT)},
-  { 47, -1, -1, sizeof(::Protocol::SC_CHAT)},
-  { 56, -1, -1, sizeof(::Protocol::BC_GL_CHAT)},
-  { 63, -1, -1, sizeof(::Protocol::CS_ECHO)},
-  { 70, -1, -1, sizeof(::Protocol::BC_GL_ECHO)},
+  { 9, -1, -1, sizeof(::Protocol::SC_LOGIN)},
+  { 17, -1, -1, sizeof(::Protocol::CS_ENTER_ROOM)},
+  { 25, -1, -1, sizeof(::Protocol::SC_ENTER_ROOM)},
+  { 33, -1, -1, sizeof(::Protocol::SC_ENTER_ROOM_OTHERS)},
+  { 41, -1, -1, sizeof(::Protocol::CS_CHAT)},
+  { 48, -1, -1, sizeof(::Protocol::SC_CHAT)},
+  { 57, -1, -1, sizeof(::Protocol::BC_GL_CHAT)},
+  { 64, -1, -1, sizeof(::Protocol::CS_ECHO)},
+  { 71, -1, -1, sizeof(::Protocol::BC_GL_ECHO)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -270,18 +272,20 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\016Protocol.proto\022\010Protocol\032\nEnum.proto\032\014"
-  "Struct.proto\"-\n\010CS_LOGIN\022\021\n\tuser_name\030\001 "
-  "\001(\t\022\016\n\006passwd\030\002 \001(\t\"+\n\010SC_LOGIN\022\017\n\007succe"
-  "ss\030\001 \001(\010\022\016\n\006userId\030\002 \001(\004\"2\n\rCS_ENTER_ROO"
-  "M\022\021\n\troom_name\030\001 \001(\t\022\016\n\006userId\030\002 \001(\004\"I\n\r"
-  "SC_ENTER_ROOM\022\017\n\007success\030\001 \001(\010\022\'\n\005users\030"
-  "\002 \003(\0132\030.Protocol.hyps_user_info\"P\n\024SC_EN"
-  "TER_ROOM_OTHERS\022\017\n\007success\030\001 \001(\010\022\'\n\005user"
-  "s\030\002 \003(\0132\030.Protocol.hyps_user_info\"\026\n\007CS_"
-  "CHAT\022\013\n\003msg\030\001 \001(\t\"7\n\007SC_CHAT\022\017\n\007success\030"
-  "\001 \001(\010\022\016\n\006userId\030\002 \001(\004\022\013\n\003msg\030\003 \001(\t\"\031\n\nBC"
-  "_GL_CHAT\022\013\n\003msg\030\001 \001(\t\"\026\n\007CS_ECHO\022\013\n\003msg\030"
-  "\001 \001(\t\"\031\n\nBC_GL_ECHO\022\013\n\003msg\030\001 \001(\tb\006proto3"
+  "Struct.proto\"B\n\010CS_LOGIN\022\023\n\013bIsDevLogin\030"
+  "\001 \001(\010\022\021\n\tuser_name\030\002 \001(\t\022\016\n\006passwd\030\003 \001(\t"
+  "\"H\n\010SC_LOGIN\022\017\n\007success\030\001 \001(\010\022+\n\tuser_in"
+  "fo\030\003 \001(\0132\030.Protocol.hyps_user_info\"2\n\rCS"
+  "_ENTER_ROOM\022\021\n\troom_name\030\001 \001(\t\022\016\n\006userId"
+  "\030\002 \001(\004\"I\n\rSC_ENTER_ROOM\022\017\n\007success\030\001 \001(\010"
+  "\022\'\n\005users\030\002 \003(\0132\030.Protocol.hyps_user_inf"
+  "o\"P\n\024SC_ENTER_ROOM_OTHERS\022\017\n\007success\030\001 \001"
+  "(\010\022\'\n\005users\030\002 \003(\0132\030.Protocol.hyps_user_i"
+  "nfo\"\026\n\007CS_CHAT\022\013\n\003msg\030\001 \001(\t\"7\n\007SC_CHAT\022\017"
+  "\n\007success\030\001 \001(\010\022\016\n\006userId\030\002 \001(\004\022\013\n\003msg\030\003"
+  " \001(\t\"\031\n\nBC_GL_CHAT\022\013\n\003msg\030\001 \001(\t\"\026\n\007CS_EC"
+  "HO\022\013\n\003msg\030\001 \001(\t\"\031\n\nBC_GL_ECHO\022\013\n\003msg\030\001 \001"
+  "(\tb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -289,7 +293,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 520, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 570, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
     &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 10,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
@@ -322,6 +326,7 @@ CS_LOGIN::CS_LOGIN(const CS_LOGIN& from)
   new (&_impl_) Impl_{
       decltype(_impl_.user_name_){}
     , decltype(_impl_.passwd_){}
+    , decltype(_impl_.bisdevlogin_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -341,6 +346,7 @@ CS_LOGIN::CS_LOGIN(const CS_LOGIN& from)
     _this->_impl_.passwd_.Set(from._internal_passwd(), 
       _this->GetArenaForAllocation());
   }
+  _this->_impl_.bisdevlogin_ = from._impl_.bisdevlogin_;
   // @@protoc_insertion_point(copy_constructor:Protocol.CS_LOGIN)
 }
 
@@ -351,6 +357,7 @@ inline void CS_LOGIN::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_.user_name_){}
     , decltype(_impl_.passwd_){}
+    , decltype(_impl_.bisdevlogin_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.user_name_.InitDefault();
@@ -390,6 +397,7 @@ void CS_LOGIN::Clear() {
 
   _impl_.user_name_.ClearToEmpty();
   _impl_.passwd_.ClearToEmpty();
+  _impl_.bisdevlogin_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -399,9 +407,17 @@ const char* CS_LOGIN::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string user_name = 1;
+      // bool bIsDevLogin = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          _impl_.bisdevlogin_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string user_name = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_user_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -409,9 +425,9 @@ const char* CS_LOGIN::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
         } else
           goto handle_unusual;
         continue;
-      // string passwd = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+      // string passwd = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           auto str = _internal_mutable_passwd();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -448,24 +464,30 @@ uint8_t* CS_LOGIN::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string user_name = 1;
+  // bool bIsDevLogin = 1;
+  if (this->_internal_bisdevlogin() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_bisdevlogin(), target);
+  }
+
+  // string user_name = 2;
   if (!this->_internal_user_name().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_user_name().data(), static_cast<int>(this->_internal_user_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "Protocol.CS_LOGIN.user_name");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_user_name(), target);
+        2, this->_internal_user_name(), target);
   }
 
-  // string passwd = 2;
+  // string passwd = 3;
   if (!this->_internal_passwd().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_passwd().data(), static_cast<int>(this->_internal_passwd().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "Protocol.CS_LOGIN.passwd");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_passwd(), target);
+        3, this->_internal_passwd(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -484,18 +506,23 @@ size_t CS_LOGIN::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string user_name = 1;
+  // string user_name = 2;
   if (!this->_internal_user_name().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_user_name());
   }
 
-  // string passwd = 2;
+  // string passwd = 3;
   if (!this->_internal_passwd().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_passwd());
+  }
+
+  // bool bIsDevLogin = 1;
+  if (this->_internal_bisdevlogin() != 0) {
+    total_size += 1 + 1;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -521,6 +548,9 @@ void CS_LOGIN::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   }
   if (!from._internal_passwd().empty()) {
     _this->_internal_set_passwd(from._internal_passwd());
+  }
+  if (from._internal_bisdevlogin() != 0) {
+    _this->_internal_set_bisdevlogin(from._internal_bisdevlogin());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -549,6 +579,7 @@ void CS_LOGIN::InternalSwap(CS_LOGIN* other) {
       &_impl_.passwd_, lhs_arena,
       &other->_impl_.passwd_, rhs_arena
   );
+  swap(_impl_.bisdevlogin_, other->_impl_.bisdevlogin_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CS_LOGIN::GetMetadata() const {
@@ -561,8 +592,19 @@ void CS_LOGIN::InternalSwap(CS_LOGIN* other) {
 
 class SC_LOGIN::_Internal {
  public:
+  static const ::Protocol::hyps_user_info& user_info(const SC_LOGIN* msg);
 };
 
+const ::Protocol::hyps_user_info&
+SC_LOGIN::_Internal::user_info(const SC_LOGIN* msg) {
+  return *msg->_impl_.user_info_;
+}
+void SC_LOGIN::clear_user_info() {
+  if (GetArenaForAllocation() == nullptr && _impl_.user_info_ != nullptr) {
+    delete _impl_.user_info_;
+  }
+  _impl_.user_info_ = nullptr;
+}
 SC_LOGIN::SC_LOGIN(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
@@ -573,14 +615,15 @@ SC_LOGIN::SC_LOGIN(const SC_LOGIN& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   SC_LOGIN* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.userid_){}
+      decltype(_impl_.user_info_){nullptr}
     , decltype(_impl_.success_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&_impl_.userid_, &from._impl_.userid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.success_) -
-    reinterpret_cast<char*>(&_impl_.userid_)) + sizeof(_impl_.success_));
+  if (from._internal_has_user_info()) {
+    _this->_impl_.user_info_ = new ::Protocol::hyps_user_info(*from._impl_.user_info_);
+  }
+  _this->_impl_.success_ = from._impl_.success_;
   // @@protoc_insertion_point(copy_constructor:Protocol.SC_LOGIN)
 }
 
@@ -589,7 +632,7 @@ inline void SC_LOGIN::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.userid_){uint64_t{0u}}
+      decltype(_impl_.user_info_){nullptr}
     , decltype(_impl_.success_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -606,6 +649,7 @@ SC_LOGIN::~SC_LOGIN() {
 
 inline void SC_LOGIN::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.user_info_;
 }
 
 void SC_LOGIN::SetCachedSize(int size) const {
@@ -618,9 +662,11 @@ void SC_LOGIN::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.userid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.success_) -
-      reinterpret_cast<char*>(&_impl_.userid_)) + sizeof(_impl_.success_));
+  if (GetArenaForAllocation() == nullptr && _impl_.user_info_ != nullptr) {
+    delete _impl_.user_info_;
+  }
+  _impl_.user_info_ = nullptr;
+  _impl_.success_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -638,10 +684,10 @@ const char* SC_LOGIN::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
         } else
           goto handle_unusual;
         continue;
-      // uint64 userId = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _impl_.userid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+      // .Protocol.hyps_user_info user_info = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_user_info(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -681,10 +727,11 @@ uint8_t* SC_LOGIN::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_success(), target);
   }
 
-  // uint64 userId = 2;
-  if (this->_internal_userid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_userid(), target);
+  // .Protocol.hyps_user_info user_info = 3;
+  if (this->_internal_has_user_info()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::user_info(this),
+        _Internal::user_info(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -703,9 +750,11 @@ size_t SC_LOGIN::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // uint64 userId = 2;
-  if (this->_internal_userid() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_userid());
+  // .Protocol.hyps_user_info user_info = 3;
+  if (this->_internal_has_user_info()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.user_info_);
   }
 
   // bool success = 1;
@@ -731,8 +780,9 @@ void SC_LOGIN::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_userid() != 0) {
-    _this->_internal_set_userid(from._internal_userid());
+  if (from._internal_has_user_info()) {
+    _this->_internal_mutable_user_info()->::Protocol::hyps_user_info::MergeFrom(
+        from._internal_user_info());
   }
   if (from._internal_success() != 0) {
     _this->_internal_set_success(from._internal_success());
@@ -757,9 +807,9 @@ void SC_LOGIN::InternalSwap(SC_LOGIN* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(SC_LOGIN, _impl_.success_)
       + sizeof(SC_LOGIN::_impl_.success_)
-      - PROTOBUF_FIELD_OFFSET(SC_LOGIN, _impl_.userid_)>(
-          reinterpret_cast<char*>(&_impl_.userid_),
-          reinterpret_cast<char*>(&other->_impl_.userid_));
+      - PROTOBUF_FIELD_OFFSET(SC_LOGIN, _impl_.user_info_)>(
+          reinterpret_cast<char*>(&_impl_.user_info_),
+          reinterpret_cast<char*>(&other->_impl_.user_info_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SC_LOGIN::GetMetadata() const {

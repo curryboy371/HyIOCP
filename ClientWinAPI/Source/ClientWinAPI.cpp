@@ -12,6 +12,8 @@
 
 #include "Room.h"
 
+#include "NetworkManager.h"
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
@@ -45,9 +47,23 @@ LRESULT CALLBACK MainDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
         int wmId = LOWORD(wParam);
         if (wmId == IDC_MAIN_BUTTON_LOGIN)
         {
-            // 로그인 처리 로직
-            // 성공 시 채팅 창으로 이동
-            EndDialog(hDlg, IDOK);
+            // 텍스트 받아서
+            TCHAR username[256];
+            TCHAR password[256];
+            GetDlgItemText(hDlg, IDC_MAIN_EDIT_USERNAME, username, 256);
+            GetDlgItemText(hDlg, IDC_MAIN_EDIT_PASSWORD, password, 256);
+
+            std::string name = ConvertUTF8(username);
+            std::string passwd = ConvertUTF8(password);
+
+            // cb
+            std::function<void()> cbFund = [hDlg]() {
+                // 성공 시 채팅 창으로 이동
+                EndDialog(hDlg, IDOK);
+            };
+
+            // 로그인 체크
+            GCinstance->GetManager<NetworkManager>()->Send_CS_LOGIN(name, passwd, cbFund);
 
             // 로그인 성공시 
             // 입력 창에 포커스 설정
@@ -163,17 +179,39 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     LPWSTR cmdLine = GetCommandLineW();
 
     // Convert the command line to a list of arguments
-
     int32 sessionCount = 1;
+    bool bIsDevMode = false;
     if (argc > 1)
     {
         sessionCount = std::stoi(argv[1]);
-        bvDebug = false;
+        bIsDevMode = true;
     }
     else
     {
         // 콘솔 창을 설정합니다.
         RedirectIOToConsole();
+    }
+
+    // 
+    // 
+     // 클라이언트는 서버와 연결하기 위해 ServerSession 사용
+    SessionConfig<ServerSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_C2S, sessionCount, "Client");
+
+    std::shared_ptr<IOCPClient> iocpRef = std::make_shared<IOCPClient>(sessionConfig.GetAddress(), sessionConfig.GetSessionFactory(), sessionConfig.Get_maxSessionCount(), sessionConfig.Get_nameRef());
+    HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
+    instance->InitHyInstance();
+    instance->Set_IocpRef(iocpRef);
+    instance->Set_bIsDevMode(bIsDevMode);
+
+    bool ret = iocpRef->InitIOCP();
+    if (ret)
+    {
+        // lamda...
+        Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
+            {
+                WorkThread(iocpRef);
+            }
+        );
     }
 
     // 로그인 대화 상자를 표시합니다.
@@ -183,26 +221,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         if (!InitInstance(hInstance, nCmdShow))
         {
             return FALSE;
-        }
-
-        // 클라이언트는 서버와 연결하기 위해 ServerSession 사용
-        SessionConfig<ServerSession> sessionConfig(L"127.0.0.1", 7777, E_SESSION_TYPE::E_SESSION_C2S, sessionCount, "Client");
-
-        std::shared_ptr<IOCPClient> iocpRef = std::make_shared<IOCPClient>(sessionConfig.GetAddress(), sessionConfig.GetSessionFactory(), sessionConfig.Get_maxSessionCount(), sessionConfig.Get_nameRef());
-        HyClientInstanceRef instance = std::make_shared<HyClientInstance>();
-        instance->InitHyInstance();
-        instance->Set_IocpRef(iocpRef);
-
-        bool ret = iocpRef->InitIOCP();
-
-        if (ret)
-        {
-            // lamda...
-            Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
-                {
-                    WorkThread(iocpRef);
-                }
-            );
         }
 
 

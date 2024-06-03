@@ -7,6 +7,7 @@
 #include "User.h"
 
 #include "SessionManager.h"
+#include "DBManager.h"
 
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
@@ -27,27 +28,30 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
     // 로그인 시도
     Protocol::SC_LOGIN loginPkt;
 
-    Protocol::hyps_user_info user_info;
-    std::string user_name = pkt.user_name() + std::to_string(session->GetSessionKey());
-
-    user_info.set_id(session->GetSessionKey());
-    user_info.set_name(user_name);
-    user_info.set_user_type(Protocol::hype_user::user_normal);
-
-    bool bret = Ginstance->GetManager<UserManager>()->AddUser(user_info, session);
-
-    loginPkt.set_userid(user_info.id());
-    loginPkt.set_success(bret); // TODO 체크
-
-    if (bret)
+    if (pkt.bisdevlogin() == true || GSinstance->GetManager<DBManager>()->UserLoginCheck(pkt.user_name(), pkt.passwd()) == 0)
     {
-        if (Ginstance->GetManager<SessionManager>()->OnLoginSession(session) == true)
-        {
-            SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(loginPkt);
-            session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
-        }
+        Protocol::hyps_user_info* user_info = new Protocol::hyps_user_info;
+
+        user_info->set_id(session->GetSessionKey());
+        user_info->set_name(pkt.user_name());
+        user_info->set_user_type(Protocol::hype_user::user_normal);
+
+        bool bret = Ginstance->GetManager<UserManager>()->AddUser(*user_info, session);
+
+        loginPkt.set_allocated_user_info(user_info);
+        loginPkt.set_success(bret); // TODO 체크
+
+    }
+    else // 불일치 등...
+    {
+        loginPkt.set_success(false); // TODO 체크
     }
 
+    if (Ginstance->GetManager<SessionManager>()->OnLoginSession(session) == true)
+    {
+        SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(loginPkt);
+        session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
+    }
     return true;
 }
 

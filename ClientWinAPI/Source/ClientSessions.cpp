@@ -3,6 +3,7 @@
 #include "HyClientInstance.h"
 #include "UserManager.h"
 #include "SessionManager.h"
+#include "NetworkManager.h"
 
 void ServerSession::OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
@@ -15,14 +16,20 @@ void ServerSession::OnPostConnect()
 	// 연결상태 전환
 	SetSessionStatus(E_SESSION_STATUS::E_CONNECT_STATUS);
 
+	// 네트워크 매니저에 세션 세팅
+	GCinstance->GetManager<NetworkManager>()->Set_sessionRef(GetSessionRef());
+
 	// 로그인 시도
-	Protocol::CS_LOGIN loginPkt;
-	std::string userName = "Client";
-	loginPkt.set_user_name(userName);
-	loginPkt.set_passwd("1234");
-	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
-	GCinstance->Get_IocpRef()->Send(GetSessionRef(), sendBuffer);
-	
+	if (GCinstance->Get_bIsDevMode() == true)
+	{
+		GCinstance->GetManager<NetworkManager>()->Send_CS_LOGIN("dev", "1234", [](){});
+	}
+	else
+	{
+		// 직접 로그인 시도...
+
+	}
+
 	
 	StartRecv();
 }

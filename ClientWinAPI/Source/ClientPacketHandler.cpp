@@ -3,6 +3,7 @@
 #include "ClientPacketHandler.h"
 #include "Protocol.pb.h"
 
+#include "NetworkManager.h"
 #include "SessionManager.h"
 #include "UserManager.h"
 #include "User.h"
@@ -26,17 +27,12 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
     if (pkt.success() == true)
     {
         UserRef user = std::make_shared<User>();
-        user->SetUserID(pkt.userid());
-
-        Protocol::hyps_user_info myInfo;
-        std::string my_name = session->Get_socketName() + std::to_string(pkt.userid());
-        myInfo.set_name(my_name);
-        myInfo.set_id(pkt.userid());
-        user->Set_user_info(myInfo);
+        user->Set_user_info(pkt.user_info());
         user->Set_ownerSession(session);
 
         GCinstance->GetManager<UserManager>()->AddClientSession(user);
 
+        GCinstance->GetManager<NetworkManager>()->CallnetworkCB(HyPacketID::PKE_SC_LOGIN);
         DLOG_V("SC_LOGIN:: login success user id-", user->GetUserID());
 
         session->SetSessionStatus(E_SESSION_STATUS::E_LOGIN_STATUS);
@@ -54,8 +50,9 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
     }
     else
     {
-        // retry
+        DLOG("SC_LOGIN false!!!");
     }
+
     return true;
 }
 

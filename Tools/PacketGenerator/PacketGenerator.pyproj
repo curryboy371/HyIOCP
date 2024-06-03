@@ -31,7 +31,6 @@
     <Folder Include="Templates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Bat\GeneratorSet.bat" />
     <Content Include="Proto\Enum.proto" />
     <Content Include="Proto\Protocol.proto" />
     <Content Include="Proto\Struct.proto" />

@@ -32,6 +32,11 @@ protected:
 public:
 	GETTER(RoomRef, room);
 
+	GETTER(bool, bIsDevMode)
+	SETTER(bool, bIsDevMode)
+
 private:
 	RoomRef room;
+
+	bool bIsDevMode;
 };

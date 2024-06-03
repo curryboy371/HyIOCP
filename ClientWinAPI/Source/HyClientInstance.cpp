@@ -3,13 +3,14 @@
 
 #include "UserManager.h"
 #include "SessionManager.h"
+#include "NetworkManager.h"
 #include "Room.h"
 
 
 HyClientInstanceRef GCinstance;
 
 HyClientInstance::HyClientInstance()
-	:HyInstance(E_CORE_CONNECT::E_CONNECT_CLIENT)
+	:HyInstance(E_CORE_CONNECT::E_CONNECT_CLIENT), bIsDevMode(true)
 {
 	LOG_FUNC;
 
@@ -72,6 +73,7 @@ void HyClientInstance::InitManager()
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<UserManager>()));
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<Client::SessionManager>()));
 	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<TimeManager>()));
+	managers.push_back(std::static_pointer_cast<BaseManager>(std::make_shared<NetworkManager>()));
 
 	for (auto& manager : managers)
 	{

@@ -12,14 +12,15 @@ import "Struct.proto";
 
 message CS_LOGIN
 {
-	string user_name = 1;
-	string passwd = 2;
+	bool bIsDevLogin = 1;
+	string user_name = 2;
+	string passwd = 3;
 }
 
 message SC_LOGIN
 {
 	bool success = 1;
-	uint64 userId = 2;
+	hyps_user_info user_info = 3;
 }
 
 message CS_ENTER_ROOM
