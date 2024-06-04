@@ -8,19 +8,22 @@ enum HyPacketID : uint16
 {
 	PKE_CS_LOGIN = 1000,
 	PKE_SC_LOGIN = 1001,
-	PKE_CS_ENTER_ROOM = 1002,
-	PKE_SC_ENTER_ROOM = 1003,
-	PKE_SC_ENTER_ROOM_OTHERS = 1004,
-	PKE_CS_CHAT = 1005,
-	PKE_SC_CHAT = 1006,
-	PKE_BC_GL_CHAT = 1007,
-	PKE_CS_ECHO = 1008,
-	PKE_BC_GL_ECHO = 1009,
+	PKE_CS_REGIST = 1002,
+	PKE_SC_REGIST = 1003,
+	PKE_CS_ENTER_ROOM = 1004,
+	PKE_SC_ENTER_ROOM = 1005,
+	PKE_SC_ENTER_ROOM_OTHERS = 1006,
+	PKE_CS_CHAT = 1007,
+	PKE_SC_CHAT = 1008,
+	PKE_BC_GL_CHAT = 1009,
+	PKE_CS_ECHO = 1010,
+	PKE_BC_GL_ECHO = 1011,
 };
 
 // Custom Handlers
 bool INVALID_PACKET(HySessionRef& session, BYTE* buffer, int32 len);
 bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt);
+bool CS_REGIST(HySessionRef& session, Protocol::CS_REGIST& pkt);
 bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt);
 bool CS_CHAT(HySessionRef& session, Protocol::CS_CHAT& pkt);
 bool CS_ECHO(HySessionRef& session, Protocol::CS_ECHO& pkt);
@@ -35,6 +38,7 @@ public:
 			GPacketHandler[i] = INVALID_PACKET;
 		}
 		GPacketHandler[PKE_CS_LOGIN] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_LOGIN > (CS_LOGIN, "CS_LOGIN", static_cast<uint16>(PKE_CS_LOGIN), session, buffer, len); };
+		GPacketHandler[PKE_CS_REGIST] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_REGIST > (CS_REGIST, "CS_REGIST", static_cast<uint16>(PKE_CS_REGIST), session, buffer, len); };
 		GPacketHandler[PKE_CS_ENTER_ROOM] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_ENTER_ROOM > (CS_ENTER_ROOM, "CS_ENTER_ROOM", static_cast<uint16>(PKE_CS_ENTER_ROOM), session, buffer, len); };
 		GPacketHandler[PKE_CS_CHAT] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_CHAT > (CS_CHAT, "CS_CHAT", static_cast<uint16>(PKE_CS_CHAT), session, buffer, len); };
 		GPacketHandler[PKE_CS_ECHO] = [](HySessionRef& session, BYTE* buffer, int32 len) { return HandlePacket < Protocol::CS_ECHO > (CS_ECHO, "CS_ECHO", static_cast<uint16>(PKE_CS_ECHO), session, buffer, len); };
@@ -46,6 +50,7 @@ public:
 		return GPacketHandler[header->id](session, buffer, len);
 	}
 	static SendBufferRef MakeSendBuffer(Protocol::SC_LOGIN& pkt) { return MakeSendBuffer(pkt, PKE_SC_LOGIN); }
+	static SendBufferRef MakeSendBuffer(Protocol::SC_REGIST& pkt) { return MakeSendBuffer(pkt, PKE_SC_REGIST); }
 	static SendBufferRef MakeSendBuffer(Protocol::SC_ENTER_ROOM& pkt) { return MakeSendBuffer(pkt, PKE_SC_ENTER_ROOM); }
 	static SendBufferRef MakeSendBuffer(Protocol::SC_ENTER_ROOM_OTHERS& pkt) { return MakeSendBuffer(pkt, PKE_SC_ENTER_ROOM_OTHERS); }
 	static SendBufferRef MakeSendBuffer(Protocol::SC_CHAT& pkt) { return MakeSendBuffer(pkt, PKE_SC_CHAT); }

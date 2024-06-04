@@ -94,9 +94,10 @@ UserRef UserManager::GetUser(const int64& userKey)
 
     return nullptr;
 }
-UserRef UserManager::GetMyUser()
+
+UserRef UserManager::GetMyUser(const int64& userKey/* = 0*/)
 {
-    return myUsers[0];
+    return myUsers[userKey];
 }
 
 bool UserManager::GetMyUsers(std::vector<UserRef>& OutUsers)

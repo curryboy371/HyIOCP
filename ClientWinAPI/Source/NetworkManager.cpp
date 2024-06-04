@@ -15,15 +15,14 @@ void NetworkManager::InitManager()
 
 void NetworkManager::ReleaseManager()
 {
-	sessionRef.reset();
 }
 
-void NetworkManager::CallnetworkCB(HyPacketID packetID)
+void NetworkManager::CallnetworkCB(HyPacketID packetID, int32 result)
 {
-	networkCallBackMap[packetID]();
+	networkCallBackMap[packetID](result);
 }
 
-void NetworkManager::Send_CS_LOGIN(std::string use_id, std::string use_pw, std::function<void()> cb)
+void NetworkManager::Send_CS_LOGIN(HySessionRef sessionRef, std::string use_id, std::string use_pw, std::function<void(int32)> cb)
 {
 	Protocol::CS_LOGIN loginPkt;
 	std::string userName = use_id;
@@ -40,6 +39,18 @@ void NetworkManager::Send_CS_LOGIN(std::string use_id, std::string use_pw, std::
 	}
 	else
 	{
-		networkCallBackMap.emplace(HyPacketID::PKE_SC_LOGIN, []() {});
+		networkCallBackMap.emplace(HyPacketID::PKE_SC_LOGIN, [](int32 result) {});
 	}
+}
+
+void NetworkManager::Send_CS_REGIST(HySessionRef sessionRef, std::string use_id, std::string use_pw, std::function<void(int32)> cb)
+{
+	Protocol::CS_REGIST registPkt;
+	std::string userName = use_id;
+	registPkt.set_user_name(userName);
+	registPkt.set_passwd(use_pw);
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(registPkt);
+	GCinstance->Get_IocpRef()->Send(sessionRef, sendBuffer);
+
+	networkCallBackMap.emplace(HyPacketID::PKE_SC_REGIST, cb);
 }

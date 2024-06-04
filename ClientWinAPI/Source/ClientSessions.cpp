@@ -16,17 +16,15 @@ void ServerSession::OnPostConnect()
 	// 연결상태 전환
 	SetSessionStatus(E_SESSION_STATUS::E_CONNECT_STATUS);
 
-	// 네트워크 매니저에 세션 세팅
-	GCinstance->GetManager<NetworkManager>()->Set_sessionRef(GetSessionRef());
-
 	// 로그인 시도
 	if (GCinstance->Get_bIsDevMode() == true)
 	{
-		GCinstance->GetManager<NetworkManager>()->Send_CS_LOGIN("dev", "1234", [](){});
+		GCinstance->GetManager<NetworkManager>()->Send_CS_LOGIN(shared_from_this(), "", "", [](int32 result){});
 	}
 	else
 	{
 		// 직접 로그인 시도...
+		GCinstance->GetManager<NetworkManager>()->Set_mySession(shared_from_this());
 
 	}
 

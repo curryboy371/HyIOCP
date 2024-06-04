@@ -47,6 +47,9 @@ LRESULT CALLBACK MainDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
         int wmId = LOWORD(wParam);
         if (wmId == IDC_MAIN_BUTTON_LOGIN)
         {
+
+            HySessionRef mySession = GCinstance->GetManager<NetworkManager>()->Get_mySession();
+
             // 텍스트 받아서
             TCHAR username[256];
             TCHAR password[256];
@@ -57,13 +60,21 @@ LRESULT CALLBACK MainDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
             std::string passwd = ConvertUTF8(password);
 
             // cb
-            std::function<void()> cbFund = [hDlg]() {
+            std::function<void(int32)> cbFund = [hDlg](int32 result) {
                 // 성공 시 채팅 창으로 이동
-                EndDialog(hDlg, IDOK);
+                if (result == 0)
+                {
+                    MessageBox(hDlg, L"로그인 성공", L"알림", MB_OK);
+                    EndDialog(hDlg, IDOK);
+                }
+                else
+                {
+                    MessageBox(hDlg, L"로그인 실패", L"알림", MB_OK);
+                }
             };
 
             // 로그인 체크
-            GCinstance->GetManager<NetworkManager>()->Send_CS_LOGIN(name, passwd, cbFund);
+            GCinstance->GetManager<NetworkManager>()->Send_CS_LOGIN(mySession, name, passwd, cbFund);
 
             // 로그인 성공시 
             // 입력 창에 포커스 설정
@@ -71,8 +82,30 @@ LRESULT CALLBACK MainDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
         }
         else if (wmId == IDC_MAIN_BUTTON_REGISTER)
         {
-            // 회원가입 처리 로직
-            MessageBox(hDlg, L"Register clicked", L"Info", MB_OK);
+            HySessionRef mySession = GCinstance->GetManager<NetworkManager>()->Get_mySession();
+
+            // 텍스트 받아서
+            TCHAR username[256];
+            TCHAR password[256];
+            GetDlgItemText(hDlg, IDC_MAIN_EDIT_USERNAME, username, 256);
+            GetDlgItemText(hDlg, IDC_MAIN_EDIT_PASSWORD, password, 256);
+            std::string name = ConvertUTF8(username);
+            std::string passwd = ConvertUTF8(password);
+
+            // cb
+            std::function<void(int32)> cbFund = [hDlg](int32 result) {
+                // 성공 시 
+                if (result == 0)
+                {
+                    MessageBox(hDlg, L"회원가입 완료", L"알림", MB_OK);
+                }
+                else
+                {
+                    MessageBox(hDlg, L"회원가입 실패", L"알림", MB_OK);
+                }
+            };
+
+            GCinstance->GetManager<NetworkManager>()->Send_CS_REGIST(mySession, name, passwd, cbFund);
         }
     }
     break;
@@ -214,39 +247,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         );
     }
 
-    // 로그인 대화 상자를 표시합니다.
-    if (DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG_MAIN), NULL, MainDlgProc) == IDOK)
+    if (instance->Get_bIsDevMode())
     {
         // 애플리케이션 초기화를 수행합니다:
         if (!InitInstance(hInstance, nCmdShow))
         {
             return FALSE;
         }
-
-
-        // lamda...
-        Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
-            {
-                while (true)
-                {
-                    //if (bvDebug)
-                    {
-                        std::this_thread::sleep_for(std::chrono::seconds(15));
-
-                        Protocol::CS_ECHO echoptk;
-                        std::string time = TimeManager::GetCurrentTimeAsString();
-                        echoptk.set_msg("CS_ECHO... " + time);
-                        auto sendBuffer = ClientPacketHandler::MakeSendBuffer(echoptk);
-
-                        GCinstance->Get_room()->DoAsync([=] { GCinstance->Get_room()->Broadcast(sendBuffer); });
-                    }
-
-                }
-
-            }
-        );
-
-
 
         HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENTWINAPI));
         MSG msg;
@@ -260,12 +267,63 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
-
-        Ginstance->Get_threadMgr()->JoinThreads();
-        instance->ReleaseInstance();
-
-        return (int)msg.wParam;
     }
+    else
+    {
+
+        // 로그인 대화 상자를 표시합니다.
+        if (DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG_MAIN), NULL, MainDlgProc) == IDOK)
+        {
+            // 애플리케이션 초기화를 수행합니다:
+            if (!InitInstance(hInstance, nCmdShow))
+            {
+                return FALSE;
+            }
+
+            // lamda...
+            Ginstance->Get_threadMgr()->LaunchThread([&iocpRef]()
+                {
+                    while (true)
+                    {
+                        //if (bvDebug)
+                        {
+                            std::this_thread::sleep_for(std::chrono::seconds(15));
+
+                            Protocol::CS_ECHO echoptk;
+                            std::string time = TimeManager::GetCurrentTimeAsString();
+                            echoptk.set_msg("CS_ECHO... " + time);
+                            auto sendBuffer = ClientPacketHandler::MakeSendBuffer(echoptk);
+
+                            GCinstance->Get_room()->DoAsync([=] { GCinstance->Get_room()->Broadcast(sendBuffer); });
+                        }
+
+                    }
+
+                }
+            );
+
+
+
+            HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENTWINAPI));
+            MSG msg;
+
+            // 기본 메시지 루프입니다:
+            while (GetMessage(&msg, nullptr, 0, 0))
+            {
+                if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+                {
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
+                }
+            }
+
+
+            return (int)msg.wParam;
+        }
+    }
+
+    Ginstance->Get_threadMgr()->JoinThreads();
+    instance->ReleaseInstance();
 
     return 0;
    // return (int)msg.wParam;

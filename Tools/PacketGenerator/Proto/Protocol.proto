@@ -23,6 +23,19 @@ message SC_LOGIN
 	hyps_user_info user_info = 3;
 }
 
+message CS_REGIST
+{
+	string user_name = 1;
+	string passwd = 2;
+}
+
+message SC_REGIST
+{
+	bool success = 1;
+	string user_name = 2;
+}
+
+
 message CS_ENTER_ROOM
 {
 	string room_name = 1;

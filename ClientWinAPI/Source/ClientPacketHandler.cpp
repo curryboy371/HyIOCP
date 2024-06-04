@@ -30,10 +30,11 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
         user->Set_user_info(pkt.user_info());
         user->Set_ownerSession(session);
 
+        
         GCinstance->GetManager<UserManager>()->AddClientSession(user);
 
-        GCinstance->GetManager<NetworkManager>()->CallnetworkCB(HyPacketID::PKE_SC_LOGIN);
-        DLOG_V("SC_LOGIN:: login success user id-", user->GetUserID());
+        GCinstance->GetManager<NetworkManager>()->CallnetworkCB(HyPacketID::PKE_SC_LOGIN, 0);
+        DLOG_V("SC_LOGIN:: login success user", user->Get_user_infoRef().name());
 
         session->SetSessionStatus(E_SESSION_STATUS::E_LOGIN_STATUS);
 
@@ -50,9 +51,25 @@ bool SC_LOGIN(HySessionRef& session, Protocol::SC_LOGIN& pkt)
     }
     else
     {
+        GCinstance->GetManager<NetworkManager>()->CallnetworkCB(HyPacketID::PKE_SC_LOGIN, 1);
         DLOG("SC_LOGIN false!!!");
     }
 
+    return true;
+}
+
+bool SC_REGIST(HySessionRef& session, Protocol::SC_REGIST& pkt)
+{
+    if (pkt.success() == true)
+    {
+        GCinstance->GetManager<NetworkManager>()->CallnetworkCB(HyPacketID::PKE_SC_REGIST, 0);
+        DLOG_V("SC_REGIST:: sucess user : ", pkt.user_name());
+    }
+    else
+    {
+        GCinstance->GetManager<NetworkManager>()->CallnetworkCB(HyPacketID::PKE_SC_REGIST, 1);
+        DLOG("SC_REGIST false!!!");
+    }
     return true;
 }
 
@@ -65,7 +82,7 @@ bool SC_ENTER_ROOM(HySessionRef& session, Protocol::SC_ENTER_ROOM& pkt)
         if (bsuccess)
         {
             // 본인 입장
-            UserRef myUser = GCinstance->GetManager<UserManager>()->GetMyUser();
+            UserRef myUser = GCinstance->GetManager<UserManager>()->GetMyUser(session->GetSessionKey());
 
             // 신규 유저 입장 (본인 ) 
             GCinstance->Get_room()->Enter(myUser);

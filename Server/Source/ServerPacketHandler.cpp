@@ -33,7 +33,16 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
         Protocol::hyps_user_info* user_info = new Protocol::hyps_user_info;
 
         user_info->set_id(session->GetSessionKey());
+
         user_info->set_name(pkt.user_name());
+        
+        if (pkt.bisdevlogin())
+        {
+            std::string dev_name = "dev" + std::to_string(session->GetSessionKey());
+            user_info->set_name(dev_name);
+            DLOG_V("DEV_LOGIN", dev_name);
+        }
+
         user_info->set_user_type(Protocol::hype_user::user_normal);
 
         bool bret = Ginstance->GetManager<UserManager>()->AddUser(*user_info, session);
@@ -52,6 +61,24 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
         SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(loginPkt);
         session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
     }
+    return true;
+}
+
+bool CS_REGIST(HySessionRef& session, Protocol::CS_REGIST& pkt)
+{
+    Protocol::SC_REGIST registPkt;
+
+    bool bResult = false;
+    if(GSinstance->GetManager<DBManager>()->UserTableAdd(pkt.user_name(), pkt.passwd()) == 0)
+    {
+        bResult = true;
+        registPkt.set_user_name(pkt.user_name());
+    }
+    registPkt.set_success(bResult); // TODO 체크
+
+    SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(registPkt);
+    session->PreSend(sendBuffer); // TODO 직접호출이라 추후 변경해야함
+
     return true;
 }
 

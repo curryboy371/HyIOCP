@@ -76,6 +76,11 @@ bool SessionManager::OnAddConnectedSession(HySessionRef addSession, const bool b
 
 bool SessionManager::OnLoginSession(HySessionRef sessionRef)
 {
+	if (sessionRef->GetSessionStatus() == E_SESSION_STATUS::E_LOGIN_STATUS)
+	{
+		return true;
+	}
+
 	if (remainSessions.load() > 0)
 	{
 		// TODO 로그인 성공시마다 Lock 잡는거 수정 할 수 있으면 수정필요

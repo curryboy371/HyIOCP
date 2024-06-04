@@ -25,7 +25,7 @@ public:
 
 public:
 	UserRef GetUser(const int64& userKey);
-	UserRef GetMyUser();
+	UserRef GetMyUser(const int64& userKey = 0);
 	bool GetMyUsers(std::vector<UserRef>& OutUsers);
 
 public:
