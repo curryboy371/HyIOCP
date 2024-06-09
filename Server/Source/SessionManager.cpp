@@ -113,6 +113,18 @@ bool SessionManager::OnLoginSession(HySessionRef sessionRef)
 
 }
 
+void SessionManager::BroadCast(SendBufferRef sendBuffer)
+{
+	for (auto session : sessionPool)
+	{
+		if (session.second->IsConnected())
+		{
+			session.second->PreSend(sendBuffer);
+		}
+	}
+
+}
+
 bool SessionManager::OnDisconnectSession(HySessionRef sessionRef)
 {
 	// 서버면 세션을 지우지 않고 연결 해제, 초기화. - 세션 수는 항상 동일하게 유지하도록...

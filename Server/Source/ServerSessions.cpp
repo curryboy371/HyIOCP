@@ -78,7 +78,9 @@ GameSession::~GameSession()
 void GameSession::OnPostAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
 	// GameSession 연결 상태 변경
+
 	SetSessionStatus(E_SESSION_STATUS::E_CONNECT_STATUS);
+
 }
 
 void GameSession::OnPostConnect()

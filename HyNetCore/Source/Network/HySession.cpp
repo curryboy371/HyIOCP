@@ -87,7 +87,7 @@ void HySession::OnRecv(OverlappedEx* overlappedEx)
 
 	int32 dataSize = recvBuffer.DataSize();
 
-	int32 headerSize = sizeof(PacketHeader);
+	int32 headerSize = sizeof(FPacketHeader);
 	int32 processLen = 0;
 
 	BYTE* readByte = recvBuffer.ReadPos();
@@ -101,10 +101,10 @@ void HySession::OnRecv(OverlappedEx* overlappedEx)
 			break;
 		}
 
-		PacketHeader header = *reinterpret_cast<PacketHeader*>(&readByte[processLen]);
+		FPacketHeader header = *reinterpret_cast<FPacketHeader*>(&readByte[processLen]);
 
-		int32 packetSize = header.size;
-		int32 packetID = header.id;
+		int32 packetSize = header.PacketSize;
+		int32 packetID = header.PacketID;
 		if (remainSize < packetSize) // data 파싱 여부
 		{
 			break;

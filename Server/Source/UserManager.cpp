@@ -75,6 +75,15 @@ bool UserManager::RemoveUse(HySessionRef userSession)
     return false;
 }
 
+void UserManager::Broadcast(SendBufferRef sendBuffer)
+{
+    
+    for (auto& pair : userInfoMap)
+    {
+        pair.second->Get_ownerSession()->PreSend(sendBuffer);
+    }
+}
+
 UserRef UserManager::GetUser(const int64& userKey)
 {
     if (Contains(userInfoMap, userKey) == true)

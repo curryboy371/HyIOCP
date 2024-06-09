@@ -22,6 +22,7 @@ public:
 	bool AddUser(const Protocol::hyps_user_info& InuserInfo, HySessionRef userSession);
 	bool RemoveUse(HySessionRef userSession);
 
+	void Broadcast(SendBufferRef sendBuffer);
 public:
 	UserRef GetUser(const int64& userKey);
 

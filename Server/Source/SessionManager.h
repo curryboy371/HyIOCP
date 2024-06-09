@@ -21,6 +21,8 @@ public:
 	virtual bool OnDisconnectSession(HySessionRef sessionRef) override;
 	virtual bool OnLoginSession(HySessionRef sessionRef) override;
 
+
+	void BroadCast(SendBufferRef sendBuffer);
 private:
 	std::shared_ptr<HySession> listenSessionRef = nullptr; // listen session
 	std::unordered_map<int32, HySessionRef> sessionPool; // pool이라기보다는 연결되지 않은 세션들

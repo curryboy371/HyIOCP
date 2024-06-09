@@ -40,9 +40,13 @@ XCOPY /Y /I *.pb.cc "..\..\..\Server\Source\Protocol\"
 XCOPY /Y /I *.pb.h "..\..\..\ClientWinAPI\Source\Protocol\"
 XCOPY /Y /I *.pb.cc "..\..\..\ClientWinAPI\Source\Protocol\"
 
+XCOPY /Y /I *.pb.h "..\..\..\..\..\UnrealProject\Hy\Source\Hy\Public\Network\Protocol\"
+XCOPY /Y /I *.pb.cc "..\..\..\..\..\UnrealProject\Hy\Source\Hy\Public\Network\Protocol\"
+
 pushd %~dp0\Tools\PacketGenerator\Output
 
 XCOPY /Y /I "ClientPacketHandler.h" "..\..\..\ClientWinAPI\Source\"
+XCOPY /Y /I "ClientPacketHandler.h" "..\..\..\..\..\UnrealProject\Hy\Source\Hy\Public\Network\"
 XCOPY /Y /I "ServerPacketHandler.h" "..\..\..\Server\Source\"
 
 

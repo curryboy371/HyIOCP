@@ -17,8 +17,8 @@ PacketHandlerFunc GPacketHandler[UINT16_MAX];
 /* 컨텐츠 수동 작업 */
 bool INVALID_PACKET(HySessionRef& session, BYTE* buffer, int32 len)
 {
-    PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
-    std::cout << "\nINVALID_PACKET:: id " << header->id << std::endl;
+    FPacketHeader* header = reinterpret_cast<FPacketHeader*>(buffer);
+    std::cout << "\nINVALID_PACKET:: id " << header->PacketID << std::endl;
     return false;
 }
 

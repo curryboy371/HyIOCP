@@ -20,7 +20,7 @@ message CS_LOGIN
 message SC_LOGIN
 {
 	bool success = 1;
-	hyps_user_info user_info = 3;
+	repeated hyps_player_info players = 2;
 }
 
 message CS_REGIST
@@ -35,6 +35,16 @@ message SC_REGIST
 	string user_name = 2;
 }
 
+message CS_ENTER_GAME
+{
+	uint64 player_id = 1;
+}
+
+message SC_ENTER_GAME
+{
+	bool success = 1;
+	hyps_player_info my_player = 2;
+}
 
 message CS_ENTER_ROOM
 {
@@ -54,6 +64,8 @@ message SC_ENTER_ROOM_OTHERS
 	repeated hyps_user_info users = 2;
 }
 
+
+// LEAVE spawn 
 
 message CS_CHAT
 {

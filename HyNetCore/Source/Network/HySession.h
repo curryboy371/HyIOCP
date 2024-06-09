@@ -2,10 +2,10 @@
 
 struct OverlappedEx;
 
-struct PacketHeader
+struct FPacketHeader
 {
-	uint16 size;
-	uint16 id;
+	uint16 PacketSize;
+	uint16 PacketID;
 };
 
 class HySession : public std::enable_shared_from_this<HySession>
