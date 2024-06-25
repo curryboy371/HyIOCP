@@ -87,6 +87,9 @@
     <ClCompile Include="Source\Manager\TimeManager.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Common\Header\HyMacro.cpp">
+      <Filter>Source\Common\Header</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\Header\HyType.h">

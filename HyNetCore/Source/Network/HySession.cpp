@@ -51,7 +51,6 @@ void HySession::CloseSocket()
 
 void HySession::OnAccept(OverlappedEx* overlappedEx, std::shared_ptr<HySession> sessionRef)
 {
-	LOG_FUNC;
 	OnPostAccept(overlappedEx, sessionRef);
 }
 
@@ -338,7 +337,7 @@ bool HySession::StartRecv()
 		int errCode = ::WSAGetLastError();
 		if (errCode != WSA_IO_PENDING)
 		{
-			ELOG_V("WSARecv", errCode);
+			ERR_V("WSARecv %d", errCode);
 			GetOverlappedRef(E_IO_TYPE::E_IO_RECV).ResetOwner();
 			return false;
 		}
@@ -363,7 +362,7 @@ OverlappedEx& HySession::GetOverlappedRef(E_IO_TYPE intype)
 	else
 	{
 		// error
-		ELOG_V("GetOverlappedRef Invalid E_IO_TYPE value", static_cast<int32>(intype));
+		ERR_V("GetOverlappedRef Invalid E_IO_TYPE value %d", static_cast<int32>(intype));
 		static OverlappedEx defOverlapped;
 		return defOverlapped;
 	}

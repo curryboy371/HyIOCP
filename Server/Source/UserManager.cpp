@@ -75,12 +75,41 @@ bool UserManager::RemoveUse(HySessionRef userSession)
     return false;
 }
 
+bool UserManager::AddPlayerInfo(const int64& InUserID, const Protocol::hyps_object_info& InPlayerInfo)
+{
+    if (InUserID <= INVALID_UID)
+    {
+        return false;
+    }
+
+    if (Contains(userInfoMap, InUserID) == false)
+    {
+        return false;
+    }
+
+    if (userInfoMap[InUserID])
+    {
+        userInfoMap[InUserID]->Set_player_info(InPlayerInfo);
+    }
+    return true;
+}
+
 void UserManager::Broadcast(SendBufferRef sendBuffer)
 {
-    
     for (auto& pair : userInfoMap)
     {
         pair.second->Get_ownerSession()->PreSend(sendBuffer);
+    }
+}
+
+void UserManager::Broadcast(SendBufferRef sendBuffer, const int64& Inexcept_id)
+{
+    for (auto& pair : userInfoMap)
+    {
+        if (pair.first != Inexcept_id)
+        {
+            pair.second->Get_ownerSession()->PreSend(sendBuffer);
+        }
     }
 }
 

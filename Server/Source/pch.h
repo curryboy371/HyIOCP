@@ -2,6 +2,8 @@
 
 #include "Netpch.h"
 
+#include "HyUtils.h"
+
 #include "ServerSessions.h"
 #include "ServerPacketHandler.h"
 
@@ -9,6 +11,7 @@
 
 #include "UserManager.h"
 
+#include "Protocol.pb.h"
 
 // db
 #include <mysql/jdbc.h>

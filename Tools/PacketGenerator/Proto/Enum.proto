@@ -9,3 +9,11 @@ enum hype_user
 	user_master = 1;
 	user_normal = 2;
 }
+
+enum hype_object_type
+{
+	none = 0;
+	creature = 1;
+	projectile = 2;
+	env = 3;
+}

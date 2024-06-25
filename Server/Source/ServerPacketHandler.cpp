@@ -40,10 +40,13 @@ bool CS_LOGIN(HySessionRef& session, Protocol::CS_LOGIN& pkt)
         {
             std::string dev_name = "dev" + std::to_string(session->GetSessionKey());
             user_info->set_name(dev_name);
-            DLOG_V("DEV_LOGIN", dev_name);
+            user_info->set_user_type(Protocol::hype_user::user_master);
+            LOG_V("DEV_LOGIN %s", dev_name);
         }
-
-        user_info->set_user_type(Protocol::hype_user::user_normal);
+        else
+        {
+            user_info->set_user_type(Protocol::hype_user::user_normal);
+        }
 
         bool bret = Ginstance->GetManager<UserManager>()->AddUser(*user_info, session);
 
@@ -82,6 +85,139 @@ bool CS_REGIST(HySessionRef& session, Protocol::CS_REGIST& pkt)
     return true;
 }
 
+bool CS_ENTER_GAME(HySessionRef& session, Protocol::CS_ENTER_GAME& pkt)
+{
+
+    // 신규 유저 정보 세팅
+    int64 player_id = pkt.player_id();
+    float x = HyUtils::GetRandom(0.f, 100.f);
+    float y = HyUtils::GetRandom(0.f, 100.f);
+    float yaw = HyUtils::GetRandom(-360.f, 360.f);
+
+    // 신규유저 구조체 세팅
+    Protocol::hyps_pos_info pos_info;
+    pos_info.set_object_id(player_id);
+    pos_info.set_x(x);
+    pos_info.set_y(y);
+    pos_info.set_z(0);
+    pos_info.set_yaw(yaw);
+
+    UserManagerRef userManager = Ginstance->GetManager<UserManager>();
+
+    if (userManager == nullptr)
+    {
+        return false;
+    }
+
+    // 신규 유저에게 자신의 정보 + 기존 유저 정보 전달
+    {
+        Protocol::SC_SPAWN spawnPkt;
+
+        // 새로운 유저의 정보를 설정
+        Protocol::hyps_object_info* newPlayerObjectInfo = spawnPkt.add_players();
+        newPlayerObjectInfo->set_object_id(player_id);
+        newPlayerObjectInfo->set_object_type(Protocol::hype_object_type::creature);
+        *(newPlayerObjectInfo->mutable_pos_info()) = pos_info;
+
+        if (userManager->AddPlayerInfo(player_id, *newPlayerObjectInfo))
+        {
+            // 새로운 유저에게는 기존 유저 정보를.
+            const std::unordered_map<int64, UserRef>& AllUsers = userManager->GetAllUsers();
+            for (const auto& userPair : AllUsers)
+            {
+                if (userPair.second)
+                {
+                    if (player_id != userPair.first)
+                    {
+                        const Protocol::hyps_object_info& existingPlayerInfo = userPair.second->Get_player_infoRef();
+
+                        Protocol::hyps_object_info* existingPlayerObjectInfo = spawnPkt.add_players();
+                        existingPlayerObjectInfo->set_object_id(existingPlayerInfo.object_id());
+                        existingPlayerObjectInfo->set_object_type(existingPlayerInfo.object_type());
+                        *(existingPlayerObjectInfo->mutable_pos_info()) = existingPlayerInfo.pos_info();
+                    }
+
+                }
+            }
+            SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
+            session->PreSend(sendBuffer);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // 기존 유저에게 신규유저 생성정보 전달
+    {
+        Protocol::BC_SPAWN bc_spawnPkt;
+        Protocol::hyps_object_info* broadcastNewPlayerInfo = bc_spawnPkt.add_players();
+        broadcastNewPlayerInfo->set_object_id(player_id);
+        broadcastNewPlayerInfo->set_object_type(Protocol::hype_object_type::creature);
+        *(broadcastNewPlayerInfo->mutable_pos_info()) = pos_info;
+
+        SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(bc_spawnPkt);
+        userManager->Broadcast(sendBuffer, player_id);
+    }
+
+    return true;
+}
+
+bool CS_LEAVE_GAME(HySessionRef& session, Protocol::CS_LEAVE_GAME& pkt)
+{
+    UserManagerRef userManager = Ginstance->GetManager<UserManager>();
+
+    if (userManager == nullptr)
+    {
+        return false;
+    }
+
+    int64 sessionKey = session->GetSessionKey();
+    UserRef User = userManager->GetUser(sessionKey);
+
+    if (User == nullptr)
+    {
+        return false;
+    }
+
+
+    int64 obj_id = User->Get_player_infoRef().object_id();
+    userManager->RemoveUse(session);
+
+    Protocol::SC_LEAVE_GAME LeavePkt;
+    SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(LeavePkt);
+    session->PreSend(sendBuffer);
+
+    Protocol::BC_DESPAWN despawnPkt;
+    despawnPkt.add_object_ids(obj_id);
+
+    sendBuffer = ServerPacketHandler::MakeSendBuffer(despawnPkt);
+    userManager->Broadcast(sendBuffer);
+
+    return true;
+}
+
+bool CS_MOVE_OBJECT(HySessionRef& session, Protocol::CS_MOVE_OBJECT& pkt)
+{
+    UserManagerRef userManager = Ginstance->GetManager<UserManager>();
+    if (userManager == nullptr)
+    {
+        return false;
+    }
+
+    Protocol::SC_MOVE_OBJECT moveObjPkt;
+
+    Protocol::hyps_object_info obj_info = pkt.move_info();
+    // TODO 검증 Check
+    
+    *(moveObjPkt.mutable_move_info()) = obj_info;
+
+    SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(moveObjPkt);
+    userManager->Broadcast(sendBuffer);
+
+    return true;
+}
+
 bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
 {
     Protocol::SC_ENTER_ROOM enterPkt;
@@ -91,7 +227,7 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
         if (UserRef user = GSinstance->GetManager<UserManager>()->GetUser(pkt.userid()))
         {
             // 기존유저에 입장알림.
-            Protocol::SC_ENTER_ROOM_OTHERS othersPkt;
+            Protocol::BC_ENTER_ROOM_OTHERS othersPkt;
             Protocol::hyps_user_info* user_info = othersPkt.add_users();
             *user_info = user->Get_user_infoRef();
             othersPkt.set_success(true);
@@ -125,7 +261,7 @@ bool CS_ENTER_ROOM(HySessionRef& session, Protocol::CS_ENTER_ROOM& pkt)
 
 bool CS_CHAT(HySessionRef& session, Protocol::CS_CHAT& pkt)
 {
-    PRINT_V("CS_CHAT", pkt.msg());
+    LOG_V("CS_CHAT %s", pkt.msg());
 
     // 노티
     // TODO broadcast할때.. sendhande을 좀 더 간편하게 이용하도록..
@@ -155,7 +291,7 @@ bool CS_ECHO(HySessionRef& session, Protocol::CS_ECHO& pkt)
     if (User)
     {
         std::string userName = __FUNCTION__  + User->Get_user_infoRef().name();
-        PRINT_V(userName, pkt.msg());
+        LOG_V("%s, %s", userName, pkt.msg());
         chatPkt.set_msg(userName + " : " + GSinstance->GetManager<TimeManager>()->GetCurrentTimeAsString());
         auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
         GSinstance->Get_room()->DoAsync([=] { GSinstance->Get_room()->Broadcast(sendBuffer); });

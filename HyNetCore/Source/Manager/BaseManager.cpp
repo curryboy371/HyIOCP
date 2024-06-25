@@ -3,10 +3,8 @@
 
 BaseManager::BaseManager()
 {
-	LOG_FUNC;
 }
 
 BaseManager::~BaseManager()
 {
-	LOG_FUNC;
 }

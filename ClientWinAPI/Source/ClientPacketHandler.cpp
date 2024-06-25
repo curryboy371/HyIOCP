@@ -108,7 +108,7 @@ bool SC_ENTER_ROOM(HySessionRef& session, Protocol::SC_ENTER_ROOM& pkt)
     return true;
 }
 
-bool SC_ENTER_ROOM_OTHERS(HySessionRef& session, Protocol::SC_ENTER_ROOM_OTHERS& pkt)
+bool BC_ENTER_ROOM_OTHERS(HySessionRef& session, Protocol::BC_ENTER_ROOM_OTHERS& pkt)
 {
     if (session)
     {

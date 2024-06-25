@@ -64,7 +64,7 @@ private:
 	#if UE_BUILD_SHIPPING > 0
 
 	#else
-			FString strPacketID = FString::Printf(TEXT("(%d)"), packet_id);
+			FString strPacketID = FString::Printf(TEXT("[PacketID(%d)]"), packet_id);
 			LOG_GUARD_STR(strPacketID);
 	#endif
 			bool bret = func(session, pkt);
@@ -96,7 +96,7 @@ private:
 		FPacketHeader* header = reinterpret_cast<FPacketHeader*>(sendBuffer->Buffer());
 		header->PacketSize = packetSize;
 		header->PacketID = pktId;
-		//ASSERT_CRASH(pkt.SerializeToArray(&header[1], dataSize));
+		pkt.SerializeToArray(&header[1], dataSize);
 		sendBuffer->Close(packetSize);
 
 		return sendBuffer;

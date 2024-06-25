@@ -27,6 +27,20 @@ void Room::Broadcast(SendBufferRef sendBuffer)
 	}
 }
 
+void Room::Broadcast(SendBufferRef sendBuffer, const int64& except_id)
+{
+	for (auto& user : users)
+	{
+		if (except_id == user.second->GetUserID())
+		{
+			continue;
+		}
+
+		user.second->Get_ownerSession()->PreSend(sendBuffer);
+	}
+}
+
+
 void Room::SetUserList(std::vector<UserRef>& Outusers)
 {
 	Outusers.reserve(static_cast<int32>(users.size()));

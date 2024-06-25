@@ -11,6 +11,7 @@ public:
 	void Enter(UserRef user);
 	void Leave(UserRef user);
 	void Broadcast(SendBufferRef sendBuffer);
+	void Broadcast(SendBufferRef sendBuffer, const int64& except_id);
 
 	void SetUserList(std::vector<UserRef>& Outusers);
 

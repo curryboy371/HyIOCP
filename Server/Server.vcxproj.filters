@@ -25,6 +25,9 @@
     <Filter Include="Source\DB">
       <UniqueIdentifier>{495357ff-1899-4292-920f-a2e4764c961a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{75b11a6b-e098-4160-99b0-b2e7df9b5862}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Protocol\Struct.pb.cc">
@@ -66,6 +69,15 @@
     <ClCompile Include="Source\DBManager.cpp">
       <Filter>Source\DB</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SpawnManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HyUtils.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Source\Contents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Protocol\Protocol.pb.h">
@@ -103,6 +115,15 @@
     </ClInclude>
     <ClInclude Include="Source\DBManager.h">
       <Filter>Source\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpawnManager.h">
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HyUtils.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Source\Contents</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

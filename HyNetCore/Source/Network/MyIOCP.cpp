@@ -231,6 +231,7 @@ bool IOCPServer::MakeClientSession()
 		// 이부분은 메인 스레드가 최초 실행시에만 담당하므로 lock을 걸지 않음.
 		std::shared_ptr<HySession> clientSessionRef = CreateSession();
 		clientSessionRef->Set_socketName("ClientSocket" + std::to_string(i));
+		//clientSessionRef->SetSessioKey(i);
 		Accept(clientSessionRef);
 	}
 
@@ -282,7 +283,7 @@ void IOCPServer::Accept(std::shared_ptr<HySession> sessionRef, const bool bRetry
 	}
 	else 
 	{
-		ELOG("Accept");
+		ERR_V("Accept");
 	}
 
 

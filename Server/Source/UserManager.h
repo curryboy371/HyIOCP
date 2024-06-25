@@ -2,8 +2,6 @@
 
 #include "BaseManager.h"
 
-#include "Protocol.pb.h"
-
 class User;
 
 class UserManager : public BaseManager
@@ -22,9 +20,19 @@ public:
 	bool AddUser(const Protocol::hyps_user_info& InuserInfo, HySessionRef userSession);
 	bool RemoveUse(HySessionRef userSession);
 
+	bool AddPlayerInfo(const int64& InUserID, const Protocol::hyps_object_info& InPlayerInfo);
+
 	void Broadcast(SendBufferRef sendBuffer);
+	void Broadcast(SendBufferRef sendBuffer, const int64& Inexcept_id);
+
+public:
+
+
 public:
 	UserRef GetUser(const int64& userKey);
+
+	const std::unordered_map<int64, UserRef>& GetAllUsers() { return userInfoMap; }
+
 
 private:
 	std::unordered_map<int64, UserRef> userInfoMap;

@@ -51,9 +51,9 @@ int main()
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 
 			Protocol::SC_CHAT chatPkt;
-			chatPkt.set_msg(u8"broadcst : ");
+			//chatPkt.set_msg(u8"broadcst : ");
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
-			GSinstance->GetManager<SessionManager>()->BroadCast(sendBuffer);
+			//GSinstance->GetManager<SessionManager>()->BroadCast(sendBuffer);
 		}
 
 		Ginstance->Get_threadMgr()->JoinThreads();

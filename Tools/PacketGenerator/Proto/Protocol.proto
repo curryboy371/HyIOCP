@@ -10,6 +10,7 @@ import "Struct.proto";
 //		BC_GL_ - BroadCast_Global : 전체유저 call
 //		BC_		- BroadCast		  : 특정 그룹에서 braodcast
 
+//login
 message CS_LOGIN
 {
 	bool bIsDevLogin = 1;
@@ -20,9 +21,11 @@ message CS_LOGIN
 message SC_LOGIN
 {
 	bool success = 1;
-	repeated hyps_player_info players = 2;
+	hyps_user_info user_info = 2;
+	repeated hyps_pos_info players = 3;
 }
 
+// join
 message CS_REGIST
 {
 	string user_name = 1;
@@ -35,17 +38,7 @@ message SC_REGIST
 	string user_name = 2;
 }
 
-message CS_ENTER_GAME
-{
-	uint64 player_id = 1;
-}
-
-message SC_ENTER_GAME
-{
-	bool success = 1;
-	hyps_player_info my_player = 2;
-}
-
+// enter room
 message CS_ENTER_ROOM
 {
 	string room_name = 1;
@@ -58,14 +51,68 @@ message SC_ENTER_ROOM
 	repeated hyps_user_info users = 2;
 }
 
-message SC_ENTER_ROOM_OTHERS
+message BC_ENTER_ROOM_OTHERS
 {
 	bool success = 1;
 	repeated hyps_user_info users = 2;
 }
 
+// enter game
+message CS_ENTER_GAME
+{
+	uint64 player_id = 1;
+}
 
-// LEAVE spawn 
+message SC_ENTER_GAME
+{
+	bool success = 1;
+	hyps_pos_info my_player = 2;
+}
+
+message CS_LEAVE_GAME
+{
+
+}
+
+message SC_LEAVE_GAME
+{
+
+}
+
+message BC_LEAVE_GAME
+{
+
+}
+
+message SC_SPAWN
+{
+	repeated hyps_object_info players = 1;
+}
+
+message BC_SPAWN
+{
+	repeated hyps_object_info players = 1;
+}
+
+message SC_DESPAWN
+{
+	repeated uint64 object_ids = 1;
+}
+
+message BC_DESPAWN
+{
+	repeated uint64 object_ids = 1;
+}
+
+message CS_MOVE_OBJECT
+{
+	hyps_object_info move_info = 1;
+}
+
+message SC_MOVE_OBJECT
+{
+	hyps_object_info move_info = 1;
+}
 
 message CS_CHAT
 {

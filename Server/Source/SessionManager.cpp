@@ -106,7 +106,7 @@ bool SessionManager::OnLoginSession(HySessionRef sessionRef)
 	}
 	else
 	{
-		ELOG("remain session zero");
+		ERR_V("remain session zero");
 	}
 
 	return false;

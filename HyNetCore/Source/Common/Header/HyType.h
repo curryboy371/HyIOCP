@@ -82,13 +82,15 @@ USING_SHARED_PTR(BaseManager)
 
 /* Common */
 USING_SHARED_PTR(User)
+USING_SHARED_PTR(Player)
 USING_SHARED_PTR(Room)
-USING_SHARED_PTR(GameSession)
 USING_SHARED_PTR(UserManager)
 USING_SHARED_PTR(SessionManager)
+USING_SHARED_PTR(SpawnManager)
 
 /* Client */
 USING_SHARED_PTR(HyClientInstance)
+USING_SHARED_PTR(GameSession)
 
 
 /* Server */

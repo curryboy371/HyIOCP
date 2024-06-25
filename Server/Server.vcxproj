@@ -98,6 +98,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,6 +115,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +132,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,6 +149,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,12 +161,14 @@
   <ItemGroup>
     <ClCompile Include="Source\DBManager.cpp" />
     <ClCompile Include="Source\HyServerInstance.cpp" />
+    <ClCompile Include="Source\HyUtils.cpp" />
     <ClCompile Include="Source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Protocol\Enum.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -186,13 +192,16 @@
     <ClCompile Include="Source\ServerPacketHandler.cpp" />
     <ClCompile Include="Source\ServerSessions.cpp" />
     <ClCompile Include="Source\SessionManager.cpp" />
+    <ClCompile Include="Source\SpawnManager.cpp" />
     <ClCompile Include="Source\User.cpp" />
     <ClCompile Include="Source\UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DBManager.h" />
     <ClInclude Include="Source\HyServerInstance.h" />
+    <ClInclude Include="Source\HyUtils.h" />
     <ClInclude Include="Source\pch.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Protocol\Enum.pb.h" />
     <ClInclude Include="Source\Protocol\Protocol.pb.h" />
     <ClInclude Include="Source\Protocol\Struct.pb.h" />
@@ -200,6 +209,7 @@
     <ClInclude Include="Source\ServerPacketHandler.h" />
     <ClInclude Include="Source\ServerSessions.h" />
     <ClInclude Include="Source\SessionManager.h" />
+    <ClInclude Include="Source\SpawnManager.h" />
     <ClInclude Include="Source\User.h" />
     <ClInclude Include="Source\UserManager.h" />
   </ItemGroup>
