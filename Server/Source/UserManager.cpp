@@ -90,6 +90,7 @@ bool UserManager::AddPlayerInfo(const int64& InUserID, const Protocol::hyps_obje
     if (userInfoMap[InUserID])
     {
         userInfoMap[InUserID]->Set_player_info(InPlayerInfo);
+        userInfoMap[InUserID]->Set_bHasPlayerInfo(true);
     }
     return true;
 }

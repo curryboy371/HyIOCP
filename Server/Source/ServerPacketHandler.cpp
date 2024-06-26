@@ -89,6 +89,8 @@ bool CS_ENTER_GAME(HySessionRef& session, Protocol::CS_ENTER_GAME& pkt)
 {
 
     // 신규 유저 정보 세팅
+    Protocol::hyps_object_info MyObjectInfo;
+
     int64 player_id = pkt.player_id();
     float x = HyUtils::GetRandom(0.f, 100.f);
     float y = HyUtils::GetRandom(0.f, 100.f);
@@ -102,6 +104,11 @@ bool CS_ENTER_GAME(HySessionRef& session, Protocol::CS_ENTER_GAME& pkt)
     pos_info.set_z(0);
     pos_info.set_yaw(yaw);
 
+    MyObjectInfo.set_object_id(player_id);
+    MyObjectInfo.set_object_type(Protocol::hype_object_type::creature);
+    *(MyObjectInfo.mutable_pos_info()) = pos_info;
+
+
     UserManagerRef userManager = Ginstance->GetManager<UserManager>();
 
     if (userManager == nullptr)
@@ -109,47 +116,37 @@ bool CS_ENTER_GAME(HySessionRef& session, Protocol::CS_ENTER_GAME& pkt)
         return false;
     }
 
-    // 신규 유저에게 자신의 정보 + 기존 유저 정보 전달
+
+
+    // 신규 유저에게 기존 유저 정보 전달
     {
+        //(Before My Player Add)
         Protocol::SC_SPAWN spawnPkt;
 
-        // 새로운 유저의 정보를 설정
-        Protocol::hyps_object_info* newPlayerObjectInfo = spawnPkt.add_players();
-        newPlayerObjectInfo->set_object_id(player_id);
-        newPlayerObjectInfo->set_object_type(Protocol::hype_object_type::creature);
-        *(newPlayerObjectInfo->mutable_pos_info()) = pos_info;
-
-        if (userManager->AddPlayerInfo(player_id, *newPlayerObjectInfo))
+        const std::unordered_map<int64, UserRef>& AllUsers = userManager->GetAllUsers();
+        for (const auto& userPair : AllUsers)
         {
-            // 새로운 유저에게는 기존 유저 정보를.
-            const std::unordered_map<int64, UserRef>& AllUsers = userManager->GetAllUsers();
-            for (const auto& userPair : AllUsers)
+            if (userPair.second && userPair.second->Get_bHasPlayerInfo())
             {
-                if (userPair.second)
+                if (player_id != userPair.first)
                 {
-                    if (player_id != userPair.first)
-                    {
-                        const Protocol::hyps_object_info& existingPlayerInfo = userPair.second->Get_player_infoRef();
+                    const Protocol::hyps_object_info& existingPlayerInfo = userPair.second->Get_player_infoRef();
 
-                        Protocol::hyps_object_info* existingPlayerObjectInfo = spawnPkt.add_players();
-                        existingPlayerObjectInfo->set_object_id(existingPlayerInfo.object_id());
-                        existingPlayerObjectInfo->set_object_type(existingPlayerInfo.object_type());
-                        *(existingPlayerObjectInfo->mutable_pos_info()) = existingPlayerInfo.pos_info();
-                    }
-
+                    Protocol::hyps_object_info* existingPlayerObjectInfo = spawnPkt.add_players();
+                    existingPlayerObjectInfo->set_object_id(existingPlayerInfo.object_id());
+                    existingPlayerObjectInfo->set_object_type(existingPlayerInfo.object_type());
+                    *(existingPlayerObjectInfo->mutable_pos_info()) = existingPlayerInfo.pos_info();
                 }
+
             }
-            SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
-            session->PreSend(sendBuffer);
         }
-        else
-        {
-            return false;
-        }
+        SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
+        session->PreSend(sendBuffer);
     }
 
     // 기존 유저에게 신규유저 생성정보 전달
     {
+        //(Before My Player Add)
         Protocol::BC_SPAWN bc_spawnPkt;
         Protocol::hyps_object_info* broadcastNewPlayerInfo = bc_spawnPkt.add_players();
         broadcastNewPlayerInfo->set_object_id(player_id);
@@ -158,6 +155,25 @@ bool CS_ENTER_GAME(HySessionRef& session, Protocol::CS_ENTER_GAME& pkt)
 
         SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(bc_spawnPkt);
         userManager->Broadcast(sendBuffer, player_id);
+    }
+
+    // 신규 유저에게 자기 자신 spawn 
+    {
+        //(My Player Add)
+        Protocol::SC_ENTER_GAME enterGamePkt;
+        *(enterGamePkt.mutable_my_player()) = pos_info;
+
+        if (userManager->AddPlayerInfo(player_id, MyObjectInfo))
+        {
+            enterGamePkt.set_success(true);
+        }
+        else
+        {
+            return false;
+        }
+
+        SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+        session->PreSend(sendBuffer);
     }
 
     return true;
