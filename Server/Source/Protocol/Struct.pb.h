@@ -366,6 +366,7 @@ class hyps_pos_info final :
     kYFieldNumber = 3,
     kZFieldNumber = 4,
     kYawFieldNumber = 5,
+    kMoveStateFieldNumber = 6,
   };
   // uint64 object_id = 1;
   void clear_object_id();
@@ -412,6 +413,15 @@ class hyps_pos_info final :
   void _internal_set_yaw(float value);
   public:
 
+  // .Protocol.hype_move_state move_state = 6;
+  void clear_move_state();
+  ::Protocol::hype_move_state move_state() const;
+  void set_move_state(::Protocol::hype_move_state value);
+  private:
+  ::Protocol::hype_move_state _internal_move_state() const;
+  void _internal_set_move_state(::Protocol::hype_move_state value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.hyps_pos_info)
  private:
   class _Internal;
@@ -425,6 +435,7 @@ class hyps_pos_info final :
     float y_;
     float z_;
     float yaw_;
+    int move_state_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -812,6 +823,26 @@ inline void hyps_pos_info::_internal_set_yaw(float value) {
 inline void hyps_pos_info::set_yaw(float value) {
   _internal_set_yaw(value);
   // @@protoc_insertion_point(field_set:Protocol.hyps_pos_info.yaw)
+}
+
+// .Protocol.hype_move_state move_state = 6;
+inline void hyps_pos_info::clear_move_state() {
+  _impl_.move_state_ = 0;
+}
+inline ::Protocol::hype_move_state hyps_pos_info::_internal_move_state() const {
+  return static_cast< ::Protocol::hype_move_state >(_impl_.move_state_);
+}
+inline ::Protocol::hype_move_state hyps_pos_info::move_state() const {
+  // @@protoc_insertion_point(field_get:Protocol.hyps_pos_info.move_state)
+  return _internal_move_state();
+}
+inline void hyps_pos_info::_internal_set_move_state(::Protocol::hype_move_state value) {
+  
+  _impl_.move_state_ = value;
+}
+inline void hyps_pos_info::set_move_state(::Protocol::hype_move_state value) {
+  _internal_set_move_state(value);
+  // @@protoc_insertion_point(field_set:Protocol.hyps_pos_info.move_state)
 }
 
 // -------------------------------------------------------------------

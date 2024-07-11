@@ -10,6 +10,13 @@ enum hype_user
 	user_normal = 2;
 }
 
+enum hype_move_state
+{
+	move_state_none = 0;
+	move_state_idle = 1;
+	move_state_run = 2;
+}
+
 enum hype_object_type
 {
 	none = 0;

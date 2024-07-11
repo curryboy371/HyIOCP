@@ -2778,24 +2778,34 @@ class CS_MOVE_OBJECT final :
 
   enum : int {
     kMoveInfoFieldNumber = 1,
+    kMoveStateFieldNumber = 2,
   };
-  // .Protocol.hyps_object_info move_info = 1;
+  // .Protocol.hyps_pos_info move_info = 1;
   bool has_move_info() const;
   private:
   bool _internal_has_move_info() const;
   public:
   void clear_move_info();
-  const ::Protocol::hyps_object_info& move_info() const;
-  PROTOBUF_NODISCARD ::Protocol::hyps_object_info* release_move_info();
-  ::Protocol::hyps_object_info* mutable_move_info();
-  void set_allocated_move_info(::Protocol::hyps_object_info* move_info);
+  const ::Protocol::hyps_pos_info& move_info() const;
+  PROTOBUF_NODISCARD ::Protocol::hyps_pos_info* release_move_info();
+  ::Protocol::hyps_pos_info* mutable_move_info();
+  void set_allocated_move_info(::Protocol::hyps_pos_info* move_info);
   private:
-  const ::Protocol::hyps_object_info& _internal_move_info() const;
-  ::Protocol::hyps_object_info* _internal_mutable_move_info();
+  const ::Protocol::hyps_pos_info& _internal_move_info() const;
+  ::Protocol::hyps_pos_info* _internal_mutable_move_info();
   public:
   void unsafe_arena_set_allocated_move_info(
-      ::Protocol::hyps_object_info* move_info);
-  ::Protocol::hyps_object_info* unsafe_arena_release_move_info();
+      ::Protocol::hyps_pos_info* move_info);
+  ::Protocol::hyps_pos_info* unsafe_arena_release_move_info();
+
+  // .Protocol.hype_move_state move_state = 2;
+  void clear_move_state();
+  ::Protocol::hype_move_state move_state() const;
+  void set_move_state(::Protocol::hype_move_state value);
+  private:
+  ::Protocol::hype_move_state _internal_move_state() const;
+  void _internal_set_move_state(::Protocol::hype_move_state value);
+  public:
 
   // @@protoc_insertion_point(class_scope:Protocol.CS_MOVE_OBJECT)
  private:
@@ -2805,7 +2815,8 @@ class CS_MOVE_OBJECT final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::Protocol::hyps_object_info* move_info_;
+    ::Protocol::hyps_pos_info* move_info_;
+    int move_state_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2935,24 +2946,34 @@ class SC_MOVE_OBJECT final :
 
   enum : int {
     kMoveInfoFieldNumber = 1,
+    kMoveStateFieldNumber = 2,
   };
-  // .Protocol.hyps_object_info move_info = 1;
+  // .Protocol.hyps_pos_info move_info = 1;
   bool has_move_info() const;
   private:
   bool _internal_has_move_info() const;
   public:
   void clear_move_info();
-  const ::Protocol::hyps_object_info& move_info() const;
-  PROTOBUF_NODISCARD ::Protocol::hyps_object_info* release_move_info();
-  ::Protocol::hyps_object_info* mutable_move_info();
-  void set_allocated_move_info(::Protocol::hyps_object_info* move_info);
+  const ::Protocol::hyps_pos_info& move_info() const;
+  PROTOBUF_NODISCARD ::Protocol::hyps_pos_info* release_move_info();
+  ::Protocol::hyps_pos_info* mutable_move_info();
+  void set_allocated_move_info(::Protocol::hyps_pos_info* move_info);
   private:
-  const ::Protocol::hyps_object_info& _internal_move_info() const;
-  ::Protocol::hyps_object_info* _internal_mutable_move_info();
+  const ::Protocol::hyps_pos_info& _internal_move_info() const;
+  ::Protocol::hyps_pos_info* _internal_mutable_move_info();
   public:
   void unsafe_arena_set_allocated_move_info(
-      ::Protocol::hyps_object_info* move_info);
-  ::Protocol::hyps_object_info* unsafe_arena_release_move_info();
+      ::Protocol::hyps_pos_info* move_info);
+  ::Protocol::hyps_pos_info* unsafe_arena_release_move_info();
+
+  // .Protocol.hype_move_state move_state = 2;
+  void clear_move_state();
+  ::Protocol::hype_move_state move_state() const;
+  void set_move_state(::Protocol::hype_move_state value);
+  private:
+  ::Protocol::hype_move_state _internal_move_state() const;
+  void _internal_set_move_state(::Protocol::hype_move_state value);
+  public:
 
   // @@protoc_insertion_point(class_scope:Protocol.SC_MOVE_OBJECT)
  private:
@@ -2962,7 +2983,8 @@ class SC_MOVE_OBJECT final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::Protocol::hyps_object_info* move_info_;
+    ::Protocol::hyps_pos_info* move_info_;
+    int move_state_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -4739,24 +4761,24 @@ BC_DESPAWN::mutable_object_ids() {
 
 // CS_MOVE_OBJECT
 
-// .Protocol.hyps_object_info move_info = 1;
+// .Protocol.hyps_pos_info move_info = 1;
 inline bool CS_MOVE_OBJECT::_internal_has_move_info() const {
   return this != internal_default_instance() && _impl_.move_info_ != nullptr;
 }
 inline bool CS_MOVE_OBJECT::has_move_info() const {
   return _internal_has_move_info();
 }
-inline const ::Protocol::hyps_object_info& CS_MOVE_OBJECT::_internal_move_info() const {
-  const ::Protocol::hyps_object_info* p = _impl_.move_info_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::hyps_object_info&>(
-      ::Protocol::_hyps_object_info_default_instance_);
+inline const ::Protocol::hyps_pos_info& CS_MOVE_OBJECT::_internal_move_info() const {
+  const ::Protocol::hyps_pos_info* p = _impl_.move_info_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::hyps_pos_info&>(
+      ::Protocol::_hyps_pos_info_default_instance_);
 }
-inline const ::Protocol::hyps_object_info& CS_MOVE_OBJECT::move_info() const {
+inline const ::Protocol::hyps_pos_info& CS_MOVE_OBJECT::move_info() const {
   // @@protoc_insertion_point(field_get:Protocol.CS_MOVE_OBJECT.move_info)
   return _internal_move_info();
 }
 inline void CS_MOVE_OBJECT::unsafe_arena_set_allocated_move_info(
-    ::Protocol::hyps_object_info* move_info) {
+    ::Protocol::hyps_pos_info* move_info) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.move_info_);
   }
@@ -4768,9 +4790,9 @@ inline void CS_MOVE_OBJECT::unsafe_arena_set_allocated_move_info(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.CS_MOVE_OBJECT.move_info)
 }
-inline ::Protocol::hyps_object_info* CS_MOVE_OBJECT::release_move_info() {
+inline ::Protocol::hyps_pos_info* CS_MOVE_OBJECT::release_move_info() {
   
-  ::Protocol::hyps_object_info* temp = _impl_.move_info_;
+  ::Protocol::hyps_pos_info* temp = _impl_.move_info_;
   _impl_.move_info_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -4783,27 +4805,27 @@ inline ::Protocol::hyps_object_info* CS_MOVE_OBJECT::release_move_info() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::Protocol::hyps_object_info* CS_MOVE_OBJECT::unsafe_arena_release_move_info() {
+inline ::Protocol::hyps_pos_info* CS_MOVE_OBJECT::unsafe_arena_release_move_info() {
   // @@protoc_insertion_point(field_release:Protocol.CS_MOVE_OBJECT.move_info)
   
-  ::Protocol::hyps_object_info* temp = _impl_.move_info_;
+  ::Protocol::hyps_pos_info* temp = _impl_.move_info_;
   _impl_.move_info_ = nullptr;
   return temp;
 }
-inline ::Protocol::hyps_object_info* CS_MOVE_OBJECT::_internal_mutable_move_info() {
+inline ::Protocol::hyps_pos_info* CS_MOVE_OBJECT::_internal_mutable_move_info() {
   
   if (_impl_.move_info_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::hyps_object_info>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::Protocol::hyps_pos_info>(GetArenaForAllocation());
     _impl_.move_info_ = p;
   }
   return _impl_.move_info_;
 }
-inline ::Protocol::hyps_object_info* CS_MOVE_OBJECT::mutable_move_info() {
-  ::Protocol::hyps_object_info* _msg = _internal_mutable_move_info();
+inline ::Protocol::hyps_pos_info* CS_MOVE_OBJECT::mutable_move_info() {
+  ::Protocol::hyps_pos_info* _msg = _internal_mutable_move_info();
   // @@protoc_insertion_point(field_mutable:Protocol.CS_MOVE_OBJECT.move_info)
   return _msg;
 }
-inline void CS_MOVE_OBJECT::set_allocated_move_info(::Protocol::hyps_object_info* move_info) {
+inline void CS_MOVE_OBJECT::set_allocated_move_info(::Protocol::hyps_pos_info* move_info) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.move_info_);
@@ -4824,28 +4846,48 @@ inline void CS_MOVE_OBJECT::set_allocated_move_info(::Protocol::hyps_object_info
   // @@protoc_insertion_point(field_set_allocated:Protocol.CS_MOVE_OBJECT.move_info)
 }
 
+// .Protocol.hype_move_state move_state = 2;
+inline void CS_MOVE_OBJECT::clear_move_state() {
+  _impl_.move_state_ = 0;
+}
+inline ::Protocol::hype_move_state CS_MOVE_OBJECT::_internal_move_state() const {
+  return static_cast< ::Protocol::hype_move_state >(_impl_.move_state_);
+}
+inline ::Protocol::hype_move_state CS_MOVE_OBJECT::move_state() const {
+  // @@protoc_insertion_point(field_get:Protocol.CS_MOVE_OBJECT.move_state)
+  return _internal_move_state();
+}
+inline void CS_MOVE_OBJECT::_internal_set_move_state(::Protocol::hype_move_state value) {
+  
+  _impl_.move_state_ = value;
+}
+inline void CS_MOVE_OBJECT::set_move_state(::Protocol::hype_move_state value) {
+  _internal_set_move_state(value);
+  // @@protoc_insertion_point(field_set:Protocol.CS_MOVE_OBJECT.move_state)
+}
+
 // -------------------------------------------------------------------
 
 // SC_MOVE_OBJECT
 
-// .Protocol.hyps_object_info move_info = 1;
+// .Protocol.hyps_pos_info move_info = 1;
 inline bool SC_MOVE_OBJECT::_internal_has_move_info() const {
   return this != internal_default_instance() && _impl_.move_info_ != nullptr;
 }
 inline bool SC_MOVE_OBJECT::has_move_info() const {
   return _internal_has_move_info();
 }
-inline const ::Protocol::hyps_object_info& SC_MOVE_OBJECT::_internal_move_info() const {
-  const ::Protocol::hyps_object_info* p = _impl_.move_info_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::hyps_object_info&>(
-      ::Protocol::_hyps_object_info_default_instance_);
+inline const ::Protocol::hyps_pos_info& SC_MOVE_OBJECT::_internal_move_info() const {
+  const ::Protocol::hyps_pos_info* p = _impl_.move_info_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::hyps_pos_info&>(
+      ::Protocol::_hyps_pos_info_default_instance_);
 }
-inline const ::Protocol::hyps_object_info& SC_MOVE_OBJECT::move_info() const {
+inline const ::Protocol::hyps_pos_info& SC_MOVE_OBJECT::move_info() const {
   // @@protoc_insertion_point(field_get:Protocol.SC_MOVE_OBJECT.move_info)
   return _internal_move_info();
 }
 inline void SC_MOVE_OBJECT::unsafe_arena_set_allocated_move_info(
-    ::Protocol::hyps_object_info* move_info) {
+    ::Protocol::hyps_pos_info* move_info) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.move_info_);
   }
@@ -4857,9 +4899,9 @@ inline void SC_MOVE_OBJECT::unsafe_arena_set_allocated_move_info(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.SC_MOVE_OBJECT.move_info)
 }
-inline ::Protocol::hyps_object_info* SC_MOVE_OBJECT::release_move_info() {
+inline ::Protocol::hyps_pos_info* SC_MOVE_OBJECT::release_move_info() {
   
-  ::Protocol::hyps_object_info* temp = _impl_.move_info_;
+  ::Protocol::hyps_pos_info* temp = _impl_.move_info_;
   _impl_.move_info_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -4872,27 +4914,27 @@ inline ::Protocol::hyps_object_info* SC_MOVE_OBJECT::release_move_info() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::Protocol::hyps_object_info* SC_MOVE_OBJECT::unsafe_arena_release_move_info() {
+inline ::Protocol::hyps_pos_info* SC_MOVE_OBJECT::unsafe_arena_release_move_info() {
   // @@protoc_insertion_point(field_release:Protocol.SC_MOVE_OBJECT.move_info)
   
-  ::Protocol::hyps_object_info* temp = _impl_.move_info_;
+  ::Protocol::hyps_pos_info* temp = _impl_.move_info_;
   _impl_.move_info_ = nullptr;
   return temp;
 }
-inline ::Protocol::hyps_object_info* SC_MOVE_OBJECT::_internal_mutable_move_info() {
+inline ::Protocol::hyps_pos_info* SC_MOVE_OBJECT::_internal_mutable_move_info() {
   
   if (_impl_.move_info_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::hyps_object_info>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::Protocol::hyps_pos_info>(GetArenaForAllocation());
     _impl_.move_info_ = p;
   }
   return _impl_.move_info_;
 }
-inline ::Protocol::hyps_object_info* SC_MOVE_OBJECT::mutable_move_info() {
-  ::Protocol::hyps_object_info* _msg = _internal_mutable_move_info();
+inline ::Protocol::hyps_pos_info* SC_MOVE_OBJECT::mutable_move_info() {
+  ::Protocol::hyps_pos_info* _msg = _internal_mutable_move_info();
   // @@protoc_insertion_point(field_mutable:Protocol.SC_MOVE_OBJECT.move_info)
   return _msg;
 }
-inline void SC_MOVE_OBJECT::set_allocated_move_info(::Protocol::hyps_object_info* move_info) {
+inline void SC_MOVE_OBJECT::set_allocated_move_info(::Protocol::hyps_pos_info* move_info) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.move_info_);
@@ -4911,6 +4953,26 @@ inline void SC_MOVE_OBJECT::set_allocated_move_info(::Protocol::hyps_object_info
   }
   _impl_.move_info_ = move_info;
   // @@protoc_insertion_point(field_set_allocated:Protocol.SC_MOVE_OBJECT.move_info)
+}
+
+// .Protocol.hype_move_state move_state = 2;
+inline void SC_MOVE_OBJECT::clear_move_state() {
+  _impl_.move_state_ = 0;
+}
+inline ::Protocol::hype_move_state SC_MOVE_OBJECT::_internal_move_state() const {
+  return static_cast< ::Protocol::hype_move_state >(_impl_.move_state_);
+}
+inline ::Protocol::hype_move_state SC_MOVE_OBJECT::move_state() const {
+  // @@protoc_insertion_point(field_get:Protocol.SC_MOVE_OBJECT.move_state)
+  return _internal_move_state();
+}
+inline void SC_MOVE_OBJECT::_internal_set_move_state(::Protocol::hype_move_state value) {
+  
+  _impl_.move_state_ = value;
+}
+inline void SC_MOVE_OBJECT::set_move_state(::Protocol::hype_move_state value) {
+  _internal_set_move_state(value);
+  // @@protoc_insertion_point(field_set:Protocol.SC_MOVE_OBJECT.move_state)
 }
 
 // -------------------------------------------------------------------

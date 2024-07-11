@@ -116,32 +116,34 @@ bool CS_ENTER_GAME(HySessionRef& session, Protocol::CS_ENTER_GAME& pkt)
         return false;
     }
 
-
-
     // 신규 유저에게 기존 유저 정보 전달
     {
-        //(Before My Player Add)
-        Protocol::SC_SPAWN spawnPkt;
-
-        const std::unordered_map<int64, UserRef>& AllUsers = userManager->GetAllUsers();
-        for (const auto& userPair : AllUsers)
+        if (userManager->Get_PlayerCount() > 0)
         {
-            if (userPair.second && userPair.second->Get_bHasPlayerInfo())
+            //(Before My Player Add)
+            Protocol::SC_SPAWN spawnPkt;
+
+            const std::unordered_map<int64, UserRef>& AllUsers = userManager->GetAllUsers();
+            for (const auto& userPair : AllUsers)
             {
-                if (player_id != userPair.first)
+                if (userPair.second && userPair.second->Get_bHasPlayerInfo())
                 {
-                    const Protocol::hyps_object_info& existingPlayerInfo = userPair.second->Get_player_infoRef();
+                    if (player_id != userPair.first)
+                    {
+                        const Protocol::hyps_object_info& existingPlayerInfo = userPair.second->Get_player_infoRef();
 
-                    Protocol::hyps_object_info* existingPlayerObjectInfo = spawnPkt.add_players();
-                    existingPlayerObjectInfo->set_object_id(existingPlayerInfo.object_id());
-                    existingPlayerObjectInfo->set_object_type(existingPlayerInfo.object_type());
-                    *(existingPlayerObjectInfo->mutable_pos_info()) = existingPlayerInfo.pos_info();
+                        Protocol::hyps_object_info* existingPlayerObjectInfo = spawnPkt.add_players();
+                        existingPlayerObjectInfo->set_object_id(existingPlayerInfo.object_id());
+                        existingPlayerObjectInfo->set_object_type(existingPlayerInfo.object_type());
+                        *(existingPlayerObjectInfo->mutable_pos_info()) = existingPlayerInfo.pos_info();
+                    }
+
                 }
-
             }
+            SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
+            session->PreSend(sendBuffer);
         }
-        SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
-        session->PreSend(sendBuffer);
+
     }
 
     // 기존 유저에게 신규유저 생성정보 전달
@@ -193,6 +195,7 @@ bool CS_LEAVE_GAME(HySessionRef& session, Protocol::CS_LEAVE_GAME& pkt)
 
     if (User == nullptr)
     {
+        ERR_V("Already Exit User %lld", sessionKey);
         return false;
     }
 
@@ -223,13 +226,13 @@ bool CS_MOVE_OBJECT(HySessionRef& session, Protocol::CS_MOVE_OBJECT& pkt)
 
     Protocol::SC_MOVE_OBJECT moveObjPkt;
 
-    Protocol::hyps_object_info obj_info = pkt.move_info();
+    Protocol::hyps_pos_info pos_info = pkt.move_info();
     // TODO 검증 Check
     
-    *(moveObjPkt.mutable_move_info()) = obj_info;
+    *(moveObjPkt.mutable_move_info()) = pos_info;
 
     SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(moveObjPkt);
-    userManager->Broadcast(sendBuffer);
+    userManager->Broadcast(sendBuffer, session->GetSessionKey());
 
     return true;
 }

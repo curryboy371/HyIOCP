@@ -33,8 +33,10 @@ public:
 
 	const std::unordered_map<int64, UserRef>& GetAllUsers() { return userInfoMap; }
 
+	GETTER(int32, PlayerCount)
 
 private:
 	std::unordered_map<int64, UserRef> userInfoMap;
+	int32 PlayerCount = 0;
 };
 

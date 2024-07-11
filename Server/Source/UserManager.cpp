@@ -91,6 +91,7 @@ bool UserManager::AddPlayerInfo(const int64& InUserID, const Protocol::hyps_obje
     {
         userInfoMap[InUserID]->Set_player_info(InPlayerInfo);
         userInfoMap[InUserID]->Set_bHasPlayerInfo(true);
+        ++PlayerCount;
     }
     return true;
 }
@@ -99,7 +100,10 @@ void UserManager::Broadcast(SendBufferRef sendBuffer)
 {
     for (auto& pair : userInfoMap)
     {
-        pair.second->Get_ownerSession()->PreSend(sendBuffer);
+        if (pair.second->Get_bHasPlayerInfo())
+        {
+            pair.second->Get_ownerSession()->PreSend(sendBuffer);
+        }
     }
 }
 
@@ -109,7 +113,10 @@ void UserManager::Broadcast(SendBufferRef sendBuffer, const int64& Inexcept_id)
     {
         if (pair.first != Inexcept_id)
         {
-            pair.second->Get_ownerSession()->PreSend(sendBuffer);
+            if (pair.second->Get_bHasPlayerInfo())
+            {
+                pair.second->Get_ownerSession()->PreSend(sendBuffer);
+            }
         }
     }
 }

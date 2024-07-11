@@ -73,6 +73,32 @@ inline bool hype_user_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<hype_user>(
     hype_user_descriptor(), name, value);
 }
+enum hype_move_state : int {
+  move_state_none = 0,
+  move_state_idle = 1,
+  move_state_run = 2,
+  hype_move_state_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  hype_move_state_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool hype_move_state_IsValid(int value);
+constexpr hype_move_state hype_move_state_MIN = move_state_none;
+constexpr hype_move_state hype_move_state_MAX = move_state_run;
+constexpr int hype_move_state_ARRAYSIZE = hype_move_state_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* hype_move_state_descriptor();
+template<typename T>
+inline const std::string& hype_move_state_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, hype_move_state>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function hype_move_state_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    hype_move_state_descriptor(), enum_t_value);
+}
+inline bool hype_move_state_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, hype_move_state* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<hype_move_state>(
+    hype_move_state_descriptor(), name, value);
+}
 enum hype_object_type : int {
   none = 0,
   creature = 1,
@@ -126,6 +152,11 @@ template <> struct is_proto_enum< ::Protocol::hype_user> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::hype_user>() {
   return ::Protocol::hype_user_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::hype_move_state> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::hype_move_state>() {
+  return ::Protocol::hype_move_state_descriptor();
 }
 template <> struct is_proto_enum< ::Protocol::hype_object_type> : ::std::true_type {};
 template <>

@@ -238,6 +238,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR CS_MOVE_OBJECT::CS_MOVE_OBJECT(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.move_info_)*/nullptr
+  , /*decltype(_impl_.move_state_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct CS_MOVE_OBJECTDefaultTypeInternal {
   PROTOBUF_CONSTEXPR CS_MOVE_OBJECTDefaultTypeInternal()
@@ -251,6 +252,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR SC_MOVE_OBJECT::SC_MOVE_OBJECT(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.move_info_)*/nullptr
+  , /*decltype(_impl_.move_state_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SC_MOVE_OBJECTDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SC_MOVE_OBJECTDefaultTypeInternal()
@@ -460,6 +462,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::CS_MOVE_OBJECT, _impl_.move_info_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::CS_MOVE_OBJECT, _impl_.move_state_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_MOVE_OBJECT, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -467,6 +470,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_MOVE_OBJECT, _impl_.move_info_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::SC_MOVE_OBJECT, _impl_.move_state_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::CS_CHAT, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -523,12 +527,12 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 105, -1, -1, sizeof(::Protocol::SC_DESPAWN)},
   { 112, -1, -1, sizeof(::Protocol::BC_DESPAWN)},
   { 119, -1, -1, sizeof(::Protocol::CS_MOVE_OBJECT)},
-  { 126, -1, -1, sizeof(::Protocol::SC_MOVE_OBJECT)},
-  { 133, -1, -1, sizeof(::Protocol::CS_CHAT)},
-  { 140, -1, -1, sizeof(::Protocol::SC_CHAT)},
-  { 149, -1, -1, sizeof(::Protocol::BC_GL_CHAT)},
-  { 156, -1, -1, sizeof(::Protocol::CS_ECHO)},
-  { 163, -1, -1, sizeof(::Protocol::BC_GL_ECHO)},
+  { 127, -1, -1, sizeof(::Protocol::SC_MOVE_OBJECT)},
+  { 135, -1, -1, sizeof(::Protocol::CS_CHAT)},
+  { 142, -1, -1, sizeof(::Protocol::SC_CHAT)},
+  { 151, -1, -1, sizeof(::Protocol::BC_GL_CHAT)},
+  { 158, -1, -1, sizeof(::Protocol::CS_ECHO)},
+  { 165, -1, -1, sizeof(::Protocol::BC_GL_ECHO)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -580,14 +584,16 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "info\"7\n\010BC_SPAWN\022+\n\007players\030\001 \003(\0132\032.Prot"
   "ocol.hyps_object_info\" \n\nSC_DESPAWN\022\022\n\no"
   "bject_ids\030\001 \003(\004\" \n\nBC_DESPAWN\022\022\n\nobject_"
-  "ids\030\001 \003(\004\"\?\n\016CS_MOVE_OBJECT\022-\n\tmove_info"
-  "\030\001 \001(\0132\032.Protocol.hyps_object_info\"\?\n\016SC"
-  "_MOVE_OBJECT\022-\n\tmove_info\030\001 \001(\0132\032.Protoc"
-  "ol.hyps_object_info\"\026\n\007CS_CHAT\022\013\n\003msg\030\001 "
-  "\001(\t\"7\n\007SC_CHAT\022\017\n\007success\030\001 \001(\010\022\016\n\006userI"
-  "d\030\002 \001(\004\022\013\n\003msg\030\003 \001(\t\"\031\n\nBC_GL_CHAT\022\013\n\003ms"
-  "g\030\001 \001(\t\"\026\n\007CS_ECHO\022\013\n\003msg\030\001 \001(\t\"\031\n\nBC_GL"
-  "_ECHO\022\013\n\003msg\030\001 \001(\tb\006proto3"
+  "ids\030\001 \003(\004\"k\n\016CS_MOVE_OBJECT\022*\n\tmove_info"
+  "\030\001 \001(\0132\027.Protocol.hyps_pos_info\022-\n\nmove_"
+  "state\030\002 \001(\0162\031.Protocol.hype_move_state\"k"
+  "\n\016SC_MOVE_OBJECT\022*\n\tmove_info\030\001 \001(\0132\027.Pr"
+  "otocol.hyps_pos_info\022-\n\nmove_state\030\002 \001(\016"
+  "2\031.Protocol.hype_move_state\"\026\n\007CS_CHAT\022\013"
+  "\n\003msg\030\001 \001(\t\"7\n\007SC_CHAT\022\017\n\007success\030\001 \001(\010\022"
+  "\016\n\006userId\030\002 \001(\004\022\013\n\003msg\030\003 \001(\t\"\031\n\nBC_GL_CH"
+  "AT\022\013\n\003msg\030\001 \001(\t\"\026\n\007CS_ECHO\022\013\n\003msg\030\001 \001(\t\""
+  "\031\n\nBC_GL_ECHO\022\013\n\003msg\030\001 \001(\tb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -595,7 +601,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 1186, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 1274, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
     &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 23,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
@@ -3594,10 +3600,10 @@ void BC_DESPAWN::InternalSwap(BC_DESPAWN* other) {
 
 class CS_MOVE_OBJECT::_Internal {
  public:
-  static const ::Protocol::hyps_object_info& move_info(const CS_MOVE_OBJECT* msg);
+  static const ::Protocol::hyps_pos_info& move_info(const CS_MOVE_OBJECT* msg);
 };
 
-const ::Protocol::hyps_object_info&
+const ::Protocol::hyps_pos_info&
 CS_MOVE_OBJECT::_Internal::move_info(const CS_MOVE_OBJECT* msg) {
   return *msg->_impl_.move_info_;
 }
@@ -3618,12 +3624,14 @@ CS_MOVE_OBJECT::CS_MOVE_OBJECT(const CS_MOVE_OBJECT& from)
   CS_MOVE_OBJECT* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.move_info_){nullptr}
+    , decltype(_impl_.move_state_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_move_info()) {
-    _this->_impl_.move_info_ = new ::Protocol::hyps_object_info(*from._impl_.move_info_);
+    _this->_impl_.move_info_ = new ::Protocol::hyps_pos_info(*from._impl_.move_info_);
   }
+  _this->_impl_.move_state_ = from._impl_.move_state_;
   // @@protoc_insertion_point(copy_constructor:Protocol.CS_MOVE_OBJECT)
 }
 
@@ -3633,6 +3641,7 @@ inline void CS_MOVE_OBJECT::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.move_info_){nullptr}
+    , decltype(_impl_.move_state_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -3665,6 +3674,7 @@ void CS_MOVE_OBJECT::Clear() {
     delete _impl_.move_info_;
   }
   _impl_.move_info_ = nullptr;
+  _impl_.move_state_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3674,11 +3684,20 @@ const char* CS_MOVE_OBJECT::_InternalParse(const char* ptr, ::_pbi::ParseContext
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .Protocol.hyps_object_info move_info = 1;
+      // .Protocol.hyps_pos_info move_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_move_info(), ptr);
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .Protocol.hype_move_state move_state = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_move_state(static_cast<::Protocol::hype_move_state>(val));
         } else
           goto handle_unusual;
         continue;
@@ -3711,11 +3730,18 @@ uint8_t* CS_MOVE_OBJECT::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .Protocol.hyps_object_info move_info = 1;
+  // .Protocol.hyps_pos_info move_info = 1;
   if (this->_internal_has_move_info()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::move_info(this),
         _Internal::move_info(this).GetCachedSize(), target, stream);
+  }
+
+  // .Protocol.hype_move_state move_state = 2;
+  if (this->_internal_move_state() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_move_state(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3734,11 +3760,17 @@ size_t CS_MOVE_OBJECT::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.hyps_object_info move_info = 1;
+  // .Protocol.hyps_pos_info move_info = 1;
   if (this->_internal_has_move_info()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.move_info_);
+  }
+
+  // .Protocol.hype_move_state move_state = 2;
+  if (this->_internal_move_state() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_move_state());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -3760,8 +3792,11 @@ void CS_MOVE_OBJECT::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
   (void) cached_has_bits;
 
   if (from._internal_has_move_info()) {
-    _this->_internal_mutable_move_info()->::Protocol::hyps_object_info::MergeFrom(
+    _this->_internal_mutable_move_info()->::Protocol::hyps_pos_info::MergeFrom(
         from._internal_move_info());
+  }
+  if (from._internal_move_state() != 0) {
+    _this->_internal_set_move_state(from._internal_move_state());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3780,7 +3815,12 @@ bool CS_MOVE_OBJECT::IsInitialized() const {
 void CS_MOVE_OBJECT::InternalSwap(CS_MOVE_OBJECT* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.move_info_, other->_impl_.move_info_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CS_MOVE_OBJECT, _impl_.move_state_)
+      + sizeof(CS_MOVE_OBJECT::_impl_.move_state_)
+      - PROTOBUF_FIELD_OFFSET(CS_MOVE_OBJECT, _impl_.move_info_)>(
+          reinterpret_cast<char*>(&_impl_.move_info_),
+          reinterpret_cast<char*>(&other->_impl_.move_info_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CS_MOVE_OBJECT::GetMetadata() const {
@@ -3793,10 +3833,10 @@ void CS_MOVE_OBJECT::InternalSwap(CS_MOVE_OBJECT* other) {
 
 class SC_MOVE_OBJECT::_Internal {
  public:
-  static const ::Protocol::hyps_object_info& move_info(const SC_MOVE_OBJECT* msg);
+  static const ::Protocol::hyps_pos_info& move_info(const SC_MOVE_OBJECT* msg);
 };
 
-const ::Protocol::hyps_object_info&
+const ::Protocol::hyps_pos_info&
 SC_MOVE_OBJECT::_Internal::move_info(const SC_MOVE_OBJECT* msg) {
   return *msg->_impl_.move_info_;
 }
@@ -3817,12 +3857,14 @@ SC_MOVE_OBJECT::SC_MOVE_OBJECT(const SC_MOVE_OBJECT& from)
   SC_MOVE_OBJECT* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.move_info_){nullptr}
+    , decltype(_impl_.move_state_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_move_info()) {
-    _this->_impl_.move_info_ = new ::Protocol::hyps_object_info(*from._impl_.move_info_);
+    _this->_impl_.move_info_ = new ::Protocol::hyps_pos_info(*from._impl_.move_info_);
   }
+  _this->_impl_.move_state_ = from._impl_.move_state_;
   // @@protoc_insertion_point(copy_constructor:Protocol.SC_MOVE_OBJECT)
 }
 
@@ -3832,6 +3874,7 @@ inline void SC_MOVE_OBJECT::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.move_info_){nullptr}
+    , decltype(_impl_.move_state_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -3864,6 +3907,7 @@ void SC_MOVE_OBJECT::Clear() {
     delete _impl_.move_info_;
   }
   _impl_.move_info_ = nullptr;
+  _impl_.move_state_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3873,11 +3917,20 @@ const char* SC_MOVE_OBJECT::_InternalParse(const char* ptr, ::_pbi::ParseContext
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .Protocol.hyps_object_info move_info = 1;
+      // .Protocol.hyps_pos_info move_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_move_info(), ptr);
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .Protocol.hype_move_state move_state = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_move_state(static_cast<::Protocol::hype_move_state>(val));
         } else
           goto handle_unusual;
         continue;
@@ -3910,11 +3963,18 @@ uint8_t* SC_MOVE_OBJECT::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .Protocol.hyps_object_info move_info = 1;
+  // .Protocol.hyps_pos_info move_info = 1;
   if (this->_internal_has_move_info()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::move_info(this),
         _Internal::move_info(this).GetCachedSize(), target, stream);
+  }
+
+  // .Protocol.hype_move_state move_state = 2;
+  if (this->_internal_move_state() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_move_state(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3933,11 +3993,17 @@ size_t SC_MOVE_OBJECT::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.hyps_object_info move_info = 1;
+  // .Protocol.hyps_pos_info move_info = 1;
   if (this->_internal_has_move_info()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.move_info_);
+  }
+
+  // .Protocol.hype_move_state move_state = 2;
+  if (this->_internal_move_state() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_move_state());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -3959,8 +4025,11 @@ void SC_MOVE_OBJECT::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
   (void) cached_has_bits;
 
   if (from._internal_has_move_info()) {
-    _this->_internal_mutable_move_info()->::Protocol::hyps_object_info::MergeFrom(
+    _this->_internal_mutable_move_info()->::Protocol::hyps_pos_info::MergeFrom(
         from._internal_move_info());
+  }
+  if (from._internal_move_state() != 0) {
+    _this->_internal_set_move_state(from._internal_move_state());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3979,7 +4048,12 @@ bool SC_MOVE_OBJECT::IsInitialized() const {
 void SC_MOVE_OBJECT::InternalSwap(SC_MOVE_OBJECT* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.move_info_, other->_impl_.move_info_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SC_MOVE_OBJECT, _impl_.move_state_)
+      + sizeof(SC_MOVE_OBJECT::_impl_.move_state_)
+      - PROTOBUF_FIELD_OFFSET(SC_MOVE_OBJECT, _impl_.move_info_)>(
+          reinterpret_cast<char*>(&_impl_.move_info_),
+          reinterpret_cast<char*>(&other->_impl_.move_info_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SC_MOVE_OBJECT::GetMetadata() const {

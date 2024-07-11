@@ -106,12 +106,14 @@ message BC_DESPAWN
 
 message CS_MOVE_OBJECT
 {
-	hyps_object_info move_info = 1;
+	hyps_pos_info move_info = 1;
+	hype_move_state move_state = 2;
 }
 
 message SC_MOVE_OBJECT
 {
-	hyps_object_info move_info = 1;
+	hyps_pos_info move_info = 1;
+	hype_move_state move_state = 2;
 }
 
 message CS_CHAT

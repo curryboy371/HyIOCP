@@ -21,6 +21,7 @@ message hyps_pos_info
 	float y = 3;
 	float z = 4;
 	float yaw = 5;
+	hype_move_state move_state = 6;
 }
 
 message hyps_object_info

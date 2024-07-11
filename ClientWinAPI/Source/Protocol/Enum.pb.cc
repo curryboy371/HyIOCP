@@ -22,7 +22,7 @@ namespace _pbi = _pb::internal;
 
 namespace Protocol {
 }  // namespace Protocol
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[3];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const uint32_t TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
@@ -31,13 +31,15 @@ static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\nEnum.proto\022\010Protocol*<\n\thype_user\022\r\n\tu"
   "ser_none\020\000\022\017\n\013user_master\020\001\022\017\n\013user_norm"
-  "al\020\002*C\n\020hype_object_type\022\010\n\004none\020\000\022\014\n\010cr"
-  "eature\020\001\022\016\n\nprojectile\020\002\022\007\n\003env\020\003b\006proto"
-  "3"
+  "al\020\002*O\n\017hype_move_state\022\023\n\017move_state_no"
+  "ne\020\000\022\023\n\017move_state_idle\020\001\022\022\n\016move_state_"
+  "run\020\002*C\n\020hype_object_type\022\010\n\004none\020\000\022\014\n\010c"
+  "reature\020\001\022\016\n\nprojectile\020\002\022\007\n\003env\020\003b\006prot"
+  "o3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 161, descriptor_table_protodef_Enum_2eproto,
+    false, false, 242, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -66,9 +68,24 @@ bool hype_user_IsValid(int value) {
   }
 }
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* hype_object_type_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* hype_move_state_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
   return file_level_enum_descriptors_Enum_2eproto[1];
+}
+bool hype_move_state_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* hype_object_type_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[2];
 }
 bool hype_object_type_IsValid(int value) {
   switch (value) {
