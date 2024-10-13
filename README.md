@@ -14,12 +14,13 @@
 
 - Core Lib을 사용하여 실제 게임 서버의 역할을 하는 콘솔 서버입니다.
 - 유저세션, 서버 세션 등을 관리하고, 프로토버퍼로 생성한 패킷을 핸들링 합니다.
-    
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/dca5d1b3-ad21-44f0-b8d7-013810b61237/f65989f7-50eb-4ded-a5fe-36bd08a9337b/image.png)
+
+![image](https://github.com/user-attachments/assets/58e35f9c-47b6-45ba-a322-eb6989e5aefd)
     
 
 ### Client
 
 - 패킷을 서버로부터(에) Recv(Send) 하는 역할을 하는 콘솔 클라이언트입니다.
-  
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/dca5d1b3-ad21-44f0-b8d7-013810b61237/ac47cf74-e8a8-45c0-ab96-39b92f3da234/image.png)
+
+![image](https://github.com/user-attachments/assets/6fb17bd5-e50d-4321-ad2d-afab61ea5344)
+
